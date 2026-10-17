@@ -1,30 +1,17 @@
-import DealerHero from "@/components/home/DealerHero";
-import StockList from "@/components/trade/StockList";
-import { getBrands, getCategories, getStockList } from "@/lib/catalog";
+import StockHero from "@/modules/catalog/components/StockHero";
+import StockList from "@/modules/catalog/components/StockList";
+import { getStock } from "@/modules/catalog/catalog.api";
+import { getSettings } from "@/modules/site/site.api";
 
 export default async function HomePage({ searchParams }) {
-  const params = await searchParams;
-  const [products, categories, brands] = await Promise.all([getStockList(), getCategories(), getBrands()]);
-
-  const sizes = products.flatMap((p) => p.sizes);
-  const stats = [
-    { value: products.length, label: "Products" },
-    { value: sizes.length, label: "Sizes" },
-    { value: sizes.filter((s) => s.availability === "in_stock").length, label: "Sizes in stock" },
-  ];
+  const [params, stock, settings] = await Promise.all([searchParams, getStock(), getSettings()]);
+  const initialFilters = { query: params?.q || "", brand: params?.brand || "", category: params?.category || "" };
 
   return (
     <main className="bg-[#0B0F19]">
-      <DealerHero stats={stats} />
+      <StockHero heroImage={settings.heroImage} companyName={settings.companyName} stats={stock.stats} />
       <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-10">
-        <StockList
-          key={`${params?.q || ""}|${params?.brand || ""}`}
-          products={products}
-          brands={brands}
-          categories={categories}
-          initialQuery={params?.q || ""}
-          initialBrand={params?.brand || ""}
-        />
+        <StockList key={`${initialFilters.query}|${initialFilters.brand}|${initialFilters.category}`} stock={stock} initialFilters={initialFilters} />
       </section>
     </main>
   );
