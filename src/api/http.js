@@ -10,7 +10,7 @@ const getDefaultApiUrl = () => {
   } else if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev") {
     return "http://localhost:4000/api/v1";
   }
-  return "https://api.torqueblock.com/api/v1" || "https://test.torqueblock.com/api/v1";
+  return "https://test.torqueblock.com/api/v1";
 };
 
 export const API_BASE_URL = getDefaultApiUrl().replace(/\/+$/, "");
