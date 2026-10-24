@@ -62,8 +62,7 @@ function DetailsForm({ onDone }) {
     );
 }
 
-// Profile tab: the business account (set up by Torque Block, read-only here) and the user's own
-// contact details and billing address (editable: PUT /auth/:id and the address book).
+
 export default function TradeProfilePanel() {
     const { contact } = useSettings();
     const profile = useAuthStore((s) => s.profile);

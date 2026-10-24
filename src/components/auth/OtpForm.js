@@ -71,9 +71,7 @@ export default function OtpForm({ onSuccess }) {
             </p>
             <Input autoFocus aria-label="OTP" className="text-center tracking-[0.5em] font-black" placeholder="••••••" inputMode="numeric" maxLength={6} value={otp} onChange={(e) => setOtp(digitsOnly(e.target.value))} />
             <FormError>{error}</FormError>
-            <Button type="submit" full loading={loading} loadingText="Verifying…" disabled={otp.length !== 6}>
-                Verify & Continue
-            </Button>
+            <Button type="submit" full loading={loading} loadingText="Verifying…" disabled={otp.length !== 6}> Verify & Continue </Button>
             <div className="flex justify-between text-xs font-semibold text-zinc-400">
                 <button type="button" onClick={() => { setOtpToken(""); setOtp(""); }} className="hover:text-white">Change number</button>
                 <button type="button" disabled={loading} onClick={() => run(async () => setOtpToken((await sendOtp(phone)).otpVerifyToken))} className="hover:text-white disabled:opacity-50">Resend OTP</button>

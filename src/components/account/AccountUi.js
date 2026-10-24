@@ -1,6 +1,5 @@
 import clsx from "clsx";
 
-// Small building blocks shared by the account panels (same card language as checkout and My Orders).
 
 export function Stat({ label, value, hint, tone = "text-white" }) {
     return (

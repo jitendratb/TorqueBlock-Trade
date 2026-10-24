@@ -18,10 +18,7 @@ const TABS = [
     { id: "branches", label: "Branches", Icon: FiMapPin, needsAccount: true },
 ];
 
-/**
- * Trade business account on the /account page: profile (view / edit), credit line and ledger, team, branches.
- * Credit, team and branches exist once Torque Block has opened a business account for the user.
- */
+
 export default function BusinessAccount() {
     const profile = useAuthStore((s) => s.profile);
     const account = useAccountStore((s) => s.account);

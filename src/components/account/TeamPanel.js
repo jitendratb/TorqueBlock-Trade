@@ -11,7 +11,6 @@ import { Notice, PanelHeader } from "./AccountUi";
 
 const BLANK = { name: "", phone: "", email: "", branchCode: "ALL" };
 
-// "ALL" lets a salesman order for any branch; a branch code ties every order they place to that branch.
 const useBranchOptions = () => {
     const branches = useAccountStore((s) => s.account?.branches);
     return [

@@ -10,7 +10,6 @@ import { ADDRESS_FIELDS, ADDRESS_KEYS, formatAddress, validateFields } from "@/f
 import { useAccountStore, selectIsOwner } from "@/store/accountStore";
 import { PanelHeader } from "./AccountUi";
 
-// Backend rule (trade.routes → addBranch): letters, numbers, "-" and "_", up to 20 characters; "ALL" is reserved.
 const BRANCH_CODE = /^[A-Z0-9_-]{1,20}$/;
 
 const CODE_FIELD = { name: "branchCode", label: "Branch code", placeholder: "e.g. KOR", maxLength: 20, upper: true, required: true };

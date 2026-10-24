@@ -7,7 +7,6 @@ import { readFilters, stockHref, toSearchIndex } from "@/lib/catalog.utils";
 import { getSettings } from "@/services/SiteService";
 
 export default async function HomePage({ searchParams }) {
-  // Older shared links put the filters on the home page (/?q=...); results live on /search now.
   const filters = readFilters(new URLSearchParams(await searchParams));
   if (filters.query || filters.brand || filters.category) redirect(stockHref(filters));
 

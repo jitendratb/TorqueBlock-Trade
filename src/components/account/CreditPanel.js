@@ -14,7 +14,6 @@ const STATUS_NOTICE = {
     revoked: "Credit is no longer available on this account. Please contact Torque Block for details.",
 };
 
-// Ledger actions (backend models/creditHistoryLog.model.js) -> label and whether the amount is a debit.
 const ACTIONS = {
     utilized: ["Order on credit", true],
     repayment_recorded: ["Repayment received", false],

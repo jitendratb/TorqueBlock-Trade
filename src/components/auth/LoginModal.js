@@ -12,7 +12,6 @@ export default function LoginModal() {
     const close = useUiStore((s) => s.closeLogin);
     const notify = useUiStore((s) => s.notify);
 
-    // After login, send users who have not registered their business to finish registration.
     const handleSuccess = (profile) => {
         close();
         if (!profile) return notify("error", "You're logged in, but we couldn't load your trade account. Please refresh in a moment.");
@@ -24,20 +23,14 @@ export default function LoginModal() {
 
     return (
         <Modal open={open} onClose={close} label="Trade login">
-            {/* Remount on open so the form always starts at the phone step. */}
             {open && (
                 <>
                     <Logo href={null} className="w-[110px]" />
-                    <h2 className="mt-4 text-2xl font-black tracking-tight">
-                        Trade <span className="text-orange-500">Login</span>
-                    </h2>
+                    <h2 className="mt-4 text-2xl font-black tracking-tight"> Trade <span className="text-orange-500">Login</span></h2>
                     <p className="mb-5 mt-1 text-sm text-zinc-400">Sign in with your registered mobile number.</p>
                     <OtpForm onSuccess={handleSuccess} />
-                    <p className="mt-5 border-t border-white/10 pt-4 text-center text-xs text-zinc-400">
-                        New to Trade?{" "}
-                        <Link href="/register" onClick={close} className="font-bold text-orange-500 hover:text-orange-400">
-                            Register here
-                        </Link>
+                    <p className="mt-5 border-t border-white/10 pt-4 text-center text-xs text-zinc-400"> New to Trade?{" "}
+                        <Link href="/register" onClick={close} className="font-bold text-orange-500 hover:text-orange-400"> Register here </Link>
                     </p>
                 </>
             )}
