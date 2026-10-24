@@ -1,6 +1,11 @@
+"use client";
+
 import Image from "next/image";
 import { useState } from "react";
 import clsx from "clsx";
+
+// Shown when a product has no image or its image fails to load.
+const FALLBACK_SRC = "/newlogo.webp";
 
 const parseImageUrl = (img) => {
     if (!img) return '';
@@ -30,10 +35,9 @@ export default function CustomImage({
     sizes,
     quality = 85,
     skeletonClassName = "",
-    fallback = "/newlogo.webp",
+    fallback = FALLBACK_SRC,
     fetchPriority,
     caption,
-    captionClassName = "",
     ...props
 }) {
     const [loading, setLoading] = useState(!priority);
@@ -42,8 +46,8 @@ export default function CustomImage({
     const actualSrc = parseImageUrl(src);
     const safeSrc = (typeof actualSrc === "string" && actualSrc.trim()) ? actualSrc.trim() : fallback;
     const finalAlt = (alt && alt !== "image") ? alt : (typeof src === 'object' && src?.alt ? src.alt : alt);
-    const useFallback = error || !actualSrc;
-    const renderFill = Boolean(fill && !useFallback);
+    // The fallback keeps the caller's fill layout so it sits inside the same box as the real image.
+    const renderFill = Boolean(fill);
 
     const defaultSizes = renderFill ? "100vw" : undefined;
     const finalSizes = sizes !== undefined ? sizes : defaultSizes;

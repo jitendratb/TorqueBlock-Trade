@@ -2,15 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
-
   images: {
     qualities: [50, 70, 75, 85, 90],
     remotePatterns: [

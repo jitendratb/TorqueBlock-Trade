@@ -2,7 +2,9 @@
 
 import clsx from "clsx";
 import { digitsOnly } from "@/lib/validation";
-import { Field, FormError, Input, Select } from "./Field";
+import { Field, FormError } from "./Form";
+import Input from "./Input";
+import Select from "./Select";
 
 /**
  * Renders a grid of inputs from field definitions:

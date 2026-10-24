@@ -1,17 +1,25 @@
-import StockHero from "@/modules/catalog/components/StockHero";
-import StockList from "@/modules/catalog/components/StockList";
-import { getStock } from "@/modules/catalog/catalog.api";
-import { getSettings } from "@/modules/site/site.api";
+import { redirect } from "next/navigation";
+import { connection } from "next/server";
+import StockHero from "@/components/catalog/StockHero";
+import StockList from "@/components/catalog/StockList";
+import { getStock } from "@/services/CatalogService";
+import { readFilters, stockHref, toSearchIndex } from "@/lib/catalog.utils";
+import { getSettings } from "@/services/SiteService";
 
 export default async function HomePage({ searchParams }) {
-  const [params, stock, settings] = await Promise.all([searchParams, getStock(), getSettings()]);
-  const initialFilters = { query: params?.q || "", brand: params?.brand || "", category: params?.category || "" };
+  // Older shared links put the filters on the home page (/?q=...); results live on /search now.
+  const filters = readFilters(new URLSearchParams(await searchParams));
+  if (filters.query || filters.brand || filters.category) redirect(stockHref(filters));
+
+  await connection();
+  const stock = await getStock();
+  const settings = getSettings();
 
   return (
     <main className="bg-[#0B0F19]">
-      <StockHero heroImage={settings.heroImage} companyName={settings.companyName} stats={stock.stats} />
+      <StockHero heroImage={settings.heroImage} companyName={settings.companyName} brands={stock.brands} searchIndex={toSearchIndex(stock.products)} />
       <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-10">
-        <StockList key={`${initialFilters.query}|${initialFilters.brand}|${initialFilters.category}`} stock={stock} initialFilters={initialFilters} />
+        <StockList stock={stock} />
       </section>
     </main>
   );

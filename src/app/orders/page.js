@@ -1,15 +1,25 @@
-import OrderHistory from "@/modules/orders/components/OrderHistory";
+import PageHero from "@/components/site/PageHero";
+import OrderHistory from "@/components/orders/OrderHistory";
 
 export const metadata = {
-    title: "My Orders | Torque Block Dealers",
-    description: "Track all your dealer tyre orders, dispatch status, and order history in one place."
+    title: "My Orders | Torque Block Trade",
+    description: "Track all your tyre orders, live dispatch status, delivery tracking, and tax invoice history.",
+    robots: { index: false, follow: true },
 };
 
 export default function OrdersPage() {
     return (
-        <main className="min-h-screen bg-[#0B0F19] pt-24 md:pt-28 pb-20">
-            <div className="mx-auto max-w-6xl px-4 md:px-6">
-                <OrderHistory />
+        <main>
+            <PageHero
+                eyebrow="Order Tracking"
+                title="My Trade"
+                accent="Orders"
+                description="Monitor live dispatch status, download GST invoices, and reorder tyre stock for your workshop or dealership."
+            />
+            <div className="bg-[#0B0F19] pb-20">
+                <div className="mx-auto max-w-6xl px-4 md:px-6">
+                    <OrderHistory />
+                </div>
             </div>
         </main>
     );

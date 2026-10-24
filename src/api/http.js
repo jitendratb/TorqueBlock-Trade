@@ -1,161 +1,223 @@
-const getDefaultApiUrl = () => {
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
-  }
-  if (typeof window !== "undefined") {
-    const host = window.location.hostname;
-    if (host === "localhost" || host === "127.0.0.1") {
-      return "http://localhost:4000/api/v1";
-    }
-  } else if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "dev") {
-    return "http://localhost:4000/api/v1";
-  }
-  return "https://test.torqueblock.com/api/v1";
+import axios from "axios";
+
+// ============================================================================
+// 1. Environment & Base URL Configuration (Dashboard Style)
+// ============================================================================
+
+// local development
+// const baseURL = "http://localhost:4000/api/v1";
+
+// test development
+const defaultBaseURL = "https://test.torqueblock.com/api/v1";
+
+// production development
+// const baseURL = "https://api.torqueblock.com/api/v1";
+
+export const baseURL = (process.env.NEXT_PUBLIC_API_URL || process.env.API_BASE_URL || defaultBaseURL).replace(/\/+$/, "");
+export const API_BASE_URL = baseURL;
+
+// ============================================================================
+// 2. Axios defaults — API modules call axios directly: axios.get(`${baseURL}/trade/stock`)
+// ============================================================================
+
+axios.defaults.withCredentials = true;
+axios.defaults.headers.common.Accept = "application/json";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.headers.put["Content-Type"] = "application/json";
+axios.defaults.headers.patch["Content-Type"] = "application/json";
+
+// ============================================================================
+// 3. Session & Auth State Management (Dashboard Style)
+// ============================================================================
+
+const sessionHandlers = {
+    getToken: () => null,
+    setToken: () => { },
+    clear: () => { },
 };
 
-export const API_BASE_URL = getDefaultApiUrl().replace(/\/+$/, "");
+export const configureSession = (handlers = {}) => {
+    Object.assign(sessionHandlers, handlers);
+};
 
-// ==========================================
-// 2. Custom Error Class
-// ==========================================
+// Cookies only — safe to call from the store's logout (clearAuthState below also calls logout).
+export const clearAuthCookies = () => {
+    if (typeof document === "undefined") return;
+    document.cookie = "TB_AUTH=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;";
+    document.cookie = "TB_ROLE=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax;";
+};
+
+export const clearAuthState = () => {
+    if (typeof window !== "undefined") {
+        clearAuthCookies();
+        localStorage.removeItem("trade-auth");
+        localStorage.removeItem("auth-storage");
+        try {
+            sessionHandlers.clear();
+        } catch (e) {
+            console.error("Failed to reset auth state:", e);
+        }
+    }
+};
+
+export const clearSession = clearAuthState;
+
+// Cookie helper
+const getCookie = (name) => {
+    if (typeof document === "undefined") return null;
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+    return null;
+};
+
+// ============================================================================
+// 4. Request Interceptor (Dashboard Style)
+// ============================================================================
+
+axios.interceptors.request.use(
+    async (config) => {
+        if (typeof window !== "undefined") {
+            // 1. The logged-in session (Zustand) — the cookie can hold an older login's token
+            let token = sessionHandlers.getToken();
+
+            // 2. Fallback to localStorage ('trade-auth') before the store has rehydrated
+            if (!token) {
+                try {
+                    const raw = localStorage.getItem("trade-auth");
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        token = parsed?.state?.token || null;
+                    }
+                } catch {
+                    // Ignore JSON parse errors
+                }
+            }
+
+            // 3. Fallback to cookie (same as Dashboard)
+            if (!token) {
+                token = getCookie("TB_AUTH");
+            }
+
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+        } else {
+            // Next.js Server Components / SSR Support
+            try {
+                const { cookies } = await import("next/headers");
+                const cookieStore = await cookies();
+                const token = cookieStore.get("TB_AUTH")?.value;
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`;
+                }
+            } catch {
+                // Ignore SSR context without cookies
+            }
+        }
+
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+// ============================================================================
+// 5. Custom ApiError class — every rejected request becomes one of these, so
+//    screens can show the backend's message (err.message) and branch on err.status / err.code.
+// ============================================================================
 
 export class ApiError extends Error {
-  constructor(message, status, data) {
-    super(message);
-    this.name = "ApiError";
-    this.status = status;
-    this.code = data?.code;
-    this.data = data;
-  }
+    constructor(message, status = 500, data = null, code = null) {
+        super(message);
+        this.name = "ApiError";
+        this.status = status;
+        this.code = code || data?.code || "UNKNOWN_ERROR";
+        this.data = data;
+    }
 }
 
-// ==========================================
-// 3. Session Management
-// ==========================================
-
-const session = {
-  getToken: () => null,
-  setToken: (_token) => { },
-  clear: () => { },
+const toApiError = (error) => {
+    if (error instanceof ApiError) return error;
+    const status = error.response?.status ?? (error.code === "ECONNABORTED" ? 408 : 0);
+    const data = error.response?.data ?? null;
+    const message = data?.message || (status ? `Request failed with status ${status}` : "Network error. Please check your connection.");
+    return new ApiError(message, status, data);
 };
 
-export const configureSession = (handlers) => {
-  Object.assign(session, handlers);
-};
+// ============================================================================
+// 6. Response Interceptor (Dashboard Style with 401 Token Refresh)
+// ============================================================================
 
-// ==========================================
-// 4. Helper Functions
-// ==========================================
-
-const buildUrl = (path, params) => {
-  const cleanPath = path.startsWith("/") ? path : `/${path}`;
-  const url = new URL(`${API_BASE_URL}${cleanPath}`);
-
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null && value !== "") {
-        url.searchParams.set(key, value);
-      }
-    });
-  }
-
-  return url;
-};
-
-// ==========================================
-// 5. Token Refresh Handling
-// ==========================================
-
-let refreshingPromise = null;
-
-const refreshToken = async () => {
-  if (!refreshingPromise) {
-    refreshingPromise = (async () => {
-      try {
-        const res = await fetch(buildUrl("/auth/refresh-token"), {
-          method: "POST",
-          credentials: "include",
+// Refresh tokens rotate on every use, so parallel 401s must share one refresh call.
+let refreshing = null;
+const refreshAccessToken = () => {
+    refreshing ??= axios
+        .post(`${baseURL}/auth/refresh-token`, {}, { withCredentials: true })
+        .then((res) => res.data?.token || res.data?.data?.token || null)
+        .finally(() => {
+            refreshing = null;
         });
-
-        if (!res.ok) return null;
-
-        const data = await res.json().catch(() => null);
-        if (!data?.token) return null;
-
-        session.setToken(data.token);
-        return data.token;
-      } catch {
-        return null;
-      } finally {
-        refreshingPromise = null;
-      }
-    })();
-  }
-  return refreshingPromise;
+    return refreshing;
 };
 
-// ==========================================
-// 6. Core Request Engine
-// ==========================================
+// Login, OTP and refresh answer 401 for their own reasons (e.g. "OTP expired") — never refresh for them.
+const isAuthRoute = (url = "") => /^\/?auth\/(login|verify-otp|resend-otp|refresh-token)\b/.test(url.replace(baseURL, ""));
 
-async function request(path, { method = "GET", body, params, revalidate, auth = false, timeout = 20000 } = {}, retried = false) {
-  const isBrowser = typeof window !== "undefined";
-  const token = auth && isBrowser ? session.getToken() : null;
+axios.interceptors.response.use(
+    (response) => {
+        // Some endpoints answer 200 with { success: false }.
+        if (response.data?.success === false) {
+            return Promise.reject(new ApiError(response.data.message || "Request failed", response.status, response.data));
+        }
+        return response;
+    },
+    async (error) => {
+        const originalRequest = error.config;
 
-  const headers = {
-    Accept: "application/json",
-    ...(body ? { "Content-Type": "application/json" } : {}),
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
+        if (error.response?.status === 401 && originalRequest && !isAuthRoute(originalRequest.url)) {
+            if (typeof window === "undefined") {
+                return Promise.reject(toApiError(error));
+            }
 
-  let res;
-  try {
-    res = await fetch(buildUrl(path, params), {
-      method,
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-      credentials: isBrowser ? "include" : undefined,
-      signal: AbortSignal.timeout(timeout),
-      ...(revalidate !== undefined ? { next: { revalidate } } : {}),
-    });
-  } catch (error) {
-    if (error.name === "AbortError") {
-      throw new ApiError("Request timed out", 408);
+            if (!originalRequest._retry) {
+                originalRequest._retry = true;
+
+                try {
+                    const newToken = await refreshAccessToken();
+
+                    if (newToken) {
+                        // Persist in cookie (Same as Dashboard)
+                        document.cookie = `TB_AUTH=${newToken}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax;`;
+
+                        // Update Zustand store
+                        try {
+                            sessionHandlers.setToken(newToken);
+                        } catch { }
+
+                        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                        return axios(originalRequest);
+                    }
+                } catch {
+                    // Falls through to clearing the session below.
+                }
+            }
+
+            // Refresh failed, or the retried request also failed with 401
+            console.warn("Session expired. Please log in again.");
+            clearAuthState();
+        }
+
+        // silent: the caller has a fallback, so a failure is not an error (Next.js dev shows console.error as an overlay).
+        if (!originalRequest?.silent) {
+            if (error.response?.status === 403) {
+                console.error("Forbidden: You do not have permission to perform this action.");
+            } else if (error.response?.status >= 500) {
+                console.error("Server Error: An internal server error occurred.");
+            }
+        }
+
+        return Promise.reject(toApiError(error));
     }
-    throw new ApiError(error.message || "Network error occurred", 0);
-  }
-
-  // Handle Token Expiration & Retry (Once)
-  if (res.status === 401 && token && !retried) {
-    const newToken = await refreshToken();
-    if (newToken) {
-      return request(path, { method, body, params, revalidate, auth, timeout }, true);
-    }
-    session.clear();
-  }
-
-  // Safely parse JSON responses
-  const data = await res.json().catch(() => ({}));
-
-  if (!res.ok || data?.success === false) {
-    throw new ApiError(
-      data?.message || `Request failed with status ${res.status}`,
-      res.status,
-      data
-    );
-  }
-
-  return data;
-}
-
-// ==========================================
-// 7. Public HTTP Export Methods
-// ==========================================
-
-export const http = {
-  get: (path, options) => request(path, { ...options, method: "GET" }),
-  post: (path, body, options) => request(path, { ...options, method: "POST", body }),
-  put: (path, body, options) => request(path, { ...options, method: "PUT", body }),
-  delete: (path, options) => request(path, { ...options, method: "DELETE" }),
-  del: (path, options) => request(path, { ...options, method: "DELETE" }),
-};
+);

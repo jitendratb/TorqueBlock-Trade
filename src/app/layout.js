@@ -2,13 +2,13 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import AppProviders from "./AppProviders";
-import Header from "@/modules/site/components/Header";
-import Footer from "@/modules/site/components/Footer";
-import { getSettings } from "@/modules/site/site.api";
-import { getStock } from "@/modules/catalog/catalog.api";
-import LoginModal from "@/modules/auth/components/LoginModal";
-import OrderDrawer from "@/modules/orders/components/OrderDrawer";
-import Toast from "@/ui/Toast";
+import Header from "@/components/site/Header";
+import Footer from "@/components/site/Footer";
+import { getSettings } from "@/services/SiteService";
+import { getStock } from "@/services/CatalogService";
+import LoginModal from "@/components/auth/LoginModal";
+import OrderDrawer from "@/components/orders/OrderDrawer";
+import { Toast } from "@/ui";
 
 // Same font setup as the B2C store.
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
@@ -18,7 +18,7 @@ export async function generateMetadata() {
   const settings = await getSettings();
   const name = settings.companyName;
   return {
-    title: { default: `${name} Dealer Portal - Live Stock & Dealer Prices`, template: `%s | ${name} Dealers` },
+    title: { default: `${name} Trade Portal - Live Stock & Trade Prices`, template: `%s | ${name} Trade` },
     description: settings.tagline,
     icons: {
       icon: [
@@ -45,7 +45,7 @@ export default async function RootLayout({ children }) {
         <AppProviders settings={settings}>
           <Header />
           <div className="flex-1">{children}</div>
-          <Footer settings={settings} brands={stock.brands} categories={stock.categories} />
+          <Footer settings={settings} brands={stock.brands} />
           <OrderDrawer />
           <LoginModal />
           <Toast />
