@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FiSearch, FiDisc, FiTag, FiLoader, FiX, FiAward } from "react-icons/fi";
+import { FiDisc, FiTag, FiLoader, FiX, FiAward, FiSearch } from "react-icons/fi";
+import { PiArrowUpBold } from "react-icons/pi";
 import { MdTwoWheeler } from "react-icons/md";
 import { suggestCatalog } from "@/services/CatalogService";
 import { findSearchTarget, localSuggestions, tyreHref } from "@/lib/catalog.utils";
@@ -12,10 +14,10 @@ const MIN_QUERY_LENGTH = 2;
 const SUGGESTION_ROW = "w-full text-left px-3 py-2 rounded-xl text-xs sm:text-sm text-zinc-200 hover:bg-orange-500/15 hover:text-white flex items-center justify-between gap-3 group transition-colors";
 
 const GROUPS = [
-    { type: "bike", title: "Compatible Bikes", Icon: MdTwoWheeler },
+    { type: "brand", title: "Brands", Icon: FiAward },
     { type: "product", title: "Tyre Models", Icon: FiTag },
     { type: "size", title: "Tyre Sizes", Icon: FiDisc },
-    { type: "brand", title: "Brands", Icon: FiAward },
+    { type: "bike", title: "Compatible Bikes", Icon: MdTwoWheeler },
 ];
 
 // Smart-search suggestions grouped by type (null when empty).
@@ -80,23 +82,13 @@ function SearchBox({ initialQuery, onSearch, index, tradePaths }) {
         return () => document.removeEventListener("mousedown", onPointerDown);
     }, []);
 
-    // Listen to native DOM 'search' event on input without triggering React's onSearch warning
-    useEffect(() => {
-        const el = inputRef.current;
-        if (!el) return;
-        const onNativeSearch = () => {
-            if (!el.value) handleClear();
-        };
-        el.addEventListener("search", onNativeSearch);
-        return () => el.removeEventListener("search", onNativeSearch);
-    }, []);
-
     const search = (value) => {
         setOpen(false);
         onSearch(value.trim());
     };
 
     const submit = () => {
+        if (!query) return inputRef.current?.focus();
         const target = findSearchTarget(index, text);
         if (!target) return search(text);
         setOpen(false);
@@ -106,20 +98,15 @@ function SearchBox({ initialQuery, onSearch, index, tradePaths }) {
     const handleClear = () => {
         setText("");
         setOpen(false);
-        onSearch("");
+        if (initialQuery) onSearch("");
+        inputRef.current?.focus();
     };
 
     const handleInputChange = (e) => {
         const val = e.target.value;
         setText(val);
-        if (val.trim()) {
-            setOpen(true);
-        } else {
-            setOpen(false);
-            if (initialQuery || text) {
-                onSearch("");
-            }
-        }
+        setOpen(Boolean(val.trim()));
+        if (!val.trim() && initialQuery) onSearch("");
     };
 
     const pick = (item) => {
@@ -138,50 +125,50 @@ function SearchBox({ initialQuery, onSearch, index, tradePaths }) {
                     e.preventDefault();
                     submit();
                 }}
+                role="search"
                 className="relative"
             >
-                <div className="relative flex items-center rounded-full border border-white/20 bg-black/60 p-1 sm:p-1.5 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] focus-within:border-orange-500 focus-within:ring-4 focus-within:ring-orange-500/20 transition-all">
-                    {loading ? (
-                        <FiLoader className="ml-4 sm:ml-5 text-lg sm:text-xl text-orange-400 shrink-0 animate-spin" />
-                    ) : (
-                        <FiSearch className="ml-4 sm:ml-5 text-lg sm:text-xl text-zinc-400 shrink-0" />
-                    )}
+                <div className="relative flex items-center gap-2 rounded-full border border-white/20 bg-white/10 p-1.5 sm:p-2 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] focus-within:border-orange-500/70 focus-within:ring-4 focus-within:ring-orange-500/15 transition-all">
+                    <button
+                        type="button"
+                        onClick={text ? handleClear : () => inputRef.current?.focus()}
+                        aria-label={text ? "Clear search" : "Start a search"}
+                        className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full bg-white/20 text-white transition-all hover:bg-white/30 active:scale-95 cursor-pointer"
+                    >
+                        {text ? <FiX className="text-base sm:text-lg" /> : <FiSearch className="text-base sm:text-lg text-white" />}
+                    </button>
                     <input
                         ref={inputRef}
-                        type="search"
+                        type="text"
+                        inputMode="search"
+                        enterKeyHint="search"
+                        autoComplete="off"
                         value={text}
                         onChange={handleInputChange}
                         onFocus={() => {
-                            if (text.trim().length >= MIN_QUERY_LENGTH) setOpen(true);
+                            if (canSuggest) setOpen(true);
                         }}
                         onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
-                        placeholder="Search size, brand or bike (e.g. 140/70 R17)"
-                        aria-label="Search motorcycle tyres"
-                        className="w-full bg-transparent px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base text-white placeholder:text-zinc-400 outline-none"
+                        placeholder={placeholder}
+                        aria-label="Search motorcycle tyres by size, brand or bike"
+                        className="min-w-0 flex-1 bg-transparent px-1.5 sm:px-2 py-2 sm:py-2.5 text-sm sm:text-base text-white placeholder:text-zinc-400 outline-none"
                     />
-                    {text && (
-                        <button
-                            type="button"
-                            onClick={handleClear}
-                            aria-label="Clear input"
-                            className="p-1.5 text-zinc-400 hover:text-white transition-colors mr-1 cursor-pointer"
-                        >
-                            <FiX className="text-base" />
-                        </button>
-                    )}
                     <button
                         type="submit"
-                        className="inline-flex items-center gap-2 rounded-full bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-bold px-5 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-sm shrink-0 transition-all shadow-md shadow-orange-500/25 mr-1 cursor-pointer"
+                        aria-label="Search"
+                        className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 cursor-pointer ${
+                            query ? "bg-orange-500 text-white shadow-md shadow-orange-500/30 hover:bg-orange-600" : "bg-white/20 text-white/70 hover:bg-white/30"
+                        }`}
                     >
-                        Search
+                        {loading ? <FiLoader className="text-lg animate-spin" /> : <PiArrowUpBold className="text-lg sm:text-xl" />}
                     </button>
                 </div>
                 {/* Center orange glow underline */}
-                <div className="mx-auto mt-[-1px] h-[2px] w-48 bg-gradient-to-r from-transparent via-orange-500 to-transparent blur-[1px]" />
+                <div className="mx-auto mt-[-1px] h-[2px] w-32 sm:w-48 bg-gradient-to-r from-transparent via-orange-500 to-transparent blur-[1px]" />
             </form>
 
             {open && suggestions && (
-                <div className="absolute left-0 right-0 top-full mt-2 z-50 rounded-2xl border border-white/15 bg-[#0e121c]/95 backdrop-blur-2xl p-3 shadow-2xl shadow-black/90 max-h-[380px] overflow-y-auto">
+                <div className="absolute left-0 right-0 top-full mt-2 z-50 rounded-2xl border border-white/15 bg-[#0e121c]/95 backdrop-blur-2xl p-3 shadow-2xl shadow-black/90 max-h-[min(380px,50vh)] overflow-y-auto">
                     {suggestions.map(({ type, title, Icon, items }) => (
                         <SuggestionGroup key={type} Icon={Icon} title={title}>
                             {items.map((item, idx) => (
@@ -202,11 +189,35 @@ function SearchBox({ initialQuery, onSearch, index, tradePaths }) {
     );
 }
 
-// Hero search: applies the query to the shared stock filters and suggests bikes, tyres and sizes while typing.
-// searchIndex: toSearchIndex(stock.products); suggestions only link to tyres that are in trade stock.
-export default function HeroSearch({ searchIndex = [] }) {
+
+export default function HeroSearch({ searchIndex = [], examples = [] }) {
     const [filters, setFilters] = useStockFilters();
     const [paths] = useState(() => new Set(searchIndex.flatMap((p) => [tyreHref(p), ...p.sizes.map((s) => tyreHref(p, s))])));
-    // Remounts when the applied query changes (e.g. cleared from the stock list) so the input always shows it.
-    return <SearchBox key={filters.query} initialQuery={filters.query} index={searchIndex} tradePaths={paths} onSearch={(query) => setFilters({ query })} />;
+    return <SearchBox key={filters.query} initialQuery={filters.query} index={searchIndex} tradePaths={paths} examples={examples} onSearch={(query) => setFilters({ query })} />;
+}
+
+const SLIDE_MS = 6000;
+
+// Hero background: one image, or a cross-fading slideshow when there are several.
+export function HeroSlides({ images = [], alt }) {
+    const [active, setActive] = useState(0);
+
+    useEffect(() => {
+        if (images.length < 2) return;
+        const timer = setInterval(() => setActive((i) => (i + 1) % images.length), SLIDE_MS);
+        return () => clearInterval(timer);
+    }, [images.length]);
+
+    return images.map((src, i) => (
+        <Image
+            key={src}
+            src={src}
+            alt={i === 0 ? alt : ""}
+            fill
+            priority={i === 0}
+            sizes="100vw"
+            quality={85}
+            className={`object-cover transition-opacity duration-1000 ${i === active ? "opacity-100" : "opacity-0"}`}
+        />
+    ));
 }

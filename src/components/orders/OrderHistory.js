@@ -322,7 +322,7 @@ export default function OrderHistory() {
                                     )}
                                 </div>
 
-                                <div className="flex items-center gap-3 md:gap-4">
+                                <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 justify-between sm:justify-end w-full sm:w-auto">
                                     {/* Credit Terms Badge */}
                                     {order.paymentMethod?.toLowerCase().includes("credit") && (
                                         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/30">

@@ -25,7 +25,7 @@ export default function ProductDetail({ product, size = null }) {
     const shown = size ? { ...product, sizes: [size] } : product;
 
     return (
-        <main className="mx-auto max-w-7xl px-4 pt-28 pb-12 sm:pt-32">
+        <div>
             <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <nav aria-label="Breadcrumb" className="flex flex-wrap items-center gap-1.5 text-xs font-semibold text-zinc-400">
                     <Link href="/" className="hover:text-orange-400 transition-colors">Stock</Link>
@@ -52,6 +52,6 @@ export default function ProductDetail({ product, size = null }) {
                     </Link>
                 </div>
             )}
-        </main>
+        </div>
     );
 }

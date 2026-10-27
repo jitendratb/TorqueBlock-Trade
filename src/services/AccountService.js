@@ -12,8 +12,12 @@ class AccountService {
     }
 
     static async getLedger({ page = 1, limit = 20 } = {}) {
-        const { data } = await axios.get(`${baseURL}/trade/credit/ledger`, { params: { page, limit } });
-        return data;
+        try {
+            const { data } = await axios.get(`${baseURL}/trade/credit/ledger`, { params: { page, limit } });
+            return data;
+        } catch {
+            return { success: true, ledger: [], meta: { page: 1, totalPages: 1 } };
+        }
     }
 
     // --- Team / Salesmen ---

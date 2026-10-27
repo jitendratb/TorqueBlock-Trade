@@ -83,10 +83,8 @@ export default function StockList({ stock }) {
     const [smart, setSmart] = useState({ query: "", ids: null });
     useEffect(() => {
         const query = filters.query.trim();
-        if (!query) {
-            setSmart({ query: "", ids: null });
-            return;
-        }
+        // No reset needed for an empty query: matchedIds below only uses a result for the current query.
+        if (!query) return;
         let current = true;
         searchCatalog(query).then((res) => {
             if (current) setSmart({ query, ids: toMatchedIds(res) });
@@ -172,7 +170,7 @@ export default function StockList({ stock }) {
                     aria-label="Stock pagination"
                     className="mt-8 flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between"
                 >
-                    <div className="text-xs font-semibold text-zinc-400">
+                    <div className="text-xs font-semibold text-zinc-500 text-center sm:text-left">
                         Showing <span className="font-bold text-white">{startIndex + 1}–{endIndex}</span> of{" "}
                         <span className="font-bold text-white">{filtered.length}</span> products
                     </div>

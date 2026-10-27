@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import clsx from "clsx";
 
 // Shown when a product has no image or its image fails to load.
@@ -42,6 +42,7 @@ export default function CustomImage({
 }) {
     const [loading, setLoading] = useState(!priority);
     const [error, setError] = useState(false);
+    const imgRef = useRef(null);
 
     const actualSrc = parseImageUrl(src);
     const safeSrc = (typeof actualSrc === "string" && actualSrc.trim()) ? actualSrc.trim() : fallback;
@@ -59,14 +60,21 @@ export default function CustomImage({
     const finalCaption = caption ?? (typeof src === 'object' ? src?.caption : undefined);
     const Wrapper = finalCaption ? "figure" : "div";
 
+    useEffect(() => {
+        if (imgRef.current && (imgRef.current.complete || imgRef.current.naturalWidth > 0)) {
+            setLoading(false);
+        }
+    }, [safeSrc]);
+
     return (
         <Wrapper className={clsx("relative overflow-hidden", fill ? "w-full h-full" : "", className)} style={!fill ? { width, height } : undefined} >
             {loading && !error && !priority && (
-                <div className={clsx("absolute inset-0 animate-pulse bg-zinc-800 pointer-events-none z-0", skeletonClassName)}>
+                <div className={clsx("absolute inset-0 animate-pulse bg-zinc-800/80 pointer-events-none z-0", skeletonClassName)}>
                     <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#999_1px,transparent_1px)] [background-size:16px_16px]" />
                 </div>
             )}
             <Image
+                ref={imgRef}
                 src={error ? fallback : safeSrc}
                 alt={finalAlt}
                 fill={renderFill}
@@ -78,13 +86,10 @@ export default function CustomImage({
                 sizes={finalSizes}
                 className={clsx(
                     "transition-opacity duration-300",
-                    loading ? "opacity-0" : "opacity-100",
                     imageClassName
                 )}
-                onLoad={(e) => {
-                    if (e.currentTarget?.naturalWidth > 0 || e.target?.naturalWidth > 0) {
-                        setLoading(false);
-                    }
+                onLoad={() => {
+                    setLoading(false);
                 }}
                 onError={() => {
                     setError(true);

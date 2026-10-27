@@ -82,7 +82,7 @@ export default function Header() {
                         </div>
                     </Link>
 
-                    {/* Right Action Buttons - Unified to Same Size (h-10, px-4, text-sm, rounded-xl) */}
+                    {/* Right Action Buttons - Clean, proportional and uncrowded */}
                     <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-3">
                         {!token && (
                             <>
@@ -91,9 +91,10 @@ export default function Header() {
                                     type="button"
                                     onClick={() => openLogin()}
                                     aria-label="Business Login"
-                                    className="inline-flex h-9 w-9 sm:h-10 sm:w-auto shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/5 sm:px-4 text-sm font-semibold text-white transition-all hover:bg-white/10 hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
+                                    className="inline-flex h-9 sm:h-10 shrink-0 items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-white/20 bg-white/5 px-2.5 sm:px-4 text-xs sm:text-sm font-semibold text-white transition-all hover:bg-white/10 hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
                                 >
-                                    <FiUser className="text-base text-zinc-300 shrink-0" />
+                                    <FiUser className="text-sm sm:text-base text-zinc-300 shrink-0" />
+                                    <span className="inline sm:hidden">Login</span>
                                     <span className="hidden sm:inline">Business Login</span>
                                 </button>
 
@@ -101,11 +102,11 @@ export default function Header() {
                                 <Link
                                     href="/register"
                                     aria-label="Register Your Business"
-                                    className="inline-flex h-9 w-9 sm:h-10 sm:w-auto shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-500 sm:px-4 text-sm font-bold text-white transition-all hover:bg-orange-600 shadow-md shadow-orange-500/25 active:scale-95 whitespace-nowrap"
+                                    className="hidden sm:inline-flex h-9 sm:h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-500 sm:px-4 text-xs sm:text-sm font-bold text-white transition-all hover:bg-orange-600 shadow-md shadow-orange-500/25 active:scale-95 whitespace-nowrap"
                                 >
-                                    <FiFileText className="text-base text-white shrink-0" />
+                                    <FiFileText className="text-sm sm:text-base text-white shrink-0" />
                                     <span className="hidden lg:inline">Register Your Business</span>
-                                    <span className="hidden sm:inline lg:hidden">Register</span>
+                                    <span className="inline lg:hidden">Register</span>
                                 </Link>
                             </>
                         )}
@@ -115,12 +116,12 @@ export default function Header() {
                             type="button"
                             aria-label="Open order list"
                             onClick={() => setOrderListOpen(true)}
-                            className="relative inline-flex h-9 w-9 sm:h-10 sm:w-auto shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 sm:px-4 text-sm font-bold text-white transition-all hover:bg-white/20 active:scale-95 whitespace-nowrap"
+                            className="relative inline-flex h-9 sm:h-10 shrink-0 items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-white/20 bg-white/10 px-2.5 sm:px-4 text-xs sm:text-sm font-bold text-white transition-all hover:bg-white/20 active:scale-95 whitespace-nowrap"
                         >
-                            <IoCartOutline className="text-lg shrink-0" />
+                            <IoCartOutline className="text-base sm:text-lg shrink-0" />
                             <span className="hidden sm:inline">Cart</span>
                             {units > 0 && (
-                                <span className="absolute -top-1.5 -right-1.5 sm:static flex items-center justify-center min-w-5 h-5 px-1 bg-orange-500 text-white text-[10px] font-bold rounded-full shadow-lg">
+                                <span className="flex items-center justify-center min-w-5 h-5 px-1 bg-orange-500 text-white text-[10px] font-bold rounded-full shadow-lg">
                                     {units}
                                 </span>
                             )}
@@ -134,7 +135,7 @@ export default function Header() {
                             onClick={() => setMenuOpen(true)}
                             className="inline-flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-white transition-all hover:bg-white/20 active:scale-95"
                         >
-                            <IoMdMenu className="text-2xl" />
+                            <IoMdMenu className="text-xl sm:text-2xl" />
                         </button>
                     </div>
                 </nav>
@@ -148,7 +149,32 @@ export default function Header() {
                 className="max-w-md w-full bg-[#0D111A]"
                 header={<Logo href={null} name={settings.companyName} className="w-[120px] sm:w-[130px]" />}
             >
-                <div className="flex flex-1 flex-col overflow-y-auto px-5 py-5 space-y-6 pb-6">
+                <div className="flex flex-1 flex-col overflow-y-auto px-4 sm:px-5 py-4 sm:py-5 space-y-5 sm:space-y-6 pb-6">
+                    {/* Unauthenticated Quick Access - Mobile Phone Only */}
+                    {!token && (
+                        <div className="grid grid-cols-2 gap-2.5 sm:hidden">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setMenuOpen(false);
+                                    openLogin();
+                                }}
+                                className="flex items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/5 py-3 px-3 text-xs font-bold text-white hover:bg-white/10 active:scale-95 transition"
+                            >
+                                <FiUser className="text-sm text-orange-400" />
+                                <span>Business Login</span>
+                            </button>
+                            <Link
+                                href="/register"
+                                onClick={() => setMenuOpen(false)}
+                                className="flex items-center justify-center gap-2 rounded-2xl bg-orange-500 py-3 px-3 text-xs font-bold text-white hover:bg-orange-600 shadow-md shadow-orange-500/20 active:scale-95 transition"
+                            >
+                                <FiFileText className="text-sm" />
+                                <span>Register</span>
+                            </Link>
+                        </div>
+                    )}
+
                     {/* CORE EXPLORATION */}
                     <div>
                         <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#FF5B26] mb-3">
@@ -232,7 +258,7 @@ export default function Header() {
 
                     {/* Actions: Logout & Talk to a Tyre Expert */}
                     <div className="pt-4 space-y-3 mt-auto">
-                        {token ? (
+                        {token && (
                             <button
                                 type="button"
                                 onClick={() => {
@@ -243,18 +269,6 @@ export default function Header() {
                             >
                                 <FiLogOut className="text-base" />
                                 <span>Logout</span>
-                            </button>
-                        ) : (
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setMenuOpen(false);
-                                    openLogin();
-                                }}
-                                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#131823] border border-white/10 py-3.5 text-xs sm:text-sm font-bold text-white hover:bg-white/[0.08] hover:border-white/20 transition"
-                            >
-                                <FiUser className="text-base" />
-                                <span>Trade Login</span>
                             </button>
                         )}
 

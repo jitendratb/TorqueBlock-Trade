@@ -6,7 +6,7 @@ import { FiCheck, FiLink, FiShare2 } from "react-icons/fi";
 import { useUiStore } from "@/store/ui.store";
 
 const BUTTON = "inline-flex items-center justify-center gap-1.5 rounded-lg border border-white/15 bg-white/5 font-bold text-zinc-200 transition-all hover:border-orange-500/60 hover:bg-orange-500/10 hover:text-white";
-const SIZES = { sm: "h-7 px-2 text-[11px]", md: "h-9 px-3 text-xs" };
+const SIZES = { sm: "h-7 px-2 text-[11px]", md: "h-9 px-3 text-xs", icon: "h-7 w-7 text-base" };
 
 const copyText = async (text) => {
     try {
@@ -28,7 +28,8 @@ const copyText = async (text) => {
 };
 
 // Share and Copy link for a portal page; the link uses the domain the page is open on.
-export default function ShareButtons({ path, title, text, size = "md", iconOnly = false, className }) {
+// copyOnly: just the Copy link button (the per-size link in the stock table).
+export default function ShareButtons({ path, title, text, size = "md", iconOnly = false, copyOnly = false, className }) {
     const notify = useUiStore((s) => s.notify);
     const [copied, setCopied] = useState(false);
 
@@ -59,10 +60,12 @@ export default function ShareButtons({ path, title, text, size = "md", iconOnly 
 
     return (
         <div className={clsx("inline-flex items-center gap-1.5", className)}>
-            <button type="button" onClick={share} aria-label={`Share ${title}`} title="Share" className={clsx(BUTTON, SIZES[size])}>
-                <FiShare2 className="text-orange-400" />
-                {!iconOnly && <span>Share</span>}
-            </button>
+            {!copyOnly && (
+                <button type="button" onClick={share} aria-label={`Share ${title}`} title="Share" className={clsx(BUTTON, SIZES[size])}>
+                    <FiShare2 className="text-orange-400" />
+                    {!iconOnly && <span>Share</span>}
+                </button>
+            )}
             <button type="button" onClick={copy} aria-label={`Copy link to ${title}`} title="Copy link" className={clsx(BUTTON, SIZES[size])}>
                 {copied ? <FiCheck className="text-emerald-400" /> : <FiLink className="text-orange-400" />}
                 {!iconOnly && <span>{copied ? "Copied" : "Copy link"}</span>}

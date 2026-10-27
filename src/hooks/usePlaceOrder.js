@@ -107,11 +107,15 @@ export function usePlaceOrder() {
                                 });
 
                                 const confirmedData = verifyRes.data || orderData;
+                                if (verifyRes.pending) {
+                                    notify("info", verifyRes.message);
+                                    console.warn("[payment] Razorpay capture pending:", verifyRes.captureFailure);
+                                }
                                 resolve({
                                     ...orderData,
                                     ...confirmedData,
                                     _id: confirmedData._id || orderData._id,
-                                    confirmed: true,
+                                    confirmed: !verifyRes.pending,
                                     paymentId: response.razorpay_payment_id,
                                     paidAmount: confirmedData.paidAmount || orderData.paidAmount || (razorpayOrder.amount ? razorpayOrder.amount / 100 : 0),
                                     billingAddress: billing,

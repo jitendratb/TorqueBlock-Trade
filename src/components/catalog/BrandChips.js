@@ -1,21 +1,35 @@
 "use client";
 
+import { useState } from "react";
+import clsx from "clsx";
+import { FiChevronRight, FiChevronUp } from "react-icons/fi";
 import { Chip } from "@/ui";
 import { useStockFilters } from "@/hooks/useStockFilters";
 
-// Brand chips under the hero search. Picking one filters the stock list below; picking it again clears it.
+const VISIBLE_BRANDS = 20;
+
 export default function BrandChips({ brands = [] }) {
     const [filters, setFilters] = useStockFilters();
+    const [open, setOpen] = useState(false);
     if (!brands.length) return null;
 
+    const hasMore = brands.length > VISIBLE_BRANDS;
+    const visible = open || !hasMore ? brands : brands.filter((brand, i) => i < VISIBLE_BRANDS || brand.name === filters.brand);
+
     return (
-        <div className="mt-6 sm:mt-7">
-            {/* <p className="mb-3 text-center text-[11px] font-black uppercase tracking-[0.2em] text-zinc-400">Shop by brand</p> */}
-            <div role="group" aria-label="Filter stock by brand" className="-mx-4 flex gap-2 overflow-x-auto scrollbar-hide px-4 py-1 sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0">
+        <div className="relative">
+            <div
+                role="group"
+                aria-label="Filter stock by brand"
+                className={clsx(
+                    "flex gap-2 py-1",
+                    open ? "flex-wrap justify-center" : "overflow-x-auto scrollbar-hide pr-12 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pr-0"
+                )}
+            >
                 <Chip active={!filters.brand} onClick={() => setFilters({ brand: "" })} className="backdrop-blur-sm">
                     All Brands
                 </Chip>
-                {brands.map((brand) => (
+                {visible.map((brand) => (
                     <Chip
                         key={brand.id || brand.name}
                         active={filters.brand === brand.name}
@@ -25,7 +39,30 @@ export default function BrandChips({ brands = [] }) {
                         {brand.name}
                     </Chip>
                 ))}
+                {open ? (
+                    <Chip onClick={() => setOpen(false)} aria-expanded className="inline-flex items-center gap-1 border-orange-500/50 text-orange-400">
+                        <FiChevronUp aria-hidden="true" /> Show less
+                    </Chip>
+                ) : hasMore && (
+                    <Chip onClick={() => setOpen(true)} aria-expanded={false} className="inline-flex items-center gap-1 border-orange-500/50 text-orange-400 shrink-0">
+                        More +{brands.length - VISIBLE_BRANDS}
+                    </Chip>
+                )}
             </div>
+
+            {!open && (
+                <button
+                    type="button"
+                    onClick={() => setOpen(true)}
+                    aria-label="Show all brands"
+                    aria-expanded={false}
+                    className="absolute inset-y-0 right-0 flex w-14 items-center justify-end bg-gradient-to-l from-[#0b0d12] via-[#0b0d12]/90 to-transparent sm:hidden"
+                >
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white shadow-md shadow-orange-500/30">
+                        <FiChevronRight aria-hidden="true" />
+                    </span>
+                </button>
+            )}
         </div>
     );
 }

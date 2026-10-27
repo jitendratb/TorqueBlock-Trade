@@ -58,6 +58,7 @@ export const useAuthStore = create(
                         name: form.contactName.trim(),
                         email: form.email.trim(),
                         gstin: form.gstin.trim().toUpperCase(),
+                        userType: "dealer",
                     }),
                     AddressService.ensureTradeAddress({ ...form, phone: form.phone || profile.phone }, profile.address),
                 ]);

@@ -1,72 +1,70 @@
-import Image from "next/image";
 import { BsShop } from "react-icons/bs";
 import { FiChevronDown } from "react-icons/fi";
-import HeroSearch from "./HeroSearch";
+import { PiBuildingsFill } from "react-icons/pi";
+import HeroSearch, { HeroSlides } from "./HeroSearch";
 import BrandChips from "./BrandChips";
 import TradeHighlights from "./TradeHighlights";
 
-// Home hero: headline, catalogue search, brand chips and the trade highlights.
-export default function StockHero({ heroImage, companyName = "Torque Block", brands = [], searchIndex = [] }) {
+function TrustBadge({ value = "1,500+", label = "Trade Accounts", text = "Trusted by businesses across India" }) {
     return (
-        <section
-            className="relative w-full min-h-[560px] lg:min-h-[640px] overflow-hidden bg-[#080808] pt-28 sm:pt-32 md:pt-36 pb-8 sm:pb-10 flex flex-col justify-between"
-            aria-label="Trade portal hero"
-        >
-            {heroImage && (
-                <Image
-                    src={heroImage}
-                    alt={`Premium motorcycle tyres for trade customers | ${companyName}`}
-                    fill
-                    preload
-                    sizes="100vw"
-                    quality={85}
-                    className="object-cover"
-                />
-            )}
+        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-sm text-zinc-300 sm:text-base">
+            <PiBuildingsFill aria-hidden="true" className="text-lg text-orange-500" />
+            <span className="font-bold text-white">
+                <span className="text-white-500">{value}</span> {label}
+            </span>
+            <span aria-hidden="true" className="text-zinc-500">|</span>
+            <span>{text}</span>
+        </p>
+    );
+}
 
-            {/* Dark linear gradients keep the copy readable over the photo */}
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/95 via-black/75 to-black/35" />
-            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-black/40" />
+export default function StockHero({ heroImages = [], companyName = "Torque Block", brands = [], searchIndex = [], titleAs: Title = "h1" }) {
+    const brandExamples = (brands || [])
+        .map((b) => (typeof b === "string" ? b : b?.name || b?.label))
+        .filter(Boolean);
 
-            <div className="relative z-10 mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 my-auto">
+    return (
+        <section aria-label="Trade portal hero" className="relative flex min-h-svh flex-col overflow-hidden bg-[#080808] pt-20 sm:pt-24 lg:pt-28">
+            <HeroSlides images={heroImages} alt={`Premium motorcycle tyres for trade dealers | ${companyName}`} />
+
+            {/* Darken the photo so the copy stays readable */}
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-black/60" />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0B0F19] via-transparent to-black/50" />
+
+            <div className="relative z-10 mx-auto my-auto w-full max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
                 <div className="max-w-3xl">
-                    <div className="mb-4 sm:mb-5 flex items-center gap-2.5 animate-slide-down-fade">
-                        <BsShop aria-hidden="true" className="text-orange-500 text-lg sm:text-xl shrink-0" />
-                        <span className="text-xs sm:text-sm font-bold uppercase tracking-[0.1em] text-orange-500">
-                            For Trade Customers, Workshops & Service Centres
-                        </span>
-                    </div>
+                    <p className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.1em] text-orange-500 sm:text-sm">
+                        <BsShop aria-hidden="true" className="shrink-0 text-lg sm:text-xl" />
+                        For Dealers, Workshops &amp; Service Centres
+                    </p>
 
-                    <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black tracking-[-0.04em] leading-[1.02] drop-shadow-md animate-slide-down-fade">
-                        <span className="block text-white">Premium &amp; Value Performance</span>
+                    <Title className="mt-2 text-[clamp(2rem,min(9vw,7vh),4.5rem)] font-black leading-[1.02] tracking-[-0.04em] drop-shadow-md sm:mt-3">
+                        <span className="block text-white">Premium &amp; Value</span>
+                        <span className="block text-white">Performance</span>
                         <span className="block text-orange-500">Motorcycle Tyres</span>
                         <span className="block text-white">for Your Business.</span>
-                    </h1>
+                </Title>
 
-                    <p className="mt-4 sm:mt-5 text-sm sm:text-base md:text-lg font-medium leading-relaxed text-zinc-300 max-w-2xl">
+                    <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-zinc-300 sm:mt-4 sm:text-base md:text-lg">
                         Find the right tyres, check availability and place orders online.
                     </p>
                 </div>
 
-                <div className="mx-auto mt-8 w-full max-w-3xl sm:mt-12">
-                    <HeroSearch searchIndex={searchIndex} />
-                    <BrandChips brands={brands} />
-                </div>
-
-                <div className="mt-10 sm:mt-12">
-                    <TradeHighlights />
+                <div className="mx-auto flex w-full max-w-5xl flex-col items-center text-center">
+                    <div className="mt-5 w-full max-w-3xl sm:mt-6"> <HeroSearch searchIndex={searchIndex} examples={brandExamples} /></div>
+                    <div className="mt-4 w-full"> <BrandChips brands={brands} /> </div>
+                    <div className="mt-4"> <TrustBadge /> </div>
+                    <div className="mt-4 w-full sm:mt-5"> <TradeHighlights /> </div>
                 </div>
             </div>
 
-            <div className="relative z-10 flex justify-center mt-6">
-                <a
-                    href="#stock"
-                    aria-label="Scroll down to live stock"
-                    className="hero-scroll-cue p-1.5 text-zinc-500 transition-colors hover:text-orange-500"
-                >
-                    <FiChevronDown className="text-2xl" />
-                </a>
-            </div>
+            <a
+                href="#stock"
+                aria-label="Scroll down to live stock"
+                className="hero-scroll-cue relative z-10 mx-auto mb-2 p-1 text-zinc-500 transition-colors hover:text-orange-500"
+            >
+                <FiChevronDown className="text-2xl" />
+            </a>
         </section>
     );
 }

@@ -1,11 +1,11 @@
 import { memo } from "react";
 import Link from "next/link";
 import { BsLightningChargeFill } from "react-icons/bs";
-import { CustomImage, ShareButtons } from "@/ui";
+import { CustomImage } from "@/ui";
 import { tyreHref } from "@/lib/catalog.utils";
 import StockRow, { STOCK_GRID } from "./StockRow";
 
-const COLUMNS = ["TYRE SIZE", "FITMENT", "AVAILABILITY", "BUSINESS PRICE", "ACTION"];
+const COLUMNS = ["TYRE SIZE", "FITMENT", "AVAILABILITY", "TRADE PRICE", "ACTION"];
 
 function getProductDescription(product) {
     if (product.description) return product.description;
@@ -28,33 +28,33 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
     const href = tyreHref(product);
 
     return (
-        <article className="overflow-hidden rounded-3xl border border-white/10 bg-[#0E1118]/90 backdrop-blur-md transition-all hover:border-orange-500/30 shadow-xl">
-            <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr]">
+        <article className="overflow-hidden rounded-2xl border border-orange-500/30 bg-[#0E1118]/90 backdrop-blur-md transition-all hover:border-orange-500/60 shadow-xl">
+            <div className="grid grid-cols-1 lg:grid-cols-[230px_1fr] xl:grid-cols-[260px_1fr]">
                 {/* Left column: image and product info */}
-                <div className="border-b border-white/10 p-5 sm:p-6 grid grid-cols-[96px_1fr] items-center gap-4 sm:grid-cols-[150px_1fr] sm:gap-5 md:grid-cols-[200px_1fr] md:gap-6 lg:block lg:border-b-0 lg:border-r">
+                <div className="border-b border-white/10 p-3.5 sm:p-5 grid grid-cols-[80px_1fr] items-center gap-3.5 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr] md:gap-5 lg:block lg:p-5 lg:border-b-0 lg:border-r">
                     {/* Tyre Image */}
-                    <div className="relative h-24 sm:h-32 md:h-44 lg:h-52 w-full lg:mb-4 flex items-center justify-center">
+                    <div className="relative h-20 w-20 sm:h-28 sm:w-28 md:h-32 md:w-32 lg:h-36 lg:w-full shrink-0 overflow-hidden rounded-xl bg-white lg:mb-3 flex items-center justify-center">
                         <CustomImage
                             src={product.image}
                             alt={product.name}
                             fill
-                            sizes="(max-width: 640px) 96px, (max-width: 1024px) 200px, 280px"
-                            imageClassName="object-contain"
+                            sizes="(max-width: 640px) 80px, (max-width: 1024px) 140px, 260px"
+                            imageClassName="object-contain p-1.5 sm:p-2"
                         />
                     </div>
 
                     <div className="min-w-0">
                     {/* Brand Badge */}
                     {product.brand && (
-                        <div className="mb-2">
-                            <span className="inline-block rounded border border-orange-500/50 bg-orange-500/10 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-orange-400">
+                        <div className="mb-1.5 sm:mb-2">
+                            <span className="inline-block rounded border border-orange-500/50 bg-orange-500/10 px-2 sm:px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-orange-400">
                                 {product.brand.name}
                             </span>
                         </div>
                     )}
 
                     {/* Product Title */}
-                    <Title className="text-lg sm:text-xl lg:text-2xl font-black leading-tight tracking-tight text-white mb-2 break-words">
+                    <Title className="text-sm sm:text-base lg:text-lg xl:text-xl font-black leading-tight tracking-tight text-white mb-1 sm:mb-1.5 break-words">
                         {href ? (
                             <Link href={href} className="hover:text-orange-400 transition-colors">
                                 {product.name}
@@ -65,33 +65,24 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                     </Title>
 
                     {/* Category Tag with Lightning Bolt */}
-                    <div className="mb-3 flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-orange-400">
-                        <BsLightningChargeFill className="text-sm shrink-0 text-orange-500" />
+                    <div className="mb-2 sm:mb-3 flex items-center gap-1.5 text-[11px] sm:text-xs font-black uppercase tracking-wider text-orange-400">
+                        <BsLightningChargeFill className="text-xs sm:text-sm shrink-0 text-orange-500" />
                         <span>{product.category?.name || "SUPER SPORT"}</span>
                     </div>
 
                     {/* Product Description */}
-                    <p className="text-xs text-zinc-400 font-medium leading-relaxed">
+                    <p className="line-clamp-2 text-xs sm:text-sm text-zinc-400 font-medium leading-relaxed">
                         {description}
                     </p>
 
-                    {href && (
-                        <ShareButtons
-                            path={href}
-                            title={product.name}
-                            text={`${product.name} – trade stock & business prices on Torque Block Trade`}
-                            size="sm"
-                            className="mt-3 flex-wrap sm:mt-4"
-                        />
-                    )}
                     </div>
                 </div>
 
                 {/* Right column: size table */}
-                <div className="p-4 sm:p-6 flex-1 flex flex-col justify-start min-w-0">
-                    <div className={`hidden gap-4 border-b border-white/10 pb-3 text-[11px] font-bold uppercase tracking-wider text-zinc-400 md:grid ${STOCK_GRID}`}>
+                <div className="px-3.5 pb-2 pt-1 sm:px-5 sm:pt-3 lg:px-5 xl:px-6 flex-1 flex flex-col justify-start min-w-0">
+                    <div className={`hidden gap-4 border-b border-white/10 pt-2 pb-3 text-[11px] xl:text-xs font-bold uppercase tracking-wider xl:tracking-[0.12em] whitespace-nowrap text-zinc-300 md:grid ${STOCK_GRID}`}>
                         {COLUMNS.map((col, idx) => (
-                            <span key={col} className={idx === COLUMNS.length - 1 ? "text-right" : ""}>
+                            <span key={col} className={idx === 0 ? "" : idx === COLUMNS.length - 1 ? "text-right" : "text-center"}>
                                 {col}
                             </span>
                         ))}

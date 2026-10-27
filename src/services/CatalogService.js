@@ -1,20 +1,26 @@
 import { cache } from "react";
 import axios from "axios";
 import { baseURL } from "@/api/http";
+import { getActiveBrands } from "@/lib/constants/brands";
 
 const UNAVAILABLE = { unavailable: true, products: [], brands: [], categories: [], stats: { products: 0, sizes: 0, inStock: 0 } };
 
 // Stock catalogue, smart search, and trade price service.
 class CatalogService {
-    // GET /trade/stock — every trade-active size grouped by product, with live stock and trade price.
-    // Cached by Next.js for 60s via fetch adapter.
     static getStock = cache(async () => {
         try {
             const { data } = await axios.get(`${baseURL}/trade/stock`, { adapter: "fetch", fetchOptions: { next: { revalidate: 60 } } });
-            return data.data;
+            const stockData = data?.data || UNAVAILABLE;
+            return {
+                ...stockData,
+                brands: getActiveBrands(stockData.brands),
+            };
         } catch (error) {
             console.warn("[catalog] stock unavailable:", error.message);
-            return UNAVAILABLE;
+            return {
+                ...UNAVAILABLE,
+                brands: getActiveBrands([]),
+            };
         }
     });
 

@@ -28,8 +28,11 @@ export default async function SearchPage() {
         accent="Tyres"
         description="Filter by brand, size, or pattern with real-time stock counts and verified business trade pricing."
       >
-        <div className="mx-auto mt-8 max-w-3xl">
-          <HeroSearch searchIndex={toSearchIndex(stock.products)} />
+        <div className="mx-auto mt-8 max-w-3xl space-y-5">
+          <HeroSearch
+            searchIndex={toSearchIndex(stock.products)}
+            examples={(stock.brands || []).map((b) => (typeof b === "string" ? b : b?.name || b?.label)).filter(Boolean)}
+          />
           <BrandChips brands={stock.brands} />
         </div>
       </PageHero>
