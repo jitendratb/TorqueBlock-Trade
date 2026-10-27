@@ -39,17 +39,27 @@ function SuggestionGroup({ Icon, title, children }) {
     );
 }
 
-function SearchBox({ initialQuery, onSearch, index, tradePaths }) {
+const DEFAULT_PLACEHOLDER = "Search by tyre size, brand or bike";
+const PLACEHOLDER_MS = 3000;
+
+function useRotatingPlaceholder(examples) {
+    const [i, setI] = useState(0);
+    useEffect(() => {
+        if (examples.length < 2) return;
+        const timer = setInterval(() => setI((n) => (n + 1) % examples.length), PLACEHOLDER_MS);
+        return () => clearInterval(timer);
+    }, [examples.length]);
+    return examples.length ? `Search "${examples[i % examples.length]}"` : DEFAULT_PLACEHOLDER;
+}
+
+function SearchBox({ initialQuery, onSearch, index, tradePaths, examples = [] }) {
     const router = useRouter();
     const [text, setText] = useState(initialQuery || "");
     const [result, setResult] = useState({ suggestions: null, loading: false });
     const [open, setOpen] = useState(false);
     const containerRef = useRef(null);
     const inputRef = useRef(null);
-
-    useEffect(() => {
-        setText(initialQuery || "");
-    }, [initialQuery]);
+    const placeholder = useRotatingPlaceholder(examples);
 
     const query = text.trim();
     const canSuggest = query.length >= MIN_QUERY_LENGTH;
