@@ -24,17 +24,16 @@ export const TRADE_SETTINGS = {
         },
     ],
     socials: [
-        { platform: "instagram", label: "Instagram", href: "https://www.instagram.com/torque_block" },
+        { platform: "instagram", label: "Instagram", href: "https://www.instagram.com/torque_block/?hl=en" },
         { platform: "facebook", label: "Facebook", href: "https://www.facebook.com/torqueblock" },
         { platform: "youtube", label: "YouTube", href: "https://www.youtube.com/@torqueblock" },
-        { platform: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/torque-block" },
+        { platform: "linkedin", label: "LinkedIn", href: "https://in.linkedin.com/company/torque-block" },
     ],
     supportLinks: [
-        { label: "Shipping Policy", href: "https://www.torqueblock.com/shipping-policy" },
-        { label: "Return Policy", href: "https://www.torqueblock.com/return-policy" },
-        { label: "FAQ", href: "https://www.torqueblock.com/faq" },
-        { label: "Terms & Conditions", href: "https://www.torqueblock.com/terms" },
-        { label: "Privacy Policy", href: "https://www.torqueblock.com/privacy-policy" },
+        { label: "Shipping Policy", href: "/support-and-policy/policy-shipping" },
+        { label: "Return Policy", href: "/support-and-policy/policy-return" },
+        { label: "Terms & Conditions", href: "/support-and-policy/policy-terms-and-condition" },
+        { label: "Privacy Policy", href: "/support-and-policy/policy-privacy" },
     ],
     businessTypes: [
         "Tyre Retailer",

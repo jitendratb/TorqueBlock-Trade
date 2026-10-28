@@ -7,13 +7,13 @@ import TradeHighlights from "./TradeHighlights";
 
 function TrustBadge({ value = "1,500+", label = "Trade Accounts", text = "Trusted by businesses across India" }) {
     return (
-        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-sm text-zinc-300 sm:text-base">
-            <PiBuildingsFill aria-hidden="true" className="text-lg text-orange-500" />
+        <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 text-center text-xs sm:text-sm md:text-base text-zinc-300">
+            <PiBuildingsFill aria-hidden="true" className="text-base sm:text-lg md:text-xl text-orange-500 shrink-0" />
             <span className="font-bold text-white">
-                <span className="text-white-500">{value}</span> {label}
+                <span className="text-white">{value}</span> {label}
             </span>
             <span aria-hidden="true" className="text-zinc-500">|</span>
-            <span>{text}</span>
+            <span className="text-zinc-300">{text}</span>
         </p>
     );
 }

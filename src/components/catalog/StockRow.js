@@ -36,7 +36,7 @@ function PriceCell({ size, tradePrice, isApproved, onLoginClick }) {
             <button
                 type="button"
                 onClick={onLoginClick}
-                className="flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-orange-400 transition-colors whitespace-nowrap text-left md:mx-auto"
+                className="flex items-center justify-center gap-1 text-xs font-semibold text-zinc-400 hover:text-orange-400 transition-colors whitespace-nowrap mx-auto"
                 title="Login to unlock trade wholesale prices"
             >
                 <FiLock className="text-orange-400 text-xs sm:text-sm shrink-0" />
@@ -47,9 +47,9 @@ function PriceCell({ size, tradePrice, isApproved, onLoginClick }) {
 
     const price = tradePrice ?? size.tradePrice;
     if (!price) {
-        return <p className="text-sm sm:text-base lg:text-lg font-bold text-zinc-500 md:text-center" title="No trade price set yet">–</p>;
+        return <p className="text-sm sm:text-base lg:text-lg font-bold text-zinc-500 text-center" title="No trade price set yet">–</p>;
     }
-    return <p className="text-sm sm:text-base lg:text-lg font-black text-white md:text-center tracking-tight">{formatINR(price)}</p>;
+    return <p className="text-sm sm:text-base lg:text-lg font-black text-white text-center tracking-tight whitespace-nowrap">{formatINR(price)}</p>;
 }
 
 // One size row: stock, business price and the order-list controls (the order list lives in the browser).
@@ -97,7 +97,7 @@ function StockRow({ product, size, isApproved, tradePrice }) {
     };
 
     const renderActionControls = (isMobile = false) => (
-        <div className={`flex items-center ${isMobile ? "gap-2" : "gap-2 justify-end"}`}>
+        <div className={`flex items-center ${isMobile ? "gap-2" : "gap-2 justify-center"}`}>
             {!inCart ? (
                 <button
                     type="button"
@@ -190,7 +190,7 @@ function StockRow({ product, size, isApproved, tradePrice }) {
 
             {/* Desktop View (md:) - 5-Column High-Precision Table Row */}
             <div className={`hidden md:grid items-center gap-4 ${STOCK_GRID}`}>
-                <div className="min-w-0 flex items-center gap-2.5">
+                <div className="min-w-0 flex items-center justify-center gap-2.5">
                     {href ? (
                         <Link href={href} className="truncate text-sm lg:text-base font-bold text-white hover:text-orange-400 transition-colors">
                             {size.size}
@@ -206,8 +206,10 @@ function StockRow({ product, size, isApproved, tradePrice }) {
                 <div className="justify-self-center">
                     <StockBadge size={size} />
                 </div>
-                <PriceCell size={size} tradePrice={tradePrice} isApproved={isApproved} onLoginClick={openLogin} />
-                <div className="flex items-center justify-end">
+                <div className="justify-self-center text-center">
+                    <PriceCell size={size} tradePrice={tradePrice} isApproved={isApproved} onLoginClick={openLogin} />
+                </div>
+                <div className="flex items-center justify-center">
                     {renderActionControls(false)}
                 </div>
             </div>

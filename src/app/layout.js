@@ -11,7 +11,7 @@ import OrderDrawer from "@/components/orders/OrderDrawer";
 import { Toast } from "@/ui";
 
 // Same font setup as the B2C store.
-const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], display: "swap" });
 
 export async function generateMetadata() {
@@ -40,7 +40,7 @@ export default async function RootLayout({ children }) {
         <Script
           id="razorpay-checkout-script"
           src="https://checkout.razorpay.com/v1/checkout.js"
-          strategy="beforeInteractive"
+          strategy="lazyOnload"
         />
         <AppProviders settings={settings}>
           <Header />

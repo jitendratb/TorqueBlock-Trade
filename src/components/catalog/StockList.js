@@ -168,14 +168,47 @@ export default function StockList({ stock }) {
             {totalPages > 1 && (
                 <nav
                     aria-label="Stock pagination"
-                    className="mt-8 flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between"
+                    className="mt-8 flex flex-col gap-3 rounded-2xl sm:rounded-3xl border border-white/10 bg-white/[0.04] p-3 sm:p-4 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between"
                 >
-                    <div className="text-xs font-semibold text-zinc-500 text-center sm:text-left">
+                    <div className="text-xs font-semibold text-zinc-400 text-center sm:text-left">
                         Showing <span className="font-bold text-white">{startIndex + 1}–{endIndex}</span> of{" "}
                         <span className="font-bold text-white">{filtered.length}</span> products
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-center gap-1.5">
+                    {/* Mobile Pagination View (< sm) - Clean, Compact, No Wrapping */}
+                    <div className="flex sm:hidden items-center justify-between gap-2 w-full pt-1 border-t border-white/5">
+                        <button
+                            type="button"
+                            onClick={() => goToPage(currentPage - 1)}
+                            disabled={currentPage <= 1}
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-bold text-white transition-all hover:bg-white/10 active:scale-95 disabled:pointer-events-none disabled:opacity-30"
+                            aria-label="Previous page"
+                        >
+                            <FiChevronLeft className="text-sm" />
+                            <span>Prev</span>
+                        </button>
+
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-zinc-300">
+                            <span>Page</span>
+                            <span className="font-black text-orange-400">{currentPage}</span>
+                            <span className="text-zinc-500">/</span>
+                            <span className="text-zinc-400 font-bold">{totalPages}</span>
+                        </div>
+
+                        <button
+                            type="button"
+                            onClick={() => goToPage(currentPage + 1)}
+                            disabled={currentPage >= totalPages}
+                            className="inline-flex items-center gap-1.5 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-bold text-white transition-all hover:bg-white/10 active:scale-95 disabled:pointer-events-none disabled:opacity-30"
+                            aria-label="Next page"
+                        >
+                            <span>Next</span>
+                            <FiChevronRight className="text-sm" />
+                        </button>
+                    </div>
+
+                    {/* Desktop Pagination View (sm:) - Full Page Buttons */}
+                    <div className="hidden sm:flex items-center justify-center gap-1.5">
                         <button
                             type="button"
                             onClick={() => goToPage(currentPage - 1)}

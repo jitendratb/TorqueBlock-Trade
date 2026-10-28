@@ -10,12 +10,15 @@ import {
     FiFileText,
     FiUser,
     FiLogOut,
-    FiTrendingUp,
-    FiDisc,
-    FiCompass,
-    FiRepeat,
-    FiChevronRight
+    FiChevronRight,
+    FiTruck,
+    FiRotateCcw,
+    FiShield,
+    FiPackage,
+    FiSearch,
+    FiCreditCard
 } from "react-icons/fi";
+import { FaWhatsapp } from "react-icons/fa";
 import { Logo, Drawer } from "@/ui";
 import { useUiStore } from "@/store/ui.store";
 import { whatsappLink } from "@/lib/format";
@@ -23,11 +26,33 @@ import { useAuthStore } from "@/store/authStore";
 import { useOrderListStore, selectUnits } from "@/store/orderStore";
 import { useSettings } from "./SettingsProvider";
 
-const CATALOG_LINKS = [
-    { label: "Most Searched Tyres", Icon: FiTrendingUp },
-    { label: "Explore Tyres", Icon: FiDisc },
-    { label: "Shop by Motorcycle", Icon: FiCompass },
-    { label: "Compare Tyres", Icon: FiRepeat },
+const TRADE_SERVICES = [
+    {
+        title: "Live Stock & Inventory",
+        subtitle: "Real-time tyre availability & quantities",
+        path: "/#stock",
+        Icon: FiPackage,
+    },
+    {
+        title: "Tyre Size & Fitment Search",
+        subtitle: "Instant lookup by width, profile, rim & bike",
+        path: "/search",
+        Icon: FiSearch,
+    },
+    {
+        title: "Trade Credit & Invoicing",
+        subtitle: "18% GST input tax credit & credit terms",
+        path: "/account",
+        requireAuth: true,
+        Icon: FiCreditCard,
+    },
+    {
+        title: "Order Tracking & LR",
+        subtitle: "Real-time courier dispatch status & tracking",
+        path: "/orders",
+        requireAuth: true,
+        Icon: FiTruck,
+    },
 ];
 
 const EXPERT_WHATSAPP_MESSAGE = "Hi Torque Block! I'd like to talk to a tyre expert about trade requirements and stock availability.";
@@ -70,16 +95,16 @@ export default function Header() {
                 <nav className={`header-nav flex text-white justify-between items-center gap-2 md:gap-4 max-w-7xl mx-auto transition-all duration-300 ease-in-out ${scrolled ? "bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.4)]" : ""}`}>
                     {/* Brand Left: Company Logo + TRADE BUSINESS PORTAL */}
                     <Link href="/" className="flex min-w-0 items-center gap-2 sm:gap-3.5 select-none group" aria-label="Torque Block Trade Home">
-                        <Logo href={null} name={settings.companyName} priority className="w-[78px] min-[400px]:w-[92px] sm:w-[125px] md:w-[140px] shrink-0" />
-                        <div className="h-6 sm:h-7 w-px bg-white/20 hidden sm:block" />
-                        <div className="flex min-w-0 flex-col">
-                            <span className="text-base min-[400px]:text-lg sm:text-xl md:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">
+                        <Logo href={null} name={settings.companyName} priority className="w-[72px] min-[360px]:w-[84px] sm:w-[125px] md:w-[140px] shrink-0" />
+                        <span className="h-7 sm:h-8 w-px bg-white/20 shrink-0 block" />
+                        <span className="flex min-w-0 flex-col">
+                            <span className="text-sm min-[360px]:text-base sm:text-xl md:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">
                                 TRADE
                             </span>
-                            <span className="hidden min-[400px]:block text-[7px] sm:text-[9px] font-black uppercase tracking-[0.2em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">
+                            <span className="text-[7px] min-[360px]:text-[8px] sm:text-[10px] font-black uppercase tracking-[0.18em] sm:tracking-[0.22em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">
                                 BUSINESS PORTAL
                             </span>
-                        </div>
+                        </span>
                     </Link>
 
                     {/* Right Action Buttons - Clean, proportional and uncrowded */}
@@ -175,10 +200,10 @@ export default function Header() {
                         </div>
                     )}
 
-                    {/* CORE EXPLORATION */}
+                    {/* PORTAL NAVIGATION */}
                     <div>
                         <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#FF5B26] mb-3">
-                            CORE EXPLORATION
+                            PORTAL NAVIGATION
                         </p>
 
                         <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
@@ -232,27 +257,84 @@ export default function Header() {
                         </div>
                     </div>
 
-                    {/* CATALOGS */}
+                    {/* TRADE SERVICES */}
                     <div>
                         <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#FF5B26] mb-3">
-                            CATALOGS
+                            TRADE SERVICES
                         </p>
 
                         <div className="space-y-2.5">
-                            {CATALOG_LINKS.map(({ label, Icon }) => (
+                            {TRADE_SERVICES.map((service) => (
                                 <button
-                                    key={label}
+                                    key={service.title}
                                     type="button"
-                                    onClick={() => handleNavigate("/#stock")}
-                                    className="w-full flex items-center justify-between rounded-2xl bg-[#131823] border border-white/10 px-4 py-3.5 text-xs sm:text-sm font-bold text-white hover:bg-white/[0.06] hover:border-white/20 transition group"
+                                    onClick={() => {
+                                        if (service.requireAuth && !token) {
+                                            openLogin();
+                                        } else {
+                                            handleNavigate(service.path);
+                                        }
+                                    }}
+                                    className="w-full flex items-center justify-between rounded-2xl bg-[#131823] border border-white/10 p-3 sm:p-3.5 text-left text-white hover:bg-white/[0.06] hover:border-[#FF5B26]/40 transition group"
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <Icon className="text-base text-[#FF5B26]" />
-                                        <span>{label}</span>
+                                    <div className="flex items-center gap-3 min-w-0">
+                                        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0 text-[#FF5B26] group-hover:scale-105 group-hover:bg-orange-500/20 transition-all">
+                                            <service.Icon className="text-base sm:text-lg" />
+                                        </div>
+                                        <div className="min-w-0 text-left">
+                                            <div className="text-xs sm:text-sm font-bold text-white group-hover:text-orange-400 transition-colors truncate">
+                                                {service.title}
+                                            </div>
+                                            <div className="text-[10px] sm:text-[11px] text-zinc-400 truncate">
+                                                {service.subtitle}
+                                            </div>
+                                        </div>
                                     </div>
-                                    <FiChevronRight className="text-zinc-600 text-sm group-hover:text-white transition" />
+                                    <FiChevronRight className="text-zinc-600 text-sm group-hover:text-white group-hover:translate-x-0.5 transition shrink-0 ml-2" />
                                 </button>
                             ))}
+                        </div>
+                    </div>
+
+                    {/* POLICIES & LEGAL */}
+                    <div>
+                        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#FF5B26] mb-3">
+                            POLICIES & LEGAL
+                        </p>
+
+                        <div className="grid grid-cols-2 gap-2">
+                            <Link
+                                href="/support-and-policy/policy-shipping"
+                                onClick={() => setMenuOpen(false)}
+                                className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
+                            >
+                                <FiTruck className="text-orange-400 text-base shrink-0" />
+                                <span className="truncate">Shipping</span>
+                            </Link>
+                            <Link
+                                href="/support-and-policy/policy-return"
+                                onClick={() => setMenuOpen(false)}
+                                className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
+                            >
+                                <FiRotateCcw className="text-orange-400 text-base shrink-0" />
+                                <span className="truncate">Returns</span>
+                            </Link>
+                            <Link
+                                href="/support-and-policy/policy-terms-and-condition"
+                                onClick={() => setMenuOpen(false)}
+                                className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
+                            >
+                                <FiFileText className="text-orange-400 text-base shrink-0" />
+                                <span className="truncate">Terms</span>
+                            </Link>
+                            <Link
+                                href="/support-and-policy/policy-privacy"
+                                onClick={() => setMenuOpen(false)}
+                                className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
+                            >
+                                <FiShield className="text-orange-400 text-base shrink-0" />
+                                <span className="truncate">Privacy</span>
+                            </Link>
                         </div>
                     </div>
 
@@ -276,9 +358,10 @@ export default function Header() {
                             href={expertLink}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="w-full flex items-center justify-center rounded-2xl bg-gradient-to-r from-[#5B4DF6] via-[#6855FF] to-[#7E57FF] py-3.5 text-center text-xs sm:text-sm font-bold text-white shadow-[0_10px_25px_-5px_rgba(107,87,255,0.45)] hover:brightness-110 active:scale-[0.99] transition"
+                            className="w-full flex items-center justify-center gap-2 rounded-2xl bg-orange-500 hover:bg-orange-600 py-3.5 text-center text-xs sm:text-sm font-bold text-white shadow-lg shadow-orange-500/25 active:scale-[0.99] transition"
                         >
-                            Talk to a Tyre Expert
+                            <FaWhatsapp className="text-base sm:text-lg" />
+                            <span>Talk to a Tyre Expert</span>
                         </a>
                     </div>
                 </div>

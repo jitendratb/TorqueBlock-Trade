@@ -225,8 +225,9 @@ export function HeroSlides({ images = [], alt }) {
             alt={i === 0 ? alt : ""}
             fill
             priority={i === 0}
+            loading={i === 0 ? "eager" : "lazy"}
             sizes="100vw"
-            quality={85}
+            quality={75}
             className={`object-cover transition-opacity duration-1000 ${i === active ? "opacity-100" : "opacity-0"}`}
         />
     ));

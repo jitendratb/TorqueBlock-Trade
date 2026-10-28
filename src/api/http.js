@@ -8,7 +8,7 @@ import axios from "axios";
 // const baseURL = "http://localhost:4000/api/v1";
 
 // test development
-const defaultBaseURL = "https://test.torqueblock.com/api/v1";
+// const defaultBaseURL = "https://test.torqueblock.com/api/v1";
 
 // production development
 // const baseURL = "https://api.torqueblock.com/api/v1";
@@ -81,7 +81,6 @@ axios.interceptors.request.use(
             // 1. The logged-in session (Zustand) — the cookie can hold an older login's token
             let token = sessionHandlers.getToken();
 
-            // 2. Fallback to localStorage ('trade-auth') before the store has rehydrated
             if (!token) {
                 try {
                     const raw = localStorage.getItem("trade-auth");

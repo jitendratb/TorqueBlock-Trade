@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FiSearch, FiCalendar, FiChevronDown, FiChevronRight, FiXCircle, FiCheckCircle, FiActivity, FiFileText, FiPackage, FiTruck, FiCreditCard, FiMapPin } from "react-icons/fi";
-import { Button, ErrorState, EmptyState, SkeletonCard } from "@/ui";
+import { Button, ErrorState, EmptyState, SkeletonCard, CustomImage } from "@/ui";
 import { formatDate, formatINR } from "@/lib/format";
 import { useUiStore } from "@/store/ui.store";
 import { useAuthStore } from "@/store/authStore";
@@ -359,7 +359,25 @@ export default function OrderHistory() {
                                     const itemPrice = item.totalPrice ?? ((item.unitPrice || 0) * (item.quantity || 1));
                                     const productName = item.productName || item.productId?.availableTyres?.productName || item.productId?.hero?.title || "Motorcycle Tyre";
                                     const sizeLabel = item.size || item.productId?.size || "";
-                                    const itemImage = item.image || item.productId?.availableTyres?.productImages?.[0] || item.productId?.hero?.heroImage || null;
+
+                                    // Resolve image from item, size, family product images, or hero image
+                                    const cleanImg = (img) => {
+                                        if (!img) return null;
+                                        if (typeof img === "string" && img.trim()) return img.trim();
+                                        if (typeof img === "object" && img.url && typeof img.url === "string") return img.url.trim();
+                                        return null;
+                                    };
+
+                                    const itemImage =
+                                        cleanImg(item.image) ||
+                                        (Array.isArray(item.productId?.sizeSpecificImages) && item.productId.sizeSpecificImages.map(cleanImg).find(Boolean)) ||
+                                        (Array.isArray(item.productId?.availableTyres?.productImages) && item.productId.availableTyres.productImages.map(cleanImg).find(Boolean)) ||
+                                        cleanImg(item.productId?.availableTyres?.hero?.heroImage) ||
+                                        cleanImg(item.productId?.hero?.heroImage) ||
+                                        (Array.isArray(item.productId?.availableTyres?.gallery) && item.productId.availableTyres.gallery.map(cleanImg).find(Boolean)) ||
+                                        cleanImg(item.tubeId?.images?.[0]) ||
+                                        "/newlogo.webp";
+
                                     const sku = item.sku || item.productId?.identifier || item.productId?.sku;
 
                                     return (
@@ -368,18 +386,16 @@ export default function OrderHistory() {
                                             className="rounded-2xl bg-[#1C212E] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-white/5"
                                         >
                                             <div className="flex items-center gap-3 md:gap-4">
-                                                {/* Product Image or Fallback Package Icon */}
-                                                <div className="relative h-14 w-14 shrink-0 rounded-xl bg-black border border-white/10 flex items-center justify-center p-1.5 overflow-hidden shadow-inner">
-                                                    {itemImage ? (
-                                                        /* eslint-disable-next-line @next/next/no-img-element */
-                                                        <img
-                                                            src={typeof itemImage === "string" ? itemImage : itemImage?.url}
-                                                            alt={productName}
-                                                            className="h-full w-full object-contain"
-                                                        />
-                                                    ) : (
-                                                        <FiPackage className="text-zinc-500 text-xl" />
-                                                    )}
+                                                {/* Product Image Container with crisp white background for black tyres */}
+                                                <div className="relative h-14 w-14 shrink-0 rounded-xl bg-white border border-white/10 flex items-center justify-center p-1 overflow-hidden shadow-sm">
+                                                    <CustomImage
+                                                        src={itemImage}
+                                                        alt={productName}
+                                                        fill
+                                                        sizes="56px"
+                                                        imageClassName="object-contain p-0.5"
+                                                        fallback="/newlogo.webp"
+                                                    />
                                                 </div>
 
                                                 {/* Item Details */}

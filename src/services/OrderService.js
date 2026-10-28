@@ -12,6 +12,7 @@ class OrderService {
                 productId: line.id,
                 quantity: line.quantity,
                 size: line.size,
+                image: line.image || line.images?.[0] || undefined,
                 addressId,
                 deliveryMode: "standard",
             })),

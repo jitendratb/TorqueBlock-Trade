@@ -18,9 +18,9 @@ export function ContactLinks({ contact }) {
     return (
         <div className="space-y-3">
             {items.map(({ href, icon: Icon, label, hover = "hover:text-white" }) => (
-                <a key={href} href={href} {...externalProps(href)} className={`flex items-center gap-3 text-zinc-300 transition ${hover}`}>
-                    <Icon className="text-sm" />
-                    <span className="text-[15px]">{label}</span>
+                <a key={href} href={href} {...externalProps(href)} className={`flex w-fit items-center gap-3 text-zinc-300 transition ${hover}`}>
+                    <Icon className="shrink-0 text-base text-zinc-400" />
+                    <span className="text-sm sm:text-[15px] break-all">{label}</span>
                 </a>
             ))}
         </div>
@@ -33,10 +33,10 @@ export function HubList({ hubs = [] }) {
         <div className="space-y-4">
             {hubs.map((hub) => (
                 <a key={hub.name} href={hub.mapUrl} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 text-zinc-400 hover:text-white transition">
-                    <FaMapMarkerAlt className="mt-1 text-sm text-orange-500 shrink-0" />
-                    <div>
-                        <span className="text-[11px] font-black uppercase tracking-wider text-orange-500 block mb-1">{hub.name}</span>
-                        <p className="text-xs leading-5">{hub.address}</p>
+                    <FaMapMarkerAlt className="mt-0.5 text-base text-orange-500 shrink-0" />
+                    <div className="min-w-0">
+                        <span className="text-xs font-black uppercase tracking-wider text-orange-500 block mb-1">{hub.name}</span>
+                        <p className="text-xs sm:text-[13px] leading-5 max-w-sm">{hub.address}</p>
                         {hub.mapUrl && (
                             <span className="inline-flex items-center gap-1 mt-1.5 text-[11px] font-semibold text-orange-400 hover:text-orange-300 transition">
                                 View on Map <FaChevronRight className="text-[8px]" />
@@ -52,11 +52,11 @@ export function HubList({ hubs = [] }) {
 export function SocialLinks({ socials = [], companyName }) {
     if (!socials.length) return null;
     return (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3">
             {socials.map(({ platform, label, href }) => {
                 const Icon = SOCIAL_ICONS[platform?.toLowerCase()] || FaGlobe;
                 return (
-                    <a key={href} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Follow ${companyName || "us"} on ${label}`} className="h-11 w-11 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300 hover:bg-orange-500 hover:border-orange-500 hover:text-white transition-all duration-300">
+                    <a key={href} href={href} target="_blank" rel="noopener noreferrer" aria-label={`Follow ${companyName || "us"} on ${label}`} className="h-10 w-10 sm:h-11 sm:w-11 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-300 hover:bg-orange-500 hover:border-orange-500 hover:text-white transition-all duration-300">
                         <Icon />
                     </a>
                 );
@@ -65,29 +65,40 @@ export function SocialLinks({ socials = [], companyName }) {
     );
 }
 
-export function LinkColumn({ icon: Icon, title, links = [], cta, children }) {
+const LINK_ROW = "group flex w-full items-center gap-2.5 text-left text-sm sm:text-[15px] text-zinc-400 hover:text-orange-400 transition-colors cursor-pointer";
+
+// Links are { label, href } or, for actions like opening the login modal, { label, onClick }.
+export function LinkColumn({ icon: Icon, title, links = [], cta }) {
     return (
-        <div className="space-y-2">
-            <div className="flex items-center gap-3 mb-6">
-                <Icon className="text-2xl text-orange-500" />
-                <h3 className="text-white font-bold text-xl">{title}</h3>
+        <div>
+            <div className="mb-4 sm:mb-5 flex items-center gap-2.5 sm:gap-3">
+                <Icon className="shrink-0 text-xl sm:text-2xl text-orange-500" />
+                <h3 className="text-base sm:text-lg lg:text-xl font-bold text-white">{title}</h3>
             </div>
-            <ul className="space-y-2">
-                {links.map((link) => (
-                    <li key={link.label}>
-                        <Link href={link.href} {...externalProps(link.href)} className="group flex w-full items-center gap-2.5 text-zinc-400 hover:text-orange-500 transition text-[15px]">
-                            <FaChevronRight className="text-[10px] text-zinc-600 group-hover:text-orange-500 group-hover:translate-x-0.5 transition" />
-                            {link.label}
-                        </Link>
-                    </li>
-                ))}
+            <ul className="space-y-2.5 sm:space-y-3">
+                {links.map((link) => {
+                    const content = (
+                        <>
+                            <FaChevronRight className="shrink-0 text-[10px] text-zinc-600 group-hover:translate-x-0.5 group-hover:text-orange-400 transition" />
+                            <span>{link.label}</span>
+                        </>
+                    );
+                    return (
+                        <li key={link.label}>
+                            {link.onClick ? (
+                                <button type="button" onClick={link.onClick} className={LINK_ROW}>{content}</button>
+                            ) : (
+                                <Link href={link.href} {...externalProps(link.href)} className={LINK_ROW}>{content}</Link>
+                            )}
+                        </li>
+                    );
+                })}
             </ul>
             {cta && (
-                <Link href={cta.href} className="inline-flex items-center gap-2 text-orange-500 font-bold text-[15px] hover:gap-3 transition-all">
+                <Link href={cta.href} className="mt-4 inline-flex items-center gap-2 text-sm sm:text-[15px] font-bold text-orange-500 hover:gap-3 hover:text-orange-400 transition-all">
                     {cta.label} <FaArrowRight className="text-sm" />
                 </Link>
             )}
-            {children}
         </div>
     );
 }

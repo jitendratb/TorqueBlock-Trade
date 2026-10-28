@@ -30,6 +30,24 @@ class CatalogService {
         return data.data;
     }
 
+    // GET /intent/:identifier — existing product family API returning full productImages, gallery, and hero
+    static async fetchProductFamily(identifier) {
+        if (!identifier) return null;
+        try {
+            const res = await axios.get(`${baseURL}/intent/${identifier}`, {
+                timeout: 5000,
+                silent: true,
+                validateStatus: () => true,
+            });
+            if (res?.status >= 200 && res?.status < 300 && res?.data?.success) {
+                return res.data.intentProductData || res.data.data || null;
+            }
+            return null;
+        } catch {
+            return null;
+        }
+    }
+
     static async smartSearch(path, query, params) {
         const q = typeof query === "string" ? query.trim() : "";
         if (!q) return null;
@@ -64,5 +82,6 @@ class CatalogService {
 export default CatalogService;
 export const getStock = CatalogService.getStock;
 export const fetchTradePrices = CatalogService.fetchTradePrices;
+export const fetchProductFamily = CatalogService.fetchProductFamily;
 export const suggestCatalog = CatalogService.suggestCatalog;
 export const searchCatalog = CatalogService.searchCatalog;
