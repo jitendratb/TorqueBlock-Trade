@@ -1,4 +1,4 @@
-// Client-side checks mirror the backend rules (backend utils/trade.helper.js) so dealers
+// Client-side checks mirror the backend rules (backend utils/trade.helper.js) so trade users
 // see mistakes instantly; the backend still validates every request.
 
 export const digitsOnly = (value = "") => value.replace(/\D/g, "");

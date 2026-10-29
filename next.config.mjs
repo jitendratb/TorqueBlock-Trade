@@ -2,13 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
+  // Hero images are listed from public/hero at request time, so ship that folder with the server code.
+  outputFileTracingIncludes: {
+    "/**": ["./public/hero/**/*"],
   },
 
   images: {
@@ -18,6 +14,66 @@ const nextConfig = {
       { protocol: "https", hostname: "**.torqueblock.com" },
       { protocol: "https", hostname: "i.postimg.cc" },
     ],
+  },
+
+  async redirects() {
+    return [
+      {
+        source: "/shipping-policy",
+        destination: "/support-and-policy/policy-shipping",
+        permanent: true,
+      },
+      {
+        source: "/return-policy",
+        destination: "/support-and-policy/policy-return",
+        permanent: true,
+      },
+      {
+        source: "/terms",
+        destination: "/support-and-policy/policy-terms-and-condition",
+        permanent: true,
+      },
+      {
+        source: "/terms-and-conditions",
+        destination: "/support-and-policy/policy-terms-and-condition",
+        permanent: true,
+      },
+      {
+        source: "/privacy-policy",
+        destination: "/support-and-policy/policy-privacy",
+        permanent: true,
+      },
+      {
+        source: "/support-and-policy/shipping",
+        destination: "/support-and-policy/policy-shipping",
+        permanent: true,
+      },
+      {
+        source: "/support-and-policy/return",
+        destination: "/support-and-policy/policy-return",
+        permanent: true,
+      },
+      {
+        source: "/support-and-policy/terms",
+        destination: "/support-and-policy/policy-terms-and-condition",
+        permanent: true,
+      },
+      {
+        source: "/support-and-policy/terms-and-condition",
+        destination: "/support-and-policy/policy-terms-and-condition",
+        permanent: true,
+      },
+      {
+        source: "/support-and-policy/policy-terms",
+        destination: "/support-and-policy/policy-terms-and-condition",
+        permanent: true,
+      },
+      {
+        source: "/support-and-policy/privacy",
+        destination: "/support-and-policy/policy-privacy",
+        permanent: true,
+      },
+    ];
   },
 };
 

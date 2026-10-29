@@ -1,0 +1,25 @@
+// Re-exports all reusable UI primitives from @/components/ui for backward compatibility
+export * from "@/components/ui";
+export { default as Button } from "@/components/ui/Button";
+export { default as Card } from "@/components/ui/Card";
+export { default as Chip } from "@/components/ui/Chip";
+export { default as Drawer } from "@/components/ui/Drawer";
+export { default as Modal } from "@/components/ui/Modal";
+export { default as ShareButtons } from "@/components/ui/ShareButtons";
+export { Field, FormError } from "@/components/ui/Form";
+export { default as FormFields } from "@/components/ui/FormFields";
+export { default as Input } from "@/components/ui/Input";
+export { default as QuantityInput } from "@/components/ui/QuantityInput";
+export { default as Select } from "@/components/ui/Select";
+export { default as Badge } from "@/components/ui/Badge";
+export { default as EmptyState } from "@/components/ui/EmptyState";
+export { default as ErrorBoundary } from "@/components/ui/ErrorBoundary";
+export { default as ErrorState } from "@/components/ui/ErrorState";
+export { default as LoadingState } from "@/components/ui/LoadingState";
+export { SkeletonCard, SkeletonRows } from "@/components/ui/Skeleton";
+export { default as Spinner } from "@/components/ui/Spinner";
+export { default as Toast } from "@/components/ui/Toast";
+export { default as CustomImage } from "@/components/ui/CustomImage";
+export { default as Logo } from "@/components/ui/Logo";
+
+
