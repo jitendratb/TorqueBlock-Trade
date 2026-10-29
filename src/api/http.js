@@ -11,7 +11,7 @@ import axios from "axios";
 // const defaultBaseURL = "https://test.torqueblock.com/api/v1";
 
 // production development
-const baseURL = "https://api.torqueblock.com/api/v1";
+export const baseURL = "https://api.torqueblock.com/api/v1";
 
 // export const baseURL = (process.env.NEXT_PUBLIC_API_URL || process.env.API_BASE_URL || defaultBaseURL).replace(/\/+$/, "");
 export const API_BASE_URL = baseURL;
