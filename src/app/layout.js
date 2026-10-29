@@ -10,19 +10,18 @@ import LoginModal from "@/modules/auth/components/LoginModal";
 import OrderDrawer from "@/modules/orders/components/OrderDrawer";
 import Toast from "@/ui/Toast";
 
-// Same font setup as the B2C store.
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], display: "swap" });
 
 export async function generateMetadata() {
-  const settings = await getSettings();
-  const name = settings.companyName;
   return {
-    title: { default: `${name} Dealer Portal - Live Stock & Dealer Prices`, template: `%s | ${name} Dealers` },
-    description: settings.tagline,
+    title: "Torque Block Trade | Motorcycle Tyres for Your Business",
+    description: "Find the right motorcycle tyres, check stock availability and access business pricing. Order online with ease, with delivery across India.",
     icons: {
       icon: [
         { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+        { url: "/favicon-48x48.png", sizes: "48x48", type: "image/png" },
+        { url: "/favicon-96x96.png", sizes: "96x96", type: "image/png" },
         { url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" },
       ],
       shortcut: "/favicon.ico",

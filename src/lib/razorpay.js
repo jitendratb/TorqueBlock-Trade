@@ -1,8 +1,6 @@
 "use client";
 
-/**
- * Loads the Razorpay Checkout JavaScript SDK if not already in document
- */
+
 export const loadRazorpayScript = () => {
     return new Promise((resolve) => {
         if (typeof window === "undefined") return resolve(false);
