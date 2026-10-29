@@ -13,10 +13,16 @@ import { Toast } from "@/ui";
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
 const spaceGrotesk = Space_Grotesk({ variable: "--font-space-grotesk", subsets: ["latin"], display: "swap" });
 
+const title = "Torque Block Trade | Motorcycle Tyres for Your Business";
+const description = "Find the right motorcycle tyres, check stock availability and access business pricing. Order online with ease, with delivery across India.";
+
 export async function generateMetadata() {
   return {
-    title: "Torque Block Trade | Motorcycle Tyres for Your Business",
-    description: "Find the right motorcycle tyres, check stock availability and access business pricing. Order online with ease, with delivery across India.",
+    metadataBase: new URL(getSettings().siteUrl),
+    title,
+    description,
+    openGraph: { title, description, url: "/", siteName: "Torque Block Trade", type: "website", locale: "en_IN" },
+    twitter: { card: "summary_large_image", title, description },
     icons: {
       icon: [
         { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
