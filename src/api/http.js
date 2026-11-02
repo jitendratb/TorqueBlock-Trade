@@ -1,19 +1,11 @@
 import axios from "axios";
 
 // ============================================================================
-// 1. Environment & Base URL Configuration (Dashboard Style)
+// 1. Base URL Configuration (Configured exclusively via .env)
 // ============================================================================
 
-// local development
-// const baseURL = "http://localhost:4000/api/v1";
+export const baseURL = (process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || "").trim().replace(/\/+$/, "");
 
-// test development
-// const defaultBaseURL = "https://test.torqueblock.com/api/v1";
-
-// production development
-export const baseURL = "https://api.torqueblock.com/api/v1";
-
-// export const baseURL = (process.env.NEXT_PUBLIC_API_URL || process.env.API_BASE_URL || defaultBaseURL).replace(/\/+$/, "");
 export const API_BASE_URL = baseURL;
 
 // ============================================================================
@@ -78,7 +70,7 @@ const getCookie = (name) => {
 axios.interceptors.request.use(
     async (config) => {
         if (typeof window !== "undefined") {
-            // 1. The logged-in session (Zustand) — the cookie can hold an older login's token
+
             let token = sessionHandlers.getToken();
 
             if (!token) {
@@ -102,7 +94,6 @@ axios.interceptors.request.use(
                 config.headers.Authorization = `Bearer ${token}`;
             }
         } else {
-            // Next.js Server Components / SSR Support
             try {
                 const { cookies } = await import("next/headers");
                 const cookieStore = await cookies();

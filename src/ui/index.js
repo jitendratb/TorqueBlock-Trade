@@ -1,4 +1,4 @@
-// Re-exports all reusable UI primitives from @/components/ui for backward compatibility
+// Shared UI primitives re-exported for @/ui imports
 export * from "@/components/ui";
 export { default as Button } from "@/components/ui/Button";
 export { default as Card } from "@/components/ui/Card";
@@ -21,5 +21,4 @@ export { default as Spinner } from "@/components/ui/Spinner";
 export { default as Toast } from "@/components/ui/Toast";
 export { default as CustomImage } from "@/components/ui/CustomImage";
 export { default as Logo } from "@/components/ui/Logo";
-
 

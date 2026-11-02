@@ -22,6 +22,7 @@ export default async function Image() {
           background: "#0B0F19",
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={logoSrc} width={900} height={438} alt="" />
       </div>
     ),

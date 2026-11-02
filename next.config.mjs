@@ -2,6 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
 
+  env: {
+    NEXT_PUBLIC_API_URL: (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "").trim(),
+    API_URL: (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "").trim(),
+  },
+
   // Hero images are listed from public/hero at request time, so ship that folder with the server code.
   outputFileTracingIncludes: {
     "/**": ["./public/hero/**/*"],

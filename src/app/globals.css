@@ -86,37 +86,35 @@ button {
   background: rgba(234, 88, 12, 0.8);
 }
 
-/* Header: floats as a glass bar once the page is scrolled (data-scrolled is set in Header.js). */
-.header-root {
-  top: 0;
-  transition:
-    top var(--transition-smooth),
-    background var(--transition-smooth),
-    backdrop-filter var(--transition-smooth),
-    border-color var(--transition-smooth),
-    box-shadow var(--transition-smooth);
-}
-
-.header-root[data-scrolled="true"] {
-  top: 1rem;
-  background: rgba(255, 255, 255, 0.001);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom-color: transparent;
-  box-shadow: none;
-}
-
-.header-nav {
-  padding: 1rem;
-  border-radius: 1rem;
-  transition:
-    padding var(--transition-smooth),
-    border-color var(--transition-smooth),
-    border-radius var(--transition-smooth);
-}
-
 .hero-apex-line {
   background: linear-gradient(to right, transparent, rgba(249, 115, 22, 0.35), transparent);
+}
+
+/* Frosted glass header pill matching torqueblock.com when scrolled */
+.glass-header-pill {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    backdrop-filter 0.3s ease,
+    -webkit-backdrop-filter 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.glass-header-pill[data-scrolled="false"] {
+  background: rgba(11, 15, 25, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.glass-header-pill[data-scrolled="true"] {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.55), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
 }
 
 /* Animations */
@@ -210,15 +208,4 @@ button {
   -moz-appearance: textfield;
 }
 
-/* Small screens: keep the floating (scrolled) header off the screen edges and a little tighter. */
-@media (max-width: 640px) {
-  .header-nav {
-    padding: 0.75rem;
-  }
-}
 
-@media (max-width: 80rem) {
-  .header-root[data-scrolled="true"] .header-nav {
-    margin-inline: 0.75rem;
-  }
-}

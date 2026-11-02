@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import StockHero from "@/components/catalog/StockHero";
@@ -19,7 +20,9 @@ export default async function HomePage({ searchParams }) {
     <main className="bg-[#0B0F19]">
       <StockHero heroImages={getHeroImages(settings.heroImage)} companyName={settings.companyName} brands={stock.brands} searchIndex={toSearchIndex(stock.products)} />
       <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-10">
-        <StockList stock={stock} />
+        <Suspense fallback={<div className="min-h-[400px]" />}>
+          <StockList stock={stock} />
+        </Suspense>
       </section>
     </main>
   );

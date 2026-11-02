@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import SupportAndPolicyClient from "../SupportAndPolicyClient";
-import { shippingMetadata } from "../shipping";
-import { returnMetadata } from "../return";
-import { termsMetadata } from "../terms";
-import { privacyMetadata } from "../privacy";
+import SupportAndPolicyClient from "../components/SupportAndPolicyClient";
+import { shippingMetadata } from "../components/shipping";
+import { returnMetadata } from "../components/return";
+import { termsMetadata } from "../components/terms";
+import { privacyMetadata } from "../components/privacy";
 
 function normalizeSlug(rawSlug) {
     if (!rawSlug) return "policy-shipping";

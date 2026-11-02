@@ -1,6 +1,6 @@
 "use client";
 
-import { useDeferredValue, useEffect, useMemo, useState } from "react";
+import { Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { FiChevronLeft, FiChevronRight, FiX, FiSearch } from "react-icons/fi";
 import { ErrorState, EmptyState } from "@/ui";
 import { useAuthStore, selectIsApproved } from "@/store/authStore";
@@ -74,7 +74,7 @@ function ActiveFilters({ filters, productCount, sizeCount, onRemove, onClear }) 
     );
 }
 
-export default function StockList({ stock }) {
+function StockListContent({ stock }) {
     const [filters, setFilters] = useStockFilters();
     const isApproved = useAuthStore(selectIsApproved);
     const tradePrices = useCatalogStore((s) => s.tradePrices);
@@ -260,5 +260,13 @@ export default function StockList({ stock }) {
                 </nav>
             )}
         </div>
+    );
+}
+
+export default function StockList({ stock }) {
+    return (
+        <Suspense fallback={<div className="min-h-[400px] flex items-center justify-center text-zinc-500 text-sm">Loading stock catalogue…</div>}>
+            <StockListContent stock={stock} />
+        </Suspense>
     );
 }

@@ -1,5 +1,5 @@
 import PageHero from "@/components/site/PageHero";
-import TradeRegistration from "@/components/registration/TradeRegistration";
+import TradeRegistration from "./components/TradeRegistration";
 
 export const metadata = {
     title: "Trade Registration | Torque Block Trade",

@@ -5,9 +5,15 @@ export const TRADE_SETTINGS = {
     tagline: "Trade supply of premium & value performance motorcycle tyres, delivered across India.",
     heroImage: "https://cdn.torqueblock.com/torqueblock1-1.webp",
     contact: {
-        phone: "+916366625625",
-        phoneDisplay: "+91 6366 625 625",
-        whatsapp: "916366625625",
+        // Production WhatsApp & Phone:
+        // phone: "+916366625625",
+        // phoneDisplay: "+91 6366 625 625",
+        // whatsapp: "916366625625",
+
+        // Testing WhatsApp & Phone:
+        phone: "+916366223601",
+        phoneDisplay: "+91 6366 223 601",
+        whatsapp: "916366223601",
         email: "ops@torqueblock.com",
         whatsappMessage: "Hi Torque Block! I'm a trade customer and want to check stock and place an order.",
     },

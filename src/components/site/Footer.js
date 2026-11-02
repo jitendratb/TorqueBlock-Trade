@@ -24,12 +24,16 @@ const DEFAULT_SOCIALS = [
 
 function FooterBrand({ name }) {
     return (
-        <Link href="/" className="group inline-flex items-center gap-3 sm:gap-4" aria-label={`${name} Trade home`}>
-            <Logo href={null} name={name} className="w-[110px] sm:w-[140px] lg:w-[150px] shrink-0" />
-            <span className="h-10 sm:h-12 w-px bg-white/20" />
-            <span className="flex flex-col">
-                <span className="text-2xl sm:text-3xl font-black uppercase leading-none tracking-tight text-orange-500">Trade</span>
-                <span className="mt-1 text-[9px] sm:text-[11px] font-black uppercase tracking-[0.22em] text-zinc-300 group-hover:text-white transition-colors">Business Portal</span>
+        <Link href="/" className="group inline-flex items-center gap-2.5 sm:gap-3.5 select-none" aria-label={`${name} Trade home`}>
+            <Logo href={null} name={name} className="w-[58px] min-[380px]:w-[68px] sm:w-[110px] md:w-[130px] lg:w-[140px] shrink-0" />
+            <span className="h-5 sm:h-7 md:h-8 lg:h-9 w-px bg-white/20 shrink-0 block" />
+            <span className="flex min-w-0 flex-col">
+                <span className="text-xs min-[380px]:text-sm sm:text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">
+                    TRADE
+                </span>
+                <span className="text-[6px] min-[380px]:text-[7px] sm:text-[8.5px] md:text-[9.5px] lg:text-[10px] font-black uppercase tracking-[0.12em] sm:tracking-[0.18em] lg:tracking-[0.22em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">
+                    BUSINESS PORTAL
+                </span>
             </span>
         </Link>
     );

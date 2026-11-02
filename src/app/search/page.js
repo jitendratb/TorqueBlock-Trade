@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { connection } from "next/server";
 import PageHero from "@/components/site/PageHero";
 import HeroSearch from "@/components/catalog/HeroSearch";
@@ -39,7 +40,9 @@ export default async function SearchPage() {
 
       <div className="bg-[#0B0F19] pb-20">
         <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 pt-8">
-          <StockList stock={stock} />
+          <Suspense fallback={<div className="min-h-[400px]" />}>
+            <StockList stock={stock} />
+          </Suspense>
         </section>
       </div>
     </main>

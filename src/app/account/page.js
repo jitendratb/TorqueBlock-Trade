@@ -1,5 +1,5 @@
 import PageHero from "@/components/site/PageHero";
-import AccountView from "@/components/account/AccountView";
+import AccountView from "./components/AccountView";
 
 export const metadata = {
     title: "My Account | Torque Block Trade",

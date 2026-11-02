@@ -24,9 +24,17 @@ export const useAuthStore = create(
             profile: null,
             status: "idle", // idle | loading | ready | error
 
-            setToken: (token) => set({ token }),
+            setToken: (token) => {
+                if (typeof document !== "undefined" && token) {
+                    document.cookie = `TB_AUTH=${token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax;`;
+                }
+                set({ token });
+            },
 
             startSession: async (token) => {
+                if (typeof document !== "undefined" && token) {
+                    document.cookie = `TB_AUTH=${token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax;`;
+                }
                 set({ token });
                 return get().loadProfile();
             },
@@ -55,10 +63,9 @@ export const useAuthStore = create(
                 const { profile } = get();
                 await Promise.all([
                     AuthService.updateUser(profile.id, {
-                        name: form.contactName.trim(),
+                        name: (form.businessName || form.contactName).trim(),
                         email: form.email.trim(),
                         gstin: form.gstin.trim().toUpperCase(),
-                        userType: "dealer",
                     }),
                     AddressService.ensureTradeAddress({ ...form, phone: form.phone || profile.phone }, profile.address),
                 ]);

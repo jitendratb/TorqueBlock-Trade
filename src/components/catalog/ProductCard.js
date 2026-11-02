@@ -30,6 +30,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
     const href = tyreHref(product);
 
     // State for images loaded dynamically from existing product family API (/intent/:identifier)
+    // Strictly contains only images from the "Product Images" field (family.productImages)
     const [familyImages, setFamilyImages] = useState(null);
 
     useEffect(() => {
@@ -43,9 +44,10 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                 const u = typeof img === "string" ? img.trim() : (img?.url ? String(img.url).trim() : "");
                 if (u && !list.includes(u)) list.push(u);
             };
-            if (Array.isArray(family.productImages)) family.productImages.forEach(add);
-            if (Array.isArray(family.gallery)) family.gallery.forEach(add);
-            if (family.hero?.heroImage) add(family.hero.heroImage);
+            // Strictly show ONLY the images inside "Product Images" (family.productImages)
+            if (Array.isArray(family.productImages)) {
+                family.productImages.forEach(add);
+            }
             if (list.length > 0) {
                 setFamilyImages(list);
             }
@@ -55,7 +57,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
         };
     }, [product?.identifier]);
 
-    // Collect all available product images
+    // Collect available product images (strictly product images only, excluding lifestyle gallery)
     const allImages = useMemo(() => {
         if (familyImages && familyImages.length > 0) {
             return familyImages;
@@ -68,15 +70,11 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
         };
         if (Array.isArray(product.images)) product.images.forEach(add);
         if (product.image) add(product.image);
-        if (Array.isArray(product.sizes)) {
-            product.sizes.forEach((s) => {
-                if (Array.isArray(s.images)) s.images.forEach(add);
-            });
-        }
         return list.length > 0 ? list : ["/newlogo.webp"];
-    }, [familyImages, product.images, product.image, product.sizes]);
+    }, [familyImages, product.images, product.image]);
 
     const [activeIdx, setActiveIdx] = useState(0);
+    const safeActiveIdx = activeIdx < allImages.length ? activeIdx : 0;
 
     const handlePrev = (e) => {
         e.preventDefault();
@@ -90,7 +88,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
         setActiveIdx((prev) => (prev + 1) % allImages.length);
     };
 
-    const currentImage = allImages[activeIdx] || allImages[0];
+    const currentImage = allImages[safeActiveIdx] || allImages[0];
 
     return (
         <article className="overflow-hidden rounded-2xl border border-orange-500/30 bg-[#0E1118]/90 backdrop-blur-md transition-all hover:border-orange-500/60 shadow-xl">
@@ -101,7 +99,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                     <div className="relative group/img h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 lg:h-40 lg:w-full shrink-0 overflow-hidden rounded-xl bg-white lg:mb-3 flex items-center justify-center select-none shadow-sm">
                         <CustomImage
                             src={currentImage}
-                            alt={`${product.name} - photo ${activeIdx + 1}`}
+                            alt={`${product.name} - photo ${safeActiveIdx + 1}`}
                             fill
                             sizes="(max-width: 640px) 96px, (max-width: 1024px) 140px, 260px"
                             imageClassName="object-contain p-1.5 sm:p-2 transition-transform duration-300"
@@ -140,7 +138,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                                             }}
                                             aria-label={`Go to image ${idx + 1}`}
                                             className={`rounded-full transition-all cursor-pointer ${
-                                                idx === activeIdx
+                                                idx === safeActiveIdx
                                                     ? "h-1.5 w-3 bg-orange-500"
                                                     : "h-1.5 w-1.5 bg-white/50 hover:bg-white"
                                             }`}
