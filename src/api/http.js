@@ -4,7 +4,10 @@ import axios from "axios";
 // 1. Base URL Configuration (Configured exclusively via .env)
 // ============================================================================
 
-export const baseURL = (process.env.API_URL || "https://api.torqueblock.com/api/v1").trim().replace(/\/+$/, "");
+export const baseURL = (
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.API_URL || "https://test.torqueblock.com/api/v1"
+).trim().replace(/\/+$/, "");
 
 export const API_BASE_URL = baseURL;
 
