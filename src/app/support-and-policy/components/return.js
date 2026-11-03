@@ -1,3 +1,5 @@
+"use client";
+
 export const returnMetadata = {
     title: "Return & Cancellation Policy | Torque Block Trade",
     description: "Simple return conditions, cancellation windows, trade credit refunds, and manufacturer warranty guidelines for trade business accounts.",

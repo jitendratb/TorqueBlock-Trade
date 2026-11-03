@@ -1,9 +1,24 @@
 import { notFound } from "next/navigation";
 import SupportAndPolicyClient from "../components/SupportAndPolicyClient";
-import { shippingMetadata } from "../components/shipping";
-import { returnMetadata } from "../components/return";
-import { termsMetadata } from "../components/terms";
-import { privacyMetadata } from "../components/privacy";
+
+const POLICY_METADATA = {
+    "policy-shipping": {
+        title: "Shipping & Delivery Policy | Torque Block Trade",
+        description: "Wholesale motorcycle tyre delivery schedules, transport safety, and receiving guidelines for trade businesses across India.",
+    },
+    "policy-return": {
+        title: "Return & Cancellation Policy | Torque Block Trade",
+        description: "Wholesale trade return eligibility, transit damage claim windows, cancellation terms, and refund processing.",
+    },
+    "policy-terms-and-condition": {
+        title: "Terms & Conditions of Business | Torque Block Trade",
+        description: "Wholesale trading terms, pricing, order acceptance, credit line rules, and commercial buyer obligations.",
+    },
+    "policy-privacy": {
+        title: "Privacy & Data Protection Policy | Torque Block Trade",
+        description: "How Torque Block collects, protects, and handles business records, trade accounts, and operational data.",
+    },
+};
 
 function normalizeSlug(rawSlug) {
     if (!rawSlug) return "policy-shipping";
@@ -15,14 +30,22 @@ function normalizeSlug(rawSlug) {
     return null;
 }
 
+export function generateStaticParams() {
+    return [
+        { slug: "policy-shipping" },
+        { slug: "policy-return" },
+        { slug: "policy-terms-and-condition" },
+        { slug: "policy-privacy" },
+    ];
+}
+
 export async function generateMetadata({ params }) {
     const { slug } = await params;
     const normalized = normalizeSlug(slug);
 
-    if (normalized === "policy-shipping") return shippingMetadata;
-    if (normalized === "policy-return") return returnMetadata;
-    if (normalized === "policy-terms-and-condition") return termsMetadata;
-    if (normalized === "policy-privacy") return privacyMetadata;
+    if (normalized && POLICY_METADATA[normalized]) {
+        return POLICY_METADATA[normalized];
+    }
 
     return {
         title: "Support & Policies | Torque Block Trade",
@@ -39,4 +62,3 @@ export default async function PolicyDetailPage({ params }) {
 
     return <SupportAndPolicyClient activeSlug={normalized} />;
 }
-

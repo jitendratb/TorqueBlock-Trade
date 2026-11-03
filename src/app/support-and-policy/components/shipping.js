@@ -1,3 +1,5 @@
+"use client";
+
 export const shippingMetadata = {
     title: "Shipping & Delivery Policy | Torque Block Trade",
     description: "Wholesale motorcycle tyre delivery schedules, transport safety, and receiving guidelines for trade businesses across India.",

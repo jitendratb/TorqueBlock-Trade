@@ -8,7 +8,7 @@ import ErrorState from "@/components/ui/ErrorState";
 export default function RouteError({ error, reset }) {
     useEffect(() => {
         if (process.env.NODE_ENV !== "production") {
-            console.error("Unhandled portal error:", error);
+        console.error("Unhandled portal error:", error);
         }
     }, [error]);
 

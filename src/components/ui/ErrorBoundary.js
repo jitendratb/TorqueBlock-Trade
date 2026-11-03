@@ -4,10 +4,6 @@ import React from "react";
 import ErrorState from "./ErrorState";
 import Button from "./Button";
 
-/**
- * React Error Boundary component to prevent whole-tree crashes.
- * Wraps complex modules (StockList, OrderHistory, Checkout, Account).
- */
 export default class ErrorBoundary extends React.Component {
     constructor(props) {
         super(props);

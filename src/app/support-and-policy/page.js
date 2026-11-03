@@ -1,5 +1,10 @@
-import { redirect } from "next/navigation";
+import SupportAndPolicyClient from "./components/SupportAndPolicyClient";
+
+export const metadata = {
+    title: "Shipping & Delivery Policy | Torque Block Trade",
+    description: "Wholesale motorcycle tyre delivery schedules, transport safety, and receiving guidelines for trade businesses across India.",
+};
 
 export default function SupportAndPolicyIndexPage() {
-    redirect("/support-and-policy/policy-shipping");
+    return <SupportAndPolicyClient activeSlug="policy-shipping" />;
 }

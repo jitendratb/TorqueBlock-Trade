@@ -29,8 +29,6 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
     const description = getProductDescription(product);
     const href = tyreHref(product);
 
-    // State for images loaded dynamically from existing product family API (/intent/:identifier)
-    // Strictly contains only images from the "Product Images" field (family.productImages)
     const [familyImages, setFamilyImages] = useState(null);
 
     useEffect(() => {
@@ -57,7 +55,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
         };
     }, [product?.identifier]);
 
-    // Collect available product images (strictly product images only, excluding lifestyle gallery)
+    // Collect all available product images including family images, size images, and catalogue stock images
     const allImages = useMemo(() => {
         if (familyImages && familyImages.length > 0) {
             return familyImages;
@@ -97,55 +95,55 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                 <div className="border-b border-white/10 p-3.5 sm:p-5 grid grid-cols-[96px_1fr] items-center gap-3.5 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr] md:gap-5 lg:block lg:p-5 lg:border-b-0 lg:border-r">
                     {/* Tyre Image with arrow controls for browsing all product images */}
                     <div className="relative group/img h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 lg:h-40 lg:w-full shrink-0 overflow-hidden rounded-xl bg-white lg:mb-3 flex items-center justify-center select-none shadow-sm">
-                        <CustomImage
-                            src={currentImage}
-                            alt={`${product.name} - photo ${safeActiveIdx + 1}`}
-                            fill
-                            sizes="(max-width: 640px) 96px, (max-width: 1024px) 140px, 260px"
-                            imageClassName="object-contain p-1.5 sm:p-2 transition-transform duration-300"
-                        />
+                            <CustomImage
+                                src={currentImage}
+                                alt={`${product.name} - photo ${safeActiveIdx + 1}`}
+                                fill
+                                sizes="(max-width: 640px) 96px, (max-width: 1024px) 140px, 260px"
+                                imageClassName="object-contain p-1.5 sm:p-2 transition-transform duration-300"
+                            />
 
-                        {/* Small Navigation Arrows (only if more than 1 image) */}
-                        {allImages.length > 1 && (
-                            <>
-                                <button
-                                    type="button"
-                                    onClick={handlePrev}
-                                    aria-label="Previous product image"
-                                    className="absolute left-1 top-1/2 -translate-y-1/2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur-sm transition-all hover:bg-black hover:scale-110 active:scale-90 border border-white/20 shadow-md cursor-pointer"
-                                >
-                                    <FiChevronLeft className="text-xs" />
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={handleNext}
-                                    aria-label="Next product image"
-                                    className="absolute right-1 top-1/2 -translate-y-1/2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur-sm transition-all hover:bg-black hover:scale-110 active:scale-90 border border-white/20 shadow-md cursor-pointer"
-                                >
-                                    <FiChevronRight className="text-xs" />
-                                </button>
+                            {/* Small Navigation Arrows (only if more than 1 image) */}
+                            {allImages.length > 1 && (
+                                <>
+                                    <button
+                                        type="button"
+                                        onClick={handlePrev}
+                                        aria-label="Previous product image"
+                                        className="absolute left-1 top-1/2 -translate-y-1/2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur-sm transition-all hover:bg-black hover:scale-110 active:scale-90 border border-white/20 shadow-md cursor-pointer"
+                                    >
+                                        <FiChevronLeft className="text-xs" />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleNext}
+                                        aria-label="Next product image"
+                                        className="absolute right-1 top-1/2 -translate-y-1/2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 text-white backdrop-blur-sm transition-all hover:bg-black hover:scale-110 active:scale-90 border border-white/20 shadow-md cursor-pointer"
+                                    >
+                                        <FiChevronRight className="text-xs" />
+                                    </button>
 
-                                {/* Dot Indicators at bottom */}
-                                <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1 rounded-full bg-black/60 px-1.5 py-0.5 backdrop-blur-sm pointer-events-auto">
-                                    {allImages.map((_, idx) => (
-                                        <button
-                                            key={idx}
-                                            type="button"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                setActiveIdx(idx);
-                                            }}
-                                            aria-label={`Go to image ${idx + 1}`}
-                                            className={`rounded-full transition-all cursor-pointer ${
-                                                idx === safeActiveIdx
-                                                    ? "h-1.5 w-3 bg-orange-500"
-                                                    : "h-1.5 w-1.5 bg-white/50 hover:bg-white"
-                                            }`}
-                                        />
-                                    ))}
-                                </div>
-                            </>
+                                    {/* Dot Indicators at bottom */}
+                                    <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1 rounded-full bg-black/60 px-1.5 py-0.5 backdrop-blur-sm pointer-events-auto">
+                                        {allImages.map((_, idx) => (
+                                            <button
+                                                key={idx}
+                                                type="button"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    setActiveIdx(idx);
+                                                }}
+                                                aria-label={`Go to image ${idx + 1}`}
+                                                className={`rounded-full transition-all cursor-pointer ${
+                                                    idx === safeActiveIdx
+                                                        ? "h-1.5 w-3 bg-orange-500"
+                                                        : "h-1.5 w-1.5 bg-white/50 hover:bg-white"
+                                                }`}
+                                            />
+                                        ))}
+                                    </div>
+                                </>
                         )}
                     </div>
 
