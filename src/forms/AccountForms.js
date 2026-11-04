@@ -20,6 +20,20 @@ export const DETAILS_FIELDS = [
     ...ADDRESS_FIELDS,
 ];
 
+// Trade self-registration (AccountService registration calls). The owner's mobile is verified by WhatsApp OTP and becomes
+// the Trade login. ADDRESS_FIELDS follow as the billing address; a separate delivery address is optional.
+export const BUSINESS_TYPES = ["Dealer / Tyre Shop", "Workshop / Garage", "Fleet Operator", "Distributor / Wholesaler"];
+
+export const REGISTRATION_FIELDS = [
+    { name: "primaryOwnerName", label: "Owner name", placeholder: "Enter Your Full Name", maxLength: 100, required: true },
+    { name: "primaryOwnerNumber", label: "Owner mobile (Trade login)", placeholder: "10-digit mobile number", type: "tel", inputMode: "numeric", maxLength: 10, digits: true, required: true },
+    { name: "businessName", label: "Business / Firm name", placeholder: "Enter Your Business / Firm name", maxLength: 150, span: true, required: true },
+    { name: "businessType", label: "Business type", placeholder: "Select business type", options: BUSINESS_TYPES },
+    { name: "contactNumber", label: "Business contact number", placeholder: "If different from owner mobile", type: "tel", inputMode: "numeric", maxLength: 10, digits: true },
+    { name: "gstin", label: "GSTIN", placeholder: "Enter Your GSTIN Number (Optional)", maxLength: 15, upper: true },
+    { name: "pan", label: "PAN", placeholder: "Enter Your PAN (Optional)", maxLength: 10, upper: true },
+];
+
 export const BILLING_FIELDS = [
     { name: "businessName", label: "Trade / Business name", placeholder: "Enter Your Business / Firm name", span: true, required: true },
     { name: "contactName", label: "Contact person", placeholder: "Enter Your Full Name", required: true },
@@ -49,7 +63,7 @@ export const formatAddress = (address) =>
     address?.addressLine1 ? [address.addressLine1, address.addressLine2, `${address.city}, ${address.state} - ${address.pincode}`].filter(Boolean).join(", ") : "";
 
 // Field name -> rule in lib/validation.
-const RULE_FOR = { phone: "phone", gstin: "gstin", panNumber: "pan", pincode: "pincode", email: "email" };
+const RULE_FOR = { phone: "phone", primaryOwnerNumber: "phone", contactNumber: "phone", gstin: "gstin", pan: "pan", panNumber: "pan", pincode: "pincode", email: "email" };
 
 // Returns { field: message } for missing required fields and failed format checks.
 export const validateFields = (fields, values) =>
@@ -61,7 +75,7 @@ export const validateFields = (fields, values) =>
         }
         const rule = RULE_FOR[name];
         if (rule) {
-            const error = validate(rule, value);
+            const error = validate({ [rule]: value });
             if (error) errors[name] = error;
         }
         return errors;
@@ -70,6 +84,8 @@ export const validateFields = (fields, values) =>
 const AccountForms = {
     ADDRESS_FIELDS,
     DETAILS_FIELDS,
+    REGISTRATION_FIELDS,
+    BUSINESS_TYPES,
     BILLING_FIELDS,
     ADDRESS_KEYS,
     profileToBilling,

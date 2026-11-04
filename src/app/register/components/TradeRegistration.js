@@ -1,16 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiCheckCircle, FiClock, FiEdit2 } from "react-icons/fi";
 import { Button, ErrorState, LoadingState } from "@/ui";
 import { whatsappLink } from "@/lib/format";
 import { useAuthStore, selectHasDetails } from "@/store/authStore";
 import { useSettings } from "@/components/site/SettingsProvider";
-import OtpForm from "@/components/auth/OtpForm";
 import RegistrationForm from "./RegistrationForm";
-
-const STEPS = ["Verify mobile", "Business details"];
 
 // An admin activates trade access (the backend's 'dealer' role); until then the details wait for review.
 const STATUS_VIEW = {
@@ -18,19 +14,7 @@ const STATUS_VIEW = {
     awaiting: { Icon: FiClock, tone: "text-sky-400", title: "Awaiting Activation", text: "Our team verifies your GSTIN and activates trade prices and ordering. Message us on WhatsApp to speed it up." },
 };
 
-function Stepper({ current }) {
-    return (
-        <ol className="mb-6 grid grid-cols-2 gap-2">
-            {STEPS.map((label, i) => (
-                <li key={label} className={`rounded-xl border px-3 py-2 text-center text-[11px] font-black uppercase tracking-wider ${i <= current ? "border-orange-500 bg-orange-500/10 text-orange-400" : "border-white/10 text-zinc-500"}`}>
-                    {i + 1}. {label}
-                </li>
-            ))}
-        </ol>
-    );
-}
-
-function StatusPanel({ profile, onEdit }) {
+function StatusPanel({ profile }) {
     const { contact } = useSettings();
     const view = profile.isApproved ? STATUS_VIEW.approved : STATUS_VIEW.awaiting;
     const { Icon } = view;
@@ -60,13 +44,9 @@ function StatusPanel({ profile, onEdit }) {
                 {!profile.isApproved && activationLink && (
                     <Button href={activationLink} icon={<FaWhatsapp className="text-lg" />}>Message Us on WhatsApp</Button>
                 )}
-                <Button href="/stock">Check Stock</Button>
+                <Button href="/#stock">Check Stock</Button>
                 <Button href="/orders" variant="outline">My Orders</Button>
-                {profile.isApproved ? (
-                    <Button href="/account" variant="ghost"> <FiEdit2 /> Edit Profile</Button>
-                ) : (
-                    <Button variant="ghost" onClick={onEdit}> <FiEdit2 /> Edit Details </Button>
-                )}
+                <Button href="/account" variant="ghost"> <FiEdit2 /> Edit Profile</Button>
             </div>
         </div>
     );
@@ -77,22 +57,9 @@ export default function TradeRegistration() {
     const profile = useAuthStore((s) => s.profile);
     const status = useAuthStore((s) => s.status);
     const hasDetails = useAuthStore(selectHasDetails);
-    const [editing, setEditing] = useState(false);
 
-    const card = "rounded-3xl border border-white/10 bg-white/5 p-5 md:p-7 backdrop-blur-md";
-
-    if (!token) {
-        return (
-            <div className={card}>
-                <Stepper current={0} />
-                <h2 className="mb-1 text-xl font-black text-white">Verify your mobile number</h2>
-                <p className="mb-5 text-sm text-zinc-400">We&apos;ll send a one-time password on WhatsApp. This number becomes your Trade login.</p>
-                <OtpForm />
-            </div>
-        );
-    }
-
-    if (!profile) {
+    // Logged in: the profile tells whether this user has registered already.
+    if (token && !profile) {
         if (status === "error") {
             return (
                 <ErrorState
@@ -106,20 +73,9 @@ export default function TradeRegistration() {
         return <LoadingState message="Loading your trade account…" />;
     }
 
-    const showForm = editing || !hasDetails;
-
     return (
-        <div className={card}>
-            {showForm && <Stepper current={1} />}
-            {showForm ? (
-                <>
-                    <h2 className="mb-1 text-xl font-black text-white">Business details</h2>
-                    <p className="mb-5 text-sm text-zinc-400">Used for your GST invoice and delivery.</p>
-                    <RegistrationForm onSaved={() => setEditing(false)} />
-                </>
-            ) : (
-                <StatusPanel profile={profile} onEdit={() => setEditing(true)} />
-            )}
+        <div className="rounded-3xl border border-white/10 bg-white/5 p-5 md:p-7 backdrop-blur-md">
+            {hasDetails ? <StatusPanel profile={profile} /> : <RegistrationForm />}
         </div>
     );
 }

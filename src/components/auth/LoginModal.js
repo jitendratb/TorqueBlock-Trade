@@ -28,7 +28,7 @@ export default function LoginModal() {
                     <Logo href={null} className="w-[110px]" />
                     <h2 className="mt-4 text-2xl font-black tracking-tight"> Trade <span className="text-orange-500">Login</span></h2>
                     <p className="mb-5 mt-1 text-sm text-zinc-400">Sign in with your registered mobile number.</p>
-                    <OtpForm onSuccess={handleSuccess} />
+                    <OtpForm onSuccess={handleSuccess} onRegister={close} />
                     <p className="mt-5 border-t border-white/10 pt-4 text-center text-xs text-zinc-400"> New to Trade?{" "}
                         <Link href="/register" onClick={close} className="font-bold text-orange-500 hover:text-orange-400"> Register here </Link>
                     </p>

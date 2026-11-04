@@ -7,22 +7,26 @@ import { digitsOnly, validate } from "@/lib/validation";
 import { sendOtp, verifyOtp } from "@/services/AuthService";
 import { useAuthStore } from "@/store/authStore";
 
-// Two-step WhatsApp OTP sign-in. Calls onSuccess(profile) once the session and profile are loaded.
-export default function OtpForm({ onSuccess }) {
+// Two-step WhatsApp OTP sign-in to the Trade Portal. Calls onSuccess(profile) once the session and profile are loaded.
+// A number without a business profile gets a link to registration (onRegister runs when it is followed).
+export default function OtpForm({ onSuccess, onRegister }) {
     const startSession = useAuthStore((s) => s.startSession);
     const [phone, setPhone] = useState("");
     const [otp, setOtp] = useState("");
     const [otpToken, setOtpToken] = useState("");
     const [error, setError] = useState("");
+    const [errorCode, setErrorCode] = useState("");
     const [loading, setLoading] = useState(false);
 
     const run = async (task) => {
         setError("");
+        setErrorCode("");
         setLoading(true);
         try {
             await task();
         } catch (err) {
             setError(err.message || "Something went wrong. Please try again.");
+            setErrorCode(err.code || "");
         } finally {
             setLoading(false);
         }
@@ -31,6 +35,7 @@ export default function OtpForm({ onSuccess }) {
     const requestOtp = (e) => {
         e.preventDefault();
         const message = validate({ phone });
+        setErrorCode("");
         if (message) return setError(message);
         run(async () => {
             const res = await sendOtp(phone);
@@ -60,6 +65,11 @@ export default function OtpForm({ onSuccess }) {
                 <Button type="submit" full loading={loading} loadingText="Sending OTP…" icon={<FaWhatsapp className="text-lg" />}>
                     Get OTP on WhatsApp
                 </Button>
+                {errorCode === "NOT_REGISTERED" && (
+                    <Button href="/register" variant="outline" full onClick={onRegister}>
+                        Register Your Business
+                    </Button>
+                )}
             </form>
         );
     }

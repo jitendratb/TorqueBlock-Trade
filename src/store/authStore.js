@@ -90,7 +90,7 @@ configureSession({
 
 // Derived flags used across modules.
 export const selectIsApproved = (s) => Boolean(s.profile?.isApproved);
-// Business details were saved (registration done), whether or not an admin has approved them yet.
-export const selectHasDetails = (s) => Boolean(s.profile?.isApproved || s.profile?.address?.id);
+// Registration done (a business account exists or business details were saved), whether or not an admin has approved it yet.
+export const selectHasDetails = (s) => Boolean(s.profile?.isApproved || s.profile?.businessAccountId || s.profile?.address?.id);
 
 export default useAuthStore;
