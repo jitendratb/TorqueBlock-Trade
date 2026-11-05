@@ -76,7 +76,10 @@ export default function Header() {
     }, [pathname, setMenuOpen]);
 
     useEffect(() => {
-        const onScroll = () => setScrolled((document.documentElement.scrollTop || document.body.scrollTop) > 20);
+        const onScroll = () => {
+            const top = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            setScrolled(top > 12);
+        };
         window.addEventListener("scroll", onScroll, { passive: true });
         onScroll();
         return () => window.removeEventListener("scroll", onScroll);
@@ -91,48 +94,63 @@ export default function Header() {
 
     return (
         <div>
-            <header className="fixed top-0 left-0 right-0 w-full z-50 pt-2.5 sm:pt-3.5 px-2.5 sm:px-4 lg:px-6 pointer-events-none transition-all duration-300">
+            <header
+                data-scrolled={scrolled}
+                className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${
+                    scrolled
+                        ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
+                        : "pt-0 px-0 bg-white/10 backdrop-blur-md border-b border-white/15"
+                }`}
+            >
                 <nav
                     data-scrolled={scrolled}
-                    className="glass-header-pill pointer-events-auto mx-auto max-w-7xl flex items-center justify-between gap-2 md:gap-4 px-2.5 sm:px-5 lg:px-8 py-2 sm:py-2.5 lg:py-3 rounded-2xl text-white"
+                    className={`pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 text-white transition-all duration-300 ${
+                        scrolled
+                            ? "glass-header-pill px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl min-h-[64px] min-[360px]:min-h-[68px] sm:min-h-[72px] lg:min-h-[76px]"
+                            : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-3.5 min-[360px]:py-4 sm:py-4 lg:py-4.5 rounded-none min-h-[66px] min-[360px]:min-h-[70px] sm:min-h-[72px] lg:min-h-[76px]"
+                    }`}
                 >
                     {/* Brand Left: Company Logo + TRADE BUSINESS PORTAL */}
-                    <Link href="/" className="flex min-w-0 items-center gap-2.5 sm:gap-3.5 select-none group" aria-label="Torque Block Trade Home">
-                        <Logo href={null} name={settings.companyName} priority className="w-[58px] min-[360px]:w-[68px] sm:w-[110px] md:w-[130px] lg:w-[140px] shrink-0" />
-                        <span className="h-5 sm:h-7 md:h-8 lg:h-9 w-px bg-white/20 shrink-0 block" />
-                        <span className="flex min-w-0 flex-col">
-                            <span className="text-xs min-[360px]:text-sm sm:text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">
+                    <Link href="/" className="flex shrink-0 items-center gap-2 min-[360px]:gap-2.5 sm:gap-3.5 select-none group" aria-label="Torque Block Trade Home">
+                        <Logo
+                            href={null}
+                            name={settings.companyName}
+                            priority
+                            className="w-[78px] min-[360px]:w-[92px] min-[400px]:w-[105px] sm:w-[120px] md:w-[130px] lg:w-[145px] h-auto shrink-0"
+                        />
+                        <span className="h-6 min-[360px]:h-7 sm:h-8 md:h-8 lg:h-9 w-px bg-white/20 shrink-0 block" />
+                        <span className="flex shrink-0 flex-col">
+                            <span className="text-xs min-[360px]:text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">
                                 TRADE
                             </span>
-                            <span className="text-[6px] min-[360px]:text-[7px] sm:text-[8.5px] md:text-[9.5px] lg:text-[10px] font-black uppercase tracking-[0.12em] sm:tracking-[0.18em] lg:tracking-[0.22em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">
+                            <span className="text-[6px] min-[360px]:text-[7px] min-[400px]:text-[7.5px] sm:text-[8.5px] md:text-[9.5px] lg:text-[10px] font-black uppercase tracking-[0.12em] min-[360px]:tracking-[0.14em] sm:tracking-[0.18em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">
                                 BUSINESS PORTAL
                             </span>
                         </span>
                     </Link>
 
-                    {/* Right Action Buttons - Clean, proportional and uncrowded */}
-                    <div className="flex shrink-0 items-center justify-end gap-1.5 sm:gap-3">
+                    {/* Right Action Buttons */}
+                    <div className="flex shrink-0 items-center justify-end gap-1.5 min-[360px]:gap-2 sm:gap-3">
                         {!token && (
                             <>
-                                {/* Business Login Button */}
+                                {/* Business Login Button - Hidden on mobile, visible on tablet & laptop */}
                                 <button
                                     type="button"
                                     onClick={() => openLogin()}
                                     aria-label="Business Login"
-                                    className="inline-flex h-8 sm:h-9 md:h-10 shrink-0 items-center justify-center gap-1 sm:gap-1.5 md:gap-2 rounded-lg sm:rounded-xl border border-white/20 bg-white/5 px-2 sm:px-3 md:px-4 text-[11px] sm:text-xs md:text-sm font-semibold text-white transition-all hover:bg-white/10 hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
+                                    className="hidden md:inline-flex h-10.5 lg:h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 px-3.5 lg:px-4.5 text-xs lg:text-sm font-semibold text-white transition-all hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
                                 >
-                                    <FiUser className="text-sm sm:text-base text-zinc-300 shrink-0" />
-                                    <span className="inline sm:hidden">Login</span>
-                                    <span className="hidden sm:inline">Business Login</span>
+                                    <FiUser className="text-sm lg:text-base text-zinc-300 shrink-0" />
+                                    <span>Business Login</span>
                                 </button>
 
-                                {/* Register Your Business Button */}
+                                {/* Register Your Business Button - Hidden on mobile, visible on tablet & laptop */}
                                 <Link
                                     href="/register"
                                     aria-label="Register Your Business"
-                                    className="hidden sm:inline-flex h-9 sm:h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-500 sm:px-4 text-xs sm:text-sm font-bold text-white transition-all hover:bg-orange-600 shadow-md shadow-orange-500/25 active:scale-95 whitespace-nowrap"
+                                    className="hidden md:inline-flex h-10.5 lg:h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-500 px-3.5 lg:px-5 text-xs lg:text-sm font-bold text-white transition-all hover:bg-orange-600 shadow-md shadow-orange-500/25 active:scale-95 whitespace-nowrap"
                                 >
-                                    <FiFileText className="text-sm sm:text-base text-white shrink-0" />
+                                    <FiFileText className="text-sm lg:text-base text-white shrink-0" />
                                     <span className="hidden lg:inline">Register Your Business</span>
                                     <span className="inline lg:hidden">Register</span>
                                 </Link>
@@ -144,7 +162,7 @@ export default function Header() {
                             type="button"
                             aria-label="Open order list"
                             onClick={() => setOrderListOpen(true)}
-                            className="relative inline-flex h-8 sm:h-9 md:h-10 shrink-0 items-center justify-center gap-1 sm:gap-1.5 md:gap-2 rounded-lg sm:rounded-xl border border-white/20 bg-white/10 px-2 sm:px-3 md:px-4 text-[11px] sm:text-xs md:text-sm font-bold text-white transition-all hover:bg-white/20 active:scale-95 whitespace-nowrap"
+                            className="relative inline-flex h-10.5 min-[360px]:h-11 lg:h-11.5 shrink-0 items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 px-2.5 min-[360px]:px-3 sm:px-3.5 lg:px-4 text-xs lg:text-sm font-bold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
                         >
                             <IoCartOutline className="text-base sm:text-lg shrink-0" />
                             <span className="hidden sm:inline">Cart</span>
@@ -161,7 +179,7 @@ export default function Header() {
                             aria-label="Open navigation menu"
                             aria-expanded={menuOpen}
                             onClick={() => setMenuOpen(true)}
-                            className="inline-flex h-8 w-8 sm:h-9 sm:w-9 md:h-10 md:w-10 shrink-0 items-center justify-center rounded-lg sm:rounded-xl border border-white/20 bg-white/10 text-white transition-all hover:bg-white/20 active:scale-95"
+                            className="inline-flex h-10.5 w-10.5 min-[360px]:h-11 min-[360px]:w-11 sm:h-11 sm:w-11 lg:h-11.5 lg:w-11.5 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 shadow-sm"
                         >
                             <IoMdMenu className="text-xl sm:text-2xl" />
                         </button>
@@ -175,7 +193,20 @@ export default function Header() {
                 onClose={() => setMenuOpen(false)}
                 label="Menu"
                 className="max-w-md w-full bg-[#0D111A]"
-                header={<Logo href={null} name={settings.companyName} className="w-[120px] sm:w-[130px]" />}
+                header={
+                    <div className="flex items-center gap-2">
+                        <Logo href={null} name={settings.companyName} className="w-[84px] sm:w-[100px] shrink-0" />
+                        <span className="h-5 sm:h-6 w-px bg-white/20 shrink-0 block" />
+                        <span className="flex flex-col">
+                            <span className="text-xs sm:text-sm font-black uppercase tracking-tight text-orange-500 leading-none">
+                                TRADE
+                            </span>
+                            <span className="text-[6.5px] sm:text-[8px] font-black uppercase tracking-[0.14em] text-zinc-300 leading-tight mt-0.5 whitespace-nowrap">
+                                BUSINESS PORTAL
+                            </span>
+                        </span>
+                    </div>
+                }
             >
                 <div className="flex flex-1 flex-col overflow-y-auto px-4 sm:px-5 py-4 sm:py-5 space-y-5 sm:space-y-6 pb-6">
                     {/* Unauthenticated Quick Access - Mobile Phone Only */}

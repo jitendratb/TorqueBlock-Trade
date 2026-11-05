@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { forwardRef } from "react";
 import clsx from "clsx";
@@ -15,11 +15,11 @@ export const Input = forwardRef(function Input(
         <input
             ref={ref}
             className={clsx(
-                "w-full rounded-xl border bg-[#111827] px-4 py-3 text-sm text-white placeholder:text-zinc-500 outline-none transition-all",
-                "focus:ring-2 focus:ring-orange-500/20",
+                "w-full rounded-xl border bg-[#2D323B] px-4 py-3 text-sm font-medium text-white placeholder:text-zinc-500 outline-none transition-all",
+                "focus:ring-2 focus:ring-[#A35229]/20",
                 error
                     ? "border-red-500 focus:border-red-500"
-                    : "border-white/10 hover:border-white/20 focus:border-orange-500",
+                    : "border-white/10 hover:border-white/20 focus:border-white/30",
                 "disabled:opacity-50 disabled:cursor-not-allowed",
                 className
             )}

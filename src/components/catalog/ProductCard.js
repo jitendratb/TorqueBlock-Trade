@@ -3,26 +3,13 @@ import Link from "next/link";
 import { BsLightningChargeFill } from "react-icons/bs";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { CustomImage } from "@/ui";
-import { tyreHref } from "@/lib/catalog.utils";
+import { tyreHref, getProductDescription } from "@/lib/catalog.utils";
 import { fetchProductFamily } from "@/services/CatalogService";
 import StockRow, { STOCK_GRID } from "./StockRow";
 
 const COLUMNS = ["TYRE SIZE", "FITMENT", "AVAILABILITY", "BUSINESS PRICE", "ACTION"];
 
-function getProductDescription(product) {
-    if (product.description) return product.description;
-    const cat = (product.category?.name || "").toLowerCase();
-    if (cat.includes("sport") || cat.includes("track") || cat.includes("race")) {
-        return "Track-focused performance tyre designed for maximum grip, stability and precise handling.";
-    }
-    if (cat.includes("touring") || cat.includes("adventure") || cat.includes("trail")) {
-        return "All-terrain adventure & touring tyre built for high mileage, durability and all-weather traction.";
-    }
-    if (cat.includes("cruiser") || cat.includes("retro") || cat.includes("classic")) {
-        return "Classic cruiser tyre delivering superior ride comfort, wet grip and long-haul stability.";
-    }
-    return "Premium motorcycle tyre engineered for optimal performance, durability, and superior wet & dry grip.";
-}
+
 
 // One product with its size table. Links stay inside the portal (/tyres/<tyre> and /tyres/<tyre>/<size>).
 function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }) {

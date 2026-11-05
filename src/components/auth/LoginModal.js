@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Logo, Modal } from "@/ui";
+import { Modal } from "@/ui";
 import { useUiStore } from "@/store/ui.store";
 import OtpForm from "./OtpForm";
 
@@ -22,15 +22,20 @@ export default function LoginModal() {
     };
 
     return (
-        <Modal open={open} onClose={close} label="Trade login">
+        <Modal
+            open={open}
+            onClose={close}
+            label="Authentication"
+            className="max-w-[460px] w-full rounded-2xl sm:rounded-3xl p-6 sm:p-7 bg-[#22262E]/95 border border-white/10 backdrop-blur-xl shadow-2xl text-white"
+        >
             {open && (
                 <>
-                    <Logo href={null} className="w-[110px]" />
-                    <h2 className="mt-4 text-2xl font-black tracking-tight"> Trade <span className="text-orange-500">Login</span></h2>
-                    <p className="mb-5 mt-1 text-sm text-zinc-400">Sign in with your registered mobile number.</p>
                     <OtpForm onSuccess={handleSuccess} onRegister={close} />
-                    <p className="mt-5 border-t border-white/10 pt-4 text-center text-xs text-zinc-400"> New to Trade?{" "}
-                        <Link href="/register" onClick={close} className="font-bold text-orange-500 hover:text-orange-400"> Register here </Link>
+                    <p className="mt-5 border-t border-white/10 pt-4 text-center text-xs text-zinc-400">
+                        New to Trade?{" "}
+                        <Link href="/register" onClick={close} className="font-bold text-[#F59E0B] hover:text-amber-400 transition-colors">
+                            Register here
+                        </Link>
                     </p>
                 </>
             )}

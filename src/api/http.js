@@ -96,17 +96,6 @@ axios.interceptors.request.use(
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
             }
-        } else {
-            try {
-                const { cookies } = await import("next/headers");
-                const cookieStore = await cookies();
-                const token = cookieStore.get("TB_AUTH")?.value;
-                if (token) {
-                    config.headers.Authorization = `Bearer ${token}`;
-                }
-            } catch {
-                // Ignore SSR context without cookies
-            }
         }
 
         return config;

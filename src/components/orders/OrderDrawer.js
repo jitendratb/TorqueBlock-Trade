@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
 import { IoCartOutline } from "react-icons/io5";
 import { Drawer } from "@/ui";
@@ -19,7 +20,7 @@ import PaymentStep from "./PaymentStep";
 import OrderSuccessModal from "./OrderSuccessModal";
 
 const STEP_TITLES = {
-    address: ["Billing &", "Address", "Step 2 of 3 · Tax invoicing details", "items"],
+    address: ["Billing &", "Address", "Step 2 of 3 · Invoicing details", "items"],
     payment: ["Payment", "Method", "Step 3 of 3 · Choose how to pay", "address"],
 };
 
@@ -27,12 +28,17 @@ function StepHeader({ step, units, hasItems, onBack }) {
     const config = STEP_TITLES[step];
     if (!config) {
         return (
-            <div className="flex items-center gap-2">
-                <h2 className="text-xl font-black tracking-tight text-white">
-                    Order <span className="text-orange-500">List</span>
-                </h2>
+            <div className="flex items-center gap-2.5">
+                <div>
+                    <h2 className="text-sm sm:text-base font-black tracking-[0.08em] uppercase text-white">
+                        ORDER CART
+                    </h2>
+                    <p className="text-[11px] text-zinc-400">
+                        Review tyre batch & wholesale invoice
+                    </p>
+                </div>
                 {hasItems && (
-                    <span className="inline-flex items-center rounded-full border border-orange-500/30 bg-orange-500/10 px-2 py-0.5 text-[11px] font-bold text-orange-400">
+                    <span className="inline-flex items-center rounded-full border border-[#A35229]/40 bg-[#A35229]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#F59E0B]">
                         {units} {units === 1 ? "tyre" : "tyres"}
                     </span>
                 )}
@@ -46,15 +52,15 @@ function StepHeader({ step, units, hasItems, onBack }) {
                 type="button"
                 onClick={() => onBack(backTo)}
                 aria-label="Back"
-                className="flex h-8 w-8 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-zinc-300 transition-colors hover:bg-white/10 hover:text-white"
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-zinc-300 transition-colors hover:bg-white/15 hover:text-white"
             >
                 <FiArrowLeft size={16} />
             </button>
             <div>
-                <h2 className="text-lg font-black tracking-tight text-white">
-                    {title} <span className="text-orange-500">{accent}</span>
+                <h2 className="text-sm sm:text-base font-black tracking-[0.08em] uppercase text-white">
+                    {title} <span className="text-[#A35229]">{accent}</span>
                 </h2>
-                <p className="text-[10px] font-medium text-zinc-400">{subtitle}</p>
+                <p className="text-[11px] text-zinc-400">{subtitle}</p>
             </div>
         </div>
     );
@@ -164,16 +170,26 @@ export default function OrderDrawer() {
                 open={open}
                 onClose={close}
                 label="Order list"
-                className="max-w-lg bg-[#10141D]"
+                className="w-full max-w-full sm:max-w-md md:max-w-lg bg-[#22262E] text-white border-l border-white/10"
                 header={<StepHeader step={currentStep} units={units} hasItems={items.length > 0} onBack={setStep} />}
             >
                 {items.length === 0 ? (
-                    <div className="flex flex-1 flex-col items-center justify-center gap-3 px-8 text-center">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-zinc-500">
-                            <IoCartOutline className="text-4xl" />
+                    <div className="flex flex-1 flex-col items-center justify-center gap-3.5 px-8 text-center">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-[#2D323B] text-zinc-400">
+                            <IoCartOutline className="text-3xl" />
                         </div>
-                        <p className="text-lg font-black text-white">No tyres selected yet</p>
-                        <p className="max-w-xs text-sm text-zinc-400">Browse the wholesale catalog and use the cart or order button to add tyre sizes into your bulk batch.</p>
+                        <div>
+                            <p className="text-base font-bold uppercase tracking-wider text-white">NO TYRES IN CART</p>
+                            <p className="max-w-xs mt-1 text-xs text-zinc-400">Browse the wholesale catalog and add tyre sizes into your bulk batch.</p>
+                        </div>
+                        <Link
+                            href="/#stock"
+                            onClick={close}
+                            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-[#A35229] hover:bg-[#8F4420] py-3 px-5 text-xs font-bold uppercase tracking-[0.08em] text-white transition-all shadow-md shadow-[#A35229]/25"
+                        >
+                            <span>BROWSE TYRE STOCK</span>
+                            <span>→</span>
+                        </Link>
                     </div>
                 ) : currentStep === "items" ? (
                     <ItemsStep

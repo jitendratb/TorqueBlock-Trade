@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect } from "react";
 import clsx from "clsx";
@@ -15,7 +15,8 @@ export default function Modal({
     onClose,
     label = "Dialog modal",
     children,
-    className = "max-w-sm rounded-3xl p-6"
+    className = "max-w-[460px] w-full rounded-2xl sm:rounded-3xl p-6 sm:p-7 bg-[#22262E]/95 border border-white/10 backdrop-blur-xl shadow-2xl",
+    closeButtonClassName = "absolute right-4 top-4 sm:right-5 sm:top-5 h-8 w-8 rounded-lg bg-white/10 hover:bg-white/15 text-zinc-400 hover:text-white"
 }) {
     useEffect(() => {
         if (!open) return;
@@ -42,19 +43,19 @@ export default function Modal({
                 type="button"
                 aria-label="Close modal"
                 onClick={onClose}
-                className="absolute inset-0 bg-black/70 backdrop-blur-sm cursor-default"
+                className="absolute inset-0 bg-black/75 backdrop-blur-md cursor-default"
             />
 
             {/* Modal Content Box */}
             <div
                 className={clsx(
-                    "animate-fade-in-up relative w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain border border-white/10 bg-[#0B0F19] text-white shadow-2xl",
+                    "animate-fade-in-up relative w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain border border-white/10 text-white shadow-2xl",
                     className
                 )}
             >
                 <CloseButton
                     onClick={onClose}
-                    className="absolute right-4 top-4 h-9 w-9"
+                    className={closeButtonClassName}
                     ariaLabel="Close modal"
                 />
                 {children}

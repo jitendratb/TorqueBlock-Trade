@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import SupportAndPolicyClient from "../components/SupportAndPolicyClient";
+import SupportAndPolicyClient from "@/components/support/SupportAndPolicyClient";
 
 const POLICY_METADATA = {
     "policy-shipping": {

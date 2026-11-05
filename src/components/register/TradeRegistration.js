@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { FaWhatsapp } from "react-icons/fa";
 import { FiCheckCircle, FiClock, FiEdit2 } from "react-icons/fi";
 import { Button, ErrorState, LoadingState } from "@/ui";
@@ -7,11 +8,13 @@ import { whatsappLink } from "@/lib/format";
 import { useAuthStore, selectHasDetails } from "@/store/authStore";
 import { useSettings } from "@/components/site/SettingsProvider";
 import RegistrationForm from "./RegistrationForm";
+import useIsMounted from "@/hooks/useIsMounted";
+
 
 // An admin activates trade access (the backend's 'dealer' role); until then the details wait for review.
 const STATUS_VIEW = {
-    approved: { Icon: FiCheckCircle, tone: "text-green-500", title: "Trade Account Active", text: "Trade prices and instant ordering are live across all tyre stock." },
-    awaiting: { Icon: FiClock, tone: "text-sky-400", title: "Awaiting Activation", text: "Our team verifies your GSTIN and activates trade prices and ordering. Message us on WhatsApp to speed it up." },
+    approved: { Icon: FiCheckCircle, tone: "text-emerald-400", title: "Trade Account Active", text: "Trade wholesale prices and instant ordering are live across all tyre stock." },
+    awaiting: { Icon: FiClock, tone: "text-[#F59E0B]", title: "Awaiting Activation", text: "Our team verifies your GSTIN and activates trade prices and ordering. Message us on WhatsApp to speed it up." },
 };
 
 function StatusPanel({ profile }) {
@@ -21,13 +24,13 @@ function StatusPanel({ profile }) {
     const address = profile.address || {};
     const activationLink = whatsappLink(contact?.whatsapp, `Hi Torque Block! Please activate my trade account for ${address.businessName || "my business"} (GSTIN ${address.gstin || profile.gstin || "-"}, mobile ${profile.phone}).`);
     return (
-        <div className="space-y-5 text-center">
+        <div className="space-y-6 text-center py-2">
             <Icon className={`mx-auto text-6xl ${view.tone}`} />
             <div>
-                <h2 className="text-2xl font-black text-white">{view.title}</h2>
-                <p className="mx-auto mt-2 max-w-md text-sm text-zinc-400">{view.text}</p>
+                <h2 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white">{view.title}</h2>
+                <p className="mx-auto mt-2 max-w-md text-xs sm:text-sm text-zinc-400 leading-relaxed">{view.text}</p>
             </div>
-            <dl className="grid grid-cols-1 gap-2 rounded-2xl border border-white/10 bg-black/20 p-4 text-left text-sm sm:grid-cols-2">
+            <dl className="grid grid-cols-1 gap-2.5 rounded-2xl border border-white/10 bg-[#2D323B] p-4 text-left text-xs sm:text-sm sm:grid-cols-2">
                 {[
                     ["Business", address.businessName],
                     ["Contact", address.contactName || profile.name],
@@ -35,28 +38,35 @@ function StatusPanel({ profile }) {
                     ["City", address.city && `${address.city}, ${address.state}`],
                 ].map(([label, value]) => (
                     <div key={label}>
-                        <dt className="text-[10px] font-black uppercase tracking-widest text-zinc-500">{label}</dt>
-                        <dd className="font-semibold text-white">{value || "—"}</dd>
+                        <dt className="text-[10px] font-bold uppercase tracking-widest text-zinc-400">{label}</dt>
+                        <dd className="font-bold text-white mt-0.5">{value || "—"}</dd>
                     </div>
                 ))}
             </dl>
-            <div className="flex flex-col justify-center gap-3 sm:flex-row">
+            <div className="flex flex-col justify-center gap-3 sm:flex-row pt-2">
                 {!profile.isApproved && activationLink && (
-                    <Button href={activationLink} icon={<FaWhatsapp className="text-lg" />}>Message Us on WhatsApp</Button>
+                    <Button href={activationLink} icon={<FaWhatsapp className="text-lg" />} className="justify-center py-3.5 bg-[#A35229] hover:bg-[#8F4420] text-xs font-bold uppercase tracking-wider text-white rounded-xl shadow-lg shadow-[#A35229]/25">
+                        Message Us on WhatsApp
+                    </Button>
                 )}
-                <Button href="/#stock">Check Stock</Button>
-                <Button href="/orders" variant="outline">My Orders</Button>
-                <Button href="/account" variant="ghost"> <FiEdit2 /> Edit Profile</Button>
+                <Button href="/#stock" variant="outline" className="justify-center">Check Stock</Button>
+                <Button href="/orders" variant="outline" className="justify-center">My Orders</Button>
+                <Button href="/account" variant="ghost" className="justify-center"> <FiEdit2 /> Edit Profile</Button>
             </div>
         </div>
     );
 }
 
 export default function TradeRegistration() {
+    const isMounted = useIsMounted();
     const token = useAuthStore((s) => s.token);
     const profile = useAuthStore((s) => s.profile);
     const status = useAuthStore((s) => s.status);
     const hasDetails = useAuthStore(selectHasDetails);
+
+    if (!isMounted) {
+        return <LoadingState message="Loading your trade account…" />;
+    }
 
     // Logged in: the profile tells whether this user has registered already.
     if (token && !profile) {
@@ -74,8 +84,14 @@ export default function TradeRegistration() {
     }
 
     return (
-        <div className="rounded-3xl border border-white/10 bg-white/5 p-5 md:p-7 backdrop-blur-md">
-            {hasDetails ? <StatusPanel profile={profile} /> : <RegistrationForm />}
+        <div className="w-full rounded-2xl sm:rounded-3xl bg-[#22262E]/95 border border-white/10 p-6 sm:p-8 md:p-10 shadow-2xl shadow-black/80 backdrop-blur-xl text-white">
+            {hasDetails ? (
+                <StatusPanel profile={profile} />
+            ) : (
+                <Suspense fallback={<LoadingState message="Loading registration form…" />}>
+                    <RegistrationForm />
+                </Suspense>
+            )}
         </div>
     );
 }

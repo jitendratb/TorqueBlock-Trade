@@ -6,29 +6,13 @@ import { FiMinus, FiPlus, FiShoppingCart, FiTrash2, FiLock } from "react-icons/f
 import { formatINR } from "@/lib/format";
 import { ShareButtons } from "@/ui";
 import { tyreHref } from "@/lib/catalog.utils";
+import StockBadge from "./StockBadge";
 import { useUiStore } from "@/store/ui.store";
 import { useOrderListStore, toLine } from "@/store/orderStore";
 
 export const STOCK_GRID = "md:grid-cols-[1.4fr_0.8fr_1.1fr_1.1fr_210px] lg:grid-cols-[1.3fr_0.8fr_1fr_1.1fr_220px] xl:grid-cols-[1.4fr_0.8fr_1.1fr_1.1fr_260px]";
 
-const STOCK_BADGES = {
-    out: { label: "Out of stock", className: "bg-rose-950/60 text-rose-400 border-rose-500/20", dot: "bg-rose-400" },
-    limited: { label: "Limited stock", className: "bg-amber-950/60 text-amber-400 border-amber-500/20", dot: "bg-amber-400" },
-    in: { label: "In stock", className: "bg-emerald-950/60 text-emerald-400 border-emerald-500/20", dot: "bg-emerald-400" },
-};
 
-function StockBadge({ size }) {
-    const level = size.availability === "out_of_stock" ? "out" : size.availability === "backorder" || (size.stock != null && size.stock <= 5) ? "limited" : "in";
-
-    const { label, className, dot } = STOCK_BADGES[level];
-
-    return (
-        <span className={`inline-flex items-center gap-1.5 sm:gap-2 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-semibold border whitespace-nowrap ${className}`}>
-            <span className={`h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full shrink-0 ${dot}`} />
-            <span>{label}</span>
-        </span>
-    );
-}
 
 function PriceCell({ size, tradePrice, isApproved, onLoginClick }) {
     if (!isApproved) {

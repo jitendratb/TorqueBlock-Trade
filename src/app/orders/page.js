@@ -1,5 +1,7 @@
 import PageHero from "@/components/site/PageHero";
-import OrderHistory from "./components/OrderHistory";
+import OrderHistory from "@/components/orders/OrderHistory";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
     title: "My Orders | Torque Block Trade",

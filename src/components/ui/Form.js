@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import clsx from "clsx";
 
@@ -10,7 +10,7 @@ export function Field({ label, htmlFor, error, className, children }) {
             {label && (
                 <label
                     htmlFor={htmlFor}
-                    className="block text-[11px] font-black uppercase tracking-widest text-zinc-400"
+                    className="block text-xs sm:text-[13px] font-bold text-zinc-200"
                 >
                     {label}
                 </label>

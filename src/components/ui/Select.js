@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { forwardRef } from "react";
 import clsx from "clsx";
@@ -15,12 +15,12 @@ export const Select = forwardRef(function Select(
         <select
             ref={ref}
             className={clsx(
-                "w-full rounded-xl border bg-[#111827] px-4 py-3 text-sm text-white placeholder:text-zinc-500 outline-none transition-all cursor-pointer font-semibold",
-                "focus:ring-2 focus:ring-orange-500/20",
-                "[&>option]:bg-[#111827] [&>option]:text-white",
+                "w-full rounded-xl border bg-[#2D323B] px-4 py-3 text-sm text-white placeholder:text-zinc-500 outline-none transition-all cursor-pointer font-medium",
+                "focus:ring-2 focus:ring-[#A35229]/20",
+                "[&>option]:bg-[#2D323B] [&>option]:text-white",
                 error
                     ? "border-red-500 focus:border-red-500"
-                    : "border-white/10 hover:border-white/20 focus:border-orange-500",
+                    : "border-white/10 hover:border-white/20 focus:border-white/30",
                 "disabled:opacity-50 disabled:cursor-not-allowed",
                 className
             )}

@@ -1,4 +1,4 @@
-import SupportAndPolicyClient from "./components/SupportAndPolicyClient";
+import SupportAndPolicyClient from "@/components/support/SupportAndPolicyClient";
 
 export const metadata = {
     title: "Shipping & Delivery Policy | Torque Block Trade",

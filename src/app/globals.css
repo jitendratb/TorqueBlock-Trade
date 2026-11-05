@@ -90,8 +90,13 @@ button {
   background: linear-gradient(to right, transparent, rgba(249, 115, 22, 0.35), transparent);
 }
 
-/* Frosted glass header pill matching torqueblock.com when scrolled */
+/* Frosted glass header pill matching torqueblock.com */
 .glass-header-pill {
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.55), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
   transition:
     background-color 0.3s ease,
     border-color 0.3s ease,
@@ -99,22 +104,6 @@ button {
     -webkit-backdrop-filter 0.3s ease,
     box-shadow 0.3s ease,
     transform 0.3s ease;
-}
-
-.glass-header-pill[data-scrolled="false"] {
-  background: rgba(11, 15, 25, 0.45);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-}
-
-.glass-header-pill[data-scrolled="true"] {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  box-shadow: 0 12px 35px -5px rgba(0, 0, 0, 0.55), inset 0 1px 0 0 rgba(255, 255, 255, 0.18);
 }
 
 /* Animations */

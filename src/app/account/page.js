@@ -1,5 +1,7 @@
 import PageHero from "@/components/site/PageHero";
-import AccountView from "./components/AccountView";
+import AccountView from "@/components/account/AccountView";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
     title: "My Account | Torque Block Trade",

@@ -3,7 +3,7 @@
 import clsx from "clsx";
 import { FiCheck, FiCheckCircle, FiCreditCard, FiMapPin, FiShield } from "react-icons/fi";
 import { SiRazorpay } from "react-icons/si";
-import { Button, Select } from "@/ui";
+import { Select } from "@/ui";
 import { formatINR, formatPercent } from "@/lib/format";
 
 function PaymentOption({ selected, disabled, onSelect, Icon, title, tag, tagClass, description, children }) {
@@ -18,26 +18,26 @@ function PaymentOption({ selected, disabled, onSelect, Icon, title, tag, tagClas
             className={clsx(
                 "relative rounded-2xl border-2 p-4 transition-all",
                 selected
-                    ? "cursor-pointer border-orange-500 bg-orange-500/10 shadow-md shadow-orange-500/10"
+                    ? "cursor-pointer border-[#A35229] bg-[#A35229]/15 shadow-md shadow-[#A35229]/10"
                     : disabled
-                        ? "cursor-not-allowed border-white/10 bg-white/[0.02] opacity-80"
-                        : "cursor-pointer border-white/10 bg-white/5 hover:border-white/20"
+                        ? "cursor-not-allowed border-white/10 bg-white/[0.02] opacity-75"
+                        : "cursor-pointer border-white/10 bg-[#2D323B] hover:border-white/20"
             )}
         >
             <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                    <div className={clsx("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border", selected ? "border-orange-500/30 bg-orange-500/20 text-orange-400" : "border-white/10 bg-white/5 text-zinc-400")}>
+                    <div className={clsx("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border", selected ? "border-[#A35229]/40 bg-[#A35229]/25 text-[#F59E0B]" : "border-white/10 bg-black/20 text-zinc-400")}>
                         <Icon className="text-xl" />
                     </div>
                     <div>
                         <div className="flex flex-wrap items-center gap-2">
-                            <h3 className="text-sm font-black text-white">{title}</h3>
+                            <h3 className="text-sm font-bold text-white">{title}</h3>
                             {tag && <span className={clsx("rounded border px-1.5 py-0.5 text-[10px] font-bold", tagClass)}>{tag}</span>}
                         </div>
                         <p className="mt-0.5 text-[11px] text-zinc-400">{description}</p>
                     </div>
                 </div>
-                <div className={clsx("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2", selected ? "border-orange-500 bg-orange-500 text-black" : "border-white/30")}>
+                <div className={clsx("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2", selected ? "border-[#A35229] bg-[#A35229] text-white" : "border-white/30")}>
                     {selected && <FiCheck className="stroke-[3] text-xs" />}
                 </div>
             </div>
@@ -88,7 +88,7 @@ function CreditDetails({ account, total, branchId, onBranch, lockedBranch }) {
     );
 }
 
-// Step 3 — choose Razorpay or Pay on Credit and confirm.
+// Step 3 — Choose Razorpay or Pay on Credit and confirm.
 export default function PaymentStep({
     billing,
     units,
@@ -110,13 +110,13 @@ export default function PaymentStep({
 
     return (
         <>
-            <div className="custom-scroll flex-1 space-y-4 overflow-y-auto px-5 py-4">
-                <div className="rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs">
+            <div className="custom-scroll flex-1 space-y-4 overflow-y-auto px-4 sm:px-5 py-4">
+                <div className="rounded-2xl border border-white/10 bg-[#2D323B] p-3.5 text-xs">
                     <div className="mb-2 flex items-center justify-between">
-                        <p className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-zinc-400">
-                            <FiMapPin className="text-orange-400" /> Invoicing &amp; Delivery Destination
+                        <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                            <FiMapPin className="text-[#F59E0B]" /> Invoicing &amp; Delivery Destination
                         </p>
-                        <button type="button" onClick={onBack} className="text-[11px] font-bold text-orange-400 transition-colors hover:text-orange-300">
+                        <button type="button" onClick={onBack} className="text-[11px] font-bold text-[#F59E0B] transition-colors hover:text-amber-300">
                             Edit
                         </button>
                     </div>
@@ -124,13 +124,13 @@ export default function PaymentStep({
                     <p className="mt-0.5 text-xs text-zinc-400">
                         {[billing.contactName, billing.phone, billing.gstin && `GSTIN: ${billing.gstin}`].filter(Boolean).join(" · ")}
                     </p>
-                    <p className="mt-1 line-clamp-2 text-[11px] text-zinc-500">
+                    <p className="mt-1 line-clamp-2 text-[11px] text-zinc-400">
                         {[billing.addressLine1, billing.addressLine2, `${billing.city}, ${billing.state} - ${billing.pincode}`].filter(Boolean).join(", ")}
                     </p>
                 </div>
 
                 <div className="space-y-3" role="radiogroup" aria-label="Payment method">
-                    <p className="text-[11px] font-black uppercase tracking-wider text-zinc-400">Select Payment Method</p>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Select Payment Method</p>
 
                     <PaymentOption
                         selected={!isCredit}
@@ -143,7 +143,7 @@ export default function PaymentStep({
                     >
                         <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-white/10 pt-3 text-[10px] text-zinc-300">
                             {["UPI / QR (GPay, PhonePe, Paytm)", "Cards (Visa, Master, RuPay)", "NetBanking (50+ Banks)"].map((label) => (
-                                <span key={label} className="rounded-md border border-white/10 bg-white/5 px-2 py-0.5 font-medium">{label}</span>
+                                <span key={label} className="rounded-md border border-white/10 bg-black/30 px-2 py-0.5 font-medium">{label}</span>
                             ))}
                         </div>
                     </PaymentOption>
@@ -157,15 +157,15 @@ export default function PaymentStep({
                             title="Pay on Credit"
                             tag={`Net ${account.creditDays} Days`}
                             tagClass="border-amber-500/30 bg-amber-500/20 text-amber-300"
-                            description={`Invoiced to ${account?.businessName || "your business"} · Deducted from your credit limit`}
+                            description={`Invoiced to ${account?.businessName || "your business"} · Deducted from credit limit`}
                         >
                             <CreditDetails account={account} total={total} branchId={branchId} onBranch={onBranch} lockedBranch={lockedBranch} />
                         </PaymentOption>
                     )}
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs">
-                    <p className="text-[10px] font-black uppercase tracking-wider text-zinc-400">Order Summary</p>
+                <div className="space-y-2 rounded-2xl border border-white/10 bg-[#2D323B] p-4 text-xs">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Order Summary</p>
                     <dl className="space-y-1.5">
                         <div className="flex justify-between text-zinc-300">
                             <dt>{units} tyres · Taxable Amount</dt>
@@ -177,7 +177,7 @@ export default function PaymentStep({
                         </div>
                         <div className="flex justify-between border-t border-white/10 pt-2 text-sm font-black text-white">
                             <dt>Total Amount</dt>
-                            <dd className="text-base text-orange-400">{formatINR(total)}</dd>
+                            <dd className="text-base text-[#F59E0B]">{formatINR(total)}</dd>
                         </div>
                         {isCredit && (
                             <div className="flex justify-between pt-1 text-[11px] font-semibold text-amber-400">
@@ -189,18 +189,24 @@ export default function PaymentStep({
                 </div>
             </div>
 
-            <footer className="space-y-3 border-t border-white/10 bg-[#0D121B] px-5 py-4">
-                <Button
-                    full
+            <footer className="space-y-3.5 border-t border-white/10 bg-[#1B1E25] px-4 sm:px-5 py-4">
+                <button
+                    type="button"
                     onClick={onPay}
-                    loading={sending}
-                    loadingText={isCredit ? "Confirming Credit Order…" : "Opening Razorpay Gateway…"}
-                    icon={isCredit ? <FiCreditCard className="text-amber-400" /> : <FiShield className="text-emerald-400" />}
-                    className="relative justify-center py-3.5 shadow-lg shadow-orange-500/25"
+                    disabled={sending}
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#A35229] hover:bg-[#8F4420] active:scale-[0.99] py-3.5 px-4 text-xs sm:text-[13px] font-bold uppercase tracking-[0.08em] text-white transition-all shadow-lg shadow-[#A35229]/25 disabled:opacity-50"
                 >
-                    {isCredit ? `Confirm & Pay on Credit (${formatINR(total)})` : `Pay ${formatINR(total)} via Razorpay`}
-                </Button>
-                <div className="flex items-center justify-between pt-1 text-[11px] text-zinc-500">
+                    {sending ? (
+                        <span>{isCredit ? "Confirming Credit Order…" : "Opening Gateway…"}</span>
+                    ) : (
+                        <>
+                            <span>{isCredit ? `CONFIRM & PAY ON CREDIT (${formatINR(total)})` : `PAY ${formatINR(total)} VIA RAZORPAY`}</span>
+                            <span className="text-base leading-none">→</span>
+                        </>
+                    )}
+                </button>
+
+                <div className="flex items-center justify-between pt-1 text-[11px] text-zinc-400">
                     <button type="button" onClick={onBack} disabled={sending} className="transition-colors hover:text-white">
                         ← Back to Address
                     </button>

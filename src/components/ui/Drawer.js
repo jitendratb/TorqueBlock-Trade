@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect } from "react";
 import clsx from "clsx";
@@ -11,7 +11,7 @@ export function CloseButton({ onClick, className, ariaLabel = "Close" }) {
             onClick={onClick}
             aria-label={ariaLabel}
             className={clsx(
-                "flex h-10 w-10 items-center justify-center rounded-xl border border-white/15 bg-white/5 text-white transition-all hover:bg-white/10 active:scale-95",
+                "flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-zinc-400 hover:text-white transition-all hover:bg-white/15 active:scale-95",
                 className
             )}
         >
@@ -33,7 +33,7 @@ export default function Drawer({
     label = "Navigation drawer",
     header,
     children,
-    className = "max-w-md w-full bg-[#10141D]"
+    className = "w-full max-w-full sm:max-w-md md:max-w-lg bg-[#10141D]"
 }) {
     useEffect(() => {
         if (!open) return;

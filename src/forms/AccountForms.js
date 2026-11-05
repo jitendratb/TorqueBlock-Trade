@@ -29,9 +29,9 @@ export const REGISTRATION_FIELDS = [
     { name: "primaryOwnerNumber", label: "Owner mobile (Trade login)", placeholder: "10-digit mobile number", type: "tel", inputMode: "numeric", maxLength: 10, digits: true, required: true },
     { name: "businessName", label: "Business / Firm name", placeholder: "Enter Your Business / Firm name", maxLength: 150, span: true, required: true },
     { name: "businessType", label: "Business type", placeholder: "Select business type", options: BUSINESS_TYPES },
-    { name: "contactNumber", label: "Business contact number", placeholder: "If different from owner mobile", type: "tel", inputMode: "numeric", maxLength: 10, digits: true },
+    // { name: "contactNumber", label: "Business contact number", placeholder: "If different from owner mobile", type: "tel", inputMode: "numeric", maxLength: 10, digits: true },
     { name: "gstin", label: "GSTIN", placeholder: "Enter Your GSTIN Number (Optional)", maxLength: 15, upper: true },
-    { name: "pan", label: "PAN", placeholder: "Enter Your PAN (Optional)", maxLength: 10, upper: true },
+    // { name: "pan", label: "PAN", placeholder: "Enter Your PAN (Optional)", maxLength: 10, upper: true },
 ];
 
 export const BILLING_FIELDS = [
