@@ -16,6 +16,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
     const description = getProductDescription(product);
     const href = tyreHref(product);
 
+    const [familyData, setFamilyData] = useState(null);
     const [familyImages, setFamilyImages] = useState(null);
 
     useEffect(() => {
@@ -23,6 +24,7 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
         let isMounted = true;
         fetchProductFamily(product.identifier).then((family) => {
             if (!isMounted || !family) return;
+            setFamilyData(family);
             const list = [];
             const add = (img) => {
                 if (!img) return;
@@ -135,6 +137,27 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                     </div>
 
                     <div className="min-w-0">
+                        {/* Hero Specification - Displayed right after image */}
+                        {(familyData?.hero?.subtitle || (Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0)) && (
+                            <div className="mb-2 rounded-lg bg-black/40 border border-white/5 p-2">
+                                {familyData?.hero?.subtitle && (
+                                    <p className="text-[11px] font-semibold text-orange-400 leading-snug">
+                                        {familyData.hero.subtitle}
+                                    </p>
+                                )}
+                                {Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0 && (
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                        {familyData.hero.highlights.slice(0, 2).map((h, i) => (
+                                            <span key={i} className="inline-flex items-center gap-1 rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-medium text-zinc-300">
+                                                <span className="h-1 w-1 rounded-full bg-orange-400" />
+                                                {h}
+                                            </span>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         {/* Brand Badge */}
                         {product.brand && (
                             <div className="mb-1.5 sm:mb-2">

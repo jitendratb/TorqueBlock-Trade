@@ -17,6 +17,8 @@ import {
     FiTruck,
     FiSliders,
     FiFileText,
+    FiX,
+    FiZoomIn,
 } from "react-icons/fi";
 import { BsLightningChargeFill } from "react-icons/bs";
 import { CustomImage, ShareButtons } from "@/ui";
@@ -52,7 +54,7 @@ export default function ProductDetail({ product, size = null }) {
     const [familyImages, setFamilyImages] = useState(null);
     const [activeIdx, setActiveIdx] = useState(0);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-    const [showAllSizes, setShowAllSizes] = useState(false);
+    const [isPhotoOpen, setIsPhotoOpen] = useState(false);
 
     useEffect(() => {
         if (isApproved) loadTradePrices();
@@ -127,8 +129,6 @@ export default function ProductDetail({ product, size = null }) {
 
     // Sizes to display (either the single requested size or all sizes)
     const sizesToDisplay = size ? [size] : (product.sizes || []);
-    // Limit to 4 sizes initially unless toggled
-    const visibleSizes = showAllSizes || sizesToDisplay.length <= 4 ? sizesToDisplay : sizesToDisplay.slice(0, 4);
 
     const handleAddToCart = (targetSize) => {
         const line = toLine(product, targetSize, 1);
@@ -172,8 +172,17 @@ export default function ProductDetail({ product, size = null }) {
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7 items-start">
                     {/* LEFT COLUMN: Premium Tyre Showcase + Compact Specs / Assurance */}
                     <div className="lg:col-span-5 flex flex-col space-y-3">
-                        {/* Premium Studio Showcase Image Box */}
-                        <div className="relative w-full max-w-[270px] sm:max-w-[290px] mx-auto aspect-square rounded-2xl bg-gradient-to-b from-[#1E232E] via-[#141822] to-[#0D1017] border border-white/15 p-3 sm:p-4 flex items-center justify-center overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.12)] group/img">
+                        {/* Premium Studio Showcase Image Box (Click to open photo lightbox) */}
+                        <div
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => setIsPhotoOpen(true)}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") setIsPhotoOpen(true);
+                            }}
+                            title="Click to view full photo"
+                            className="relative w-full max-w-[320px] sm:max-w-[350px] lg:max-w-[380px] mx-auto aspect-square rounded-2xl bg-gradient-to-b from-[#1E232E] via-[#141822] to-[#0D1017] border border-white/15 p-3 sm:p-4 flex items-center justify-center overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.12)] group/img cursor-zoom-in"
+                        >
                             {/* Studio Lighting Vignette */}
                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.07)_0%,rgba(0,0,0,0.75)_100%)] pointer-events-none" />
 
@@ -186,13 +195,18 @@ export default function ProductDetail({ product, size = null }) {
                                 </div>
                             )}
 
+                            {/* Zoom Cue Icon */}
+                            <div className="absolute top-2.5 right-2.5 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 border border-white/15 text-zinc-300 backdrop-blur-sm opacity-80 group-hover/img:opacity-100 group-hover/img:border-orange-500 group-hover/img:text-orange-400 transition-all">
+                                <FiZoomIn size={13} />
+                            </div>
+
                             {/* Main Tyre Photo with Depth Drop Shadow */}
                             <CustomImage
                                 src={currentImage}
                                 alt={`${product.name} - image ${safeActiveIdx + 1}`}
                                 fill
-                                sizes="(max-width: 1024px) 270px, 290px"
-                                imageClassName="object-contain w-full h-full p-2 transition-transform duration-300 group-hover/img:scale-105 filter drop-shadow-[0_10px_20px_rgba(0,0,0,0.75)]"
+                                sizes="(max-width: 1024px) 320px, 380px"
+                                imageClassName="object-contain w-full h-full p-2 transition-transform duration-300 group-hover/img:scale-105 filter drop-shadow-[0_12px_24px_rgba(0,0,0,0.8)]"
                             />
 
                             {/* Image Counter Badge */}
@@ -208,7 +222,7 @@ export default function ProductDetail({ product, size = null }) {
                                     <button
                                         type="button"
                                         onClick={(e) => {
-                                            e.preventDefault();
+                                            e.stopPropagation();
                                             setActiveIdx((prev) => (prev - 1 + allImages.length) % allImages.length);
                                         }}
                                         aria-label="Previous image"
@@ -219,7 +233,7 @@ export default function ProductDetail({ product, size = null }) {
                                     <button
                                         type="button"
                                         onClick={(e) => {
-                                            e.preventDefault();
+                                            e.stopPropagation();
                                             setActiveIdx((prev) => (prev + 1) % allImages.length);
                                         }}
                                         aria-label="Next image"
@@ -325,9 +339,9 @@ export default function ProductDetail({ product, size = null }) {
                         )}
                     </div>
 
-                    {/* RIGHT COLUMN: Product Header, 4 Sizes Showcase, Cart Action & Overview */}
+                    {/* RIGHT COLUMN: Product Header with Hero Spec, Scrollable Sizes Table (Centered), & Description */}
                     <div className="lg:col-span-7 flex flex-col justify-start space-y-3.5">
-                        {/* Clean Product Header */}
+                        {/* Product Header + Hero Specification */}
                         <div>
                             <div className="inline-flex items-center gap-1 rounded border border-[#A35229]/40 bg-[#A35229]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#F59E0B] mb-1.5">
                                 <BsLightningChargeFill className="text-[10px]" />
@@ -337,13 +351,38 @@ export default function ProductDetail({ product, size = null }) {
                             <h1 className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight text-white leading-tight">
                                 {product.name}
                             </h1>
+
+                            {/* Hero Specification - under product title (e.g. Metzeler Racetec TD Slick) */}
+                            {(familyData?.hero?.subtitle || (Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0)) ? (
+                                <div className="mt-1 sm:mt-1.5 space-y-1">
+                                    {familyData?.hero?.subtitle && (
+                                        <p className="text-xs sm:text-sm font-semibold text-orange-400/95 leading-snug">
+                                            {familyData.hero.subtitle}
+                                        </p>
+                                    )}
+                                    {Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0 && (
+                                        <div className="flex flex-wrap gap-1.5 pt-0.5">
+                                            {familyData.hero.highlights.map((h, i) => (
+                                                <span key={i} className="inline-flex items-center gap-1 rounded-md bg-black/40 border border-white/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-medium text-zinc-300">
+                                                    <span className="h-1 w-1 rounded-full bg-orange-400" />
+                                                    {h}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                <p className="mt-1 text-xs text-zinc-400">
+                                    {product.category?.name || "Motorcycle Tyre"} • Engineered for Superior Grip &amp; Precision
+                                </p>
+                            )}
                         </div>
 
-                        {/* SIZES LIST SECTION - Displays 4 sizes, no spec tags, premium automotive cart vibe */}
-                        <div className="space-y-2 pt-2 border-t border-white/10">
-                            <div className="flex items-center justify-between">
+                        {/* SIZES LIST SECTION - Direct scrollable table with centered SIZE, FITMENT, AVAILABILITY */}
+                        <div className="space-y-1.5 pt-2 border-t border-white/10">
+                            <div className="flex items-center justify-between pb-1">
                                 <h2 className="text-xs font-bold uppercase tracking-[0.08em] text-white">
-                                    AVAILABLE TYRE SIZES ({visibleSizes.length}{sizesToDisplay.length > 4 && !showAllSizes ? ` of ${sizesToDisplay.length}` : ""})
+                                    AVAILABLE TYRE SIZES ({sizesToDisplay.length})
                                 </h2>
                                 {size && product.sizes.length > 1 && (
                                     <Link
@@ -355,53 +394,62 @@ export default function ProductDetail({ product, size = null }) {
                                 )}
                             </div>
 
-                            {/* List of 4 sizes - clean cards with vibrant cart & trade controls */}
-                            <div className="space-y-1.5">
-                                {visibleSizes.map((s) => {
+                            {/* Table Column Headers (Centered, matching home page product card table) */}
+                            <div className="hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] gap-2 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 border-b border-white/10 text-center">
+                                <span>SIZE</span>
+                                <span>FITMENT</span>
+                                <span>AVAILABILITY</span>
+                                <span>BUSINESS PRICE</span>
+                                <span>ACTION</span>
+                            </div>
+
+                            {/* Directly Scrollable Sizes Container */}
+                            <div className="max-h-[220px] sm:max-h-[260px] overflow-y-auto custom-scroll pr-1 space-y-1.5">
+                                {sizesToDisplay.map((s) => {
                                     const availability = getAvailabilityLevel(s);
                                     const tradePrice = tradePrices?.[s.id] ?? s.tradePrice;
                                     const cartItem = items.find((i) => i.id === s.id);
                                     const isOutOfStock = availability === "out";
 
                                     return (
-                                        <div
-                                            key={s.id}
-                                            className="rounded-xl border border-white/10 bg-[#262A34] hover:bg-[#2B303B] hover:border-orange-500/30 transition-colors px-3 py-2 sm:px-3.5 sm:py-2.5 flex items-center justify-between gap-2.5 shadow-sm"
-                                        >
-                                            {/* Size, Position & Stock Badge */}
-                                            <div className="flex items-center gap-2 min-w-0 flex-wrap">
-                                                {size ? (
-                                                    <span className="text-[15px] sm:text-base font-black text-white tracking-tight shrink-0">
-                                                        {s.size}
+                                        <div key={s.id}>
+                                            {/* Desktop Table Row (Centered Text Alignment) */}
+                                            <div className="hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] items-center gap-2 rounded-xl border border-white/10 bg-[#262A34] hover:bg-[#2B303B] hover:border-orange-500/30 transition-colors px-3.5 py-2 text-center shadow-sm">
+                                                {/* SIZE (Centered) */}
+                                                <div className="flex items-center justify-center">
+                                                    {size ? (
+                                                        <span className="text-sm lg:text-[15px] font-black text-white tracking-tight">
+                                                            {s.size}
+                                                        </span>
+                                                    ) : (
+                                                        <Link
+                                                            href={tyreHref(product, s)}
+                                                            className="text-sm lg:text-[15px] font-black text-white hover:text-orange-400 tracking-tight transition-colors"
+                                                            title={`View ${product.name} ${s.size} specifications`}
+                                                        >
+                                                            {s.size}
+                                                        </Link>
+                                                    )}
+                                                </div>
+
+                                                {/* FITMENT (Centered) */}
+                                                <div className="flex items-center justify-center">
+                                                    <span className="rounded border border-white/15 bg-black/40 px-2 py-0.5 text-[10px] font-bold uppercase text-zinc-300">
+                                                        {s.position || "Front / Rear"}
                                                     </span>
-                                                ) : (
-                                                    <Link
-                                                        href={tyreHref(product, s)}
-                                                        className="text-[15px] sm:text-base font-black text-white hover:text-orange-400 tracking-tight transition-colors inline-flex items-center gap-1 group/size shrink-0"
-                                                        title={`View ${product.name} ${s.size} specifications`}
-                                                    >
-                                                        <span>{s.size}</span>
-                                                        <span className="text-[10px] text-zinc-500 group-hover/size:text-orange-400 transition-colors">→</span>
-                                                    </Link>
-                                                )}
-                                                {s.position && (
-                                                    <span className="rounded border border-white/15 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-300 shrink-0">
-                                                        {s.position}
-                                                    </span>
-                                                )}
-                                                <div className="shrink-0">
+                                                </div>
+
+                                                {/* AVAILABILITY (Centered) */}
+                                                <div className="flex items-center justify-center">
                                                     <StockBadge size={s} />
                                                 </div>
-                                            </div>
 
-                                            {/* Pricing & Cart Action Controls */}
-                                            <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
-                                                {/* Price */}
-                                                <div className="text-right leading-none">
+                                                {/* BUSINESS PRICE (Centered) */}
+                                                <div className="flex flex-col items-center justify-center text-center leading-none">
                                                     {isApproved ? (
                                                         tradePrice ? (
                                                             <div>
-                                                                <p className="text-[14px] sm:text-[15px] font-black text-amber-400 leading-none">
+                                                                <p className="text-sm lg:text-[15px] font-black text-amber-400 leading-none">
                                                                     {formatINR(tradePrice)}
                                                                 </p>
                                                                 <p className="text-[9px] font-medium text-zinc-400 mt-0.5">
@@ -424,8 +472,8 @@ export default function ProductDetail({ product, size = null }) {
                                                     )}
                                                 </div>
 
-                                                {/* Cart Controls */}
-                                                <div>
+                                                {/* ACTION (Centered) */}
+                                                <div className="flex items-center justify-center">
                                                     {cartItem ? (
                                                         <div className="flex items-center gap-1 bg-[#171A23] border border-orange-500/40 rounded-lg p-0.5 shadow-sm">
                                                             <button
@@ -466,42 +514,87 @@ export default function ProductDetail({ product, size = null }) {
                                                             className="flex items-center justify-center gap-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 active:scale-95 py-1.5 px-3 text-[11px] font-bold uppercase tracking-wider text-white transition-all shadow-sm shadow-orange-500/25 disabled:opacity-40 disabled:cursor-not-allowed"
                                                         >
                                                             <FiShoppingCart size={12} />
-                                                            <span>{isOutOfStock ? "Out" : "Add to Cart"}</span>
+                                                            <span>{isOutOfStock ? "Out" : "Add"}</span>
                                                         </button>
                                                     )}
+                                                </div>
+                                            </div>
+
+                                            {/* Mobile View (< sm) */}
+                                            <div className="flex sm:hidden flex-col gap-2 p-2.5 rounded-xl border border-white/10 bg-[#262A34] shadow-sm">
+                                                <div className="flex items-center justify-between gap-2">
+                                                    <div className="flex items-center gap-1.5 min-w-0">
+                                                        {size ? (
+                                                            <span className="text-sm font-black text-white">{s.size}</span>
+                                                        ) : (
+                                                            <Link href={tyreHref(product, s)} className="text-sm font-black text-white hover:text-orange-400 transition-colors">
+                                                                {s.size}
+                                                            </Link>
+                                                        )}
+                                                        {s.position && (
+                                                            <span className="rounded border border-white/15 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-300">
+                                                                {s.position}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <StockBadge size={s} />
+                                                </div>
+
+                                                <div className="flex items-center justify-between gap-2 pt-1 border-t border-white/5">
+                                                    <div className="leading-none">
+                                                        {isApproved && tradePrice ? (
+                                                            <div>
+                                                                <p className="text-sm font-black text-amber-400">{formatINR(tradePrice)}</p>
+                                                                <p className="text-[9px] text-zinc-400">+18% GST</p>
+                                                            </div>
+                                                        ) : (
+                                                            <button type="button" onClick={openLogin} className="text-[11px] text-orange-400 font-semibold">
+                                                                Login for price
+                                                            </button>
+                                                        )}
+                                                    </div>
+
+                                                    <div>
+                                                        {cartItem ? (
+                                                            <div className="flex items-center gap-1 bg-[#171A23] border border-orange-500/40 rounded-lg p-0.5">
+                                                                <button type="button" onClick={() => { if (cartItem.quantity <= 1) remove(s.id); else setQuantity(s.id, cartItem.quantity - 1); }} className="h-6 w-6 text-zinc-300 flex items-center justify-center">
+                                                                    <FiMinus size={10} />
+                                                                </button>
+                                                                <span className="min-w-4 text-center text-xs font-black text-white">{cartItem.quantity}</span>
+                                                                <button type="button" onClick={() => setQuantity(s.id, cartItem.quantity + 1)} className="h-6 w-6 text-zinc-300 flex items-center justify-center">
+                                                                    <FiPlus size={10} />
+                                                                </button>
+                                                                <button type="button" onClick={() => setOrderListOpen(true)} className="px-2 py-0.5 rounded bg-orange-500 text-[9px] font-black uppercase text-white">
+                                                                    Cart
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <button
+                                                                type="button"
+                                                                disabled={isOutOfStock}
+                                                                onClick={() => handleAddToCart(s)}
+                                                                className="flex items-center justify-center gap-1 rounded-lg bg-orange-500 py-1.5 px-3 text-[11px] font-bold uppercase text-white disabled:opacity-40"
+                                                            >
+                                                                <FiShoppingCart size={12} />
+                                                                <span>{isOutOfStock ? "Out" : "Add to Cart"}</span>
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
-
-                            {/* Show More / Show 4 Sizes Toggle when product has > 4 sizes */}
-                            {sizesToDisplay.length > 4 && (
-                                <div className="flex justify-end pt-0.5">
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowAllSizes((prev) => !prev)}
-                                        className="text-[11px] font-bold text-[#F59E0B] hover:text-amber-300 transition-colors inline-flex items-center gap-1"
-                                    >
-                                        <span>
-                                            {showAllSizes
-                                                ? "Show 4 Sizes"
-                                                : `+ View All ${sizesToDisplay.length} Sizes`}
-                                        </span>
-                                        {showAllSizes ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
-                                    </button>
-                                </div>
-                            )}
                         </div>
 
-                        {/* PRODUCT OVERVIEW BOX - Shows ONLY 2-3 lines initially, expandable via Read More */}
+                        {/* PRODUCT DESCRIPTION BOX (Title: Description, backend content with 2-3 line preview + Read More) */}
                         <div className="rounded-xl border border-white/10 bg-[#262A34] p-3 sm:p-3.5 shadow-md space-y-2">
                             <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
                                 <div className="flex items-center gap-1.5">
                                     <FiFileText className="text-[#F59E0B] text-xs shrink-0" />
                                     <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                                        Product Overview
+                                        Description
                                     </h3>
                                 </div>
                                 {(paragraphs.length > 1 || highlights.length > 0) && (
@@ -516,7 +609,7 @@ export default function ProductDetail({ product, size = null }) {
                                 )}
                             </div>
 
-                            {/* Description Content: exactly 2 to 3 lines when collapsed! */}
+                            {/* Description Content from Backend: 2-3 lines preview initially, full when expanded */}
                             <div className="text-xs text-zinc-300 leading-relaxed">
                                 {isDescriptionExpanded ? (
                                     <div className="max-h-[160px] sm:max-h-[200px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
@@ -547,7 +640,7 @@ export default function ProductDetail({ product, size = null }) {
                                     </div>
                                 ) : (
                                     <p className="line-clamp-2 sm:line-clamp-3 text-zinc-300 font-normal">
-                                        {paragraphs[0] || ""}
+                                        {familyData?.description || product?.description || paragraphs[0] || ""}
                                     </p>
                                 )}
                             </div>
@@ -555,6 +648,74 @@ export default function ProductDetail({ product, size = null }) {
                     </div>
                 </div>
             </div>
+
+            {/* FULL-SIZE PHOTO LIGHTBOX MODAL */}
+            {isPhotoOpen && (
+                <div
+                    className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-6"
+                    onClick={() => setIsPhotoOpen(false)}
+                    role="dialog"
+                    aria-modal="true"
+                >
+                    <div
+                        className="relative max-w-4xl w-full max-h-[88vh] h-[75vh] flex items-center justify-center"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Close Lightbox Button */}
+                        <button
+                            type="button"
+                            onClick={() => setIsPhotoOpen(false)}
+                            aria-label="Close photo preview"
+                            className="absolute -top-10 sm:-top-12 right-0 z-20 flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-white hover:bg-orange-500 hover:text-white transition-colors"
+                        >
+                            <FiX size={20} />
+                        </button>
+
+                        {/* Large Photo Display */}
+                        <div className="relative w-full h-full rounded-2xl overflow-hidden bg-black/60 border border-white/15 p-4 flex items-center justify-center shadow-2xl">
+                            <CustomImage
+                                src={currentImage}
+                                alt={`${product.name} - large preview`}
+                                fill
+                                sizes="(max-width: 1200px) 90vw, 1000px"
+                                imageClassName="object-contain p-4 filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.9)]"
+                            />
+
+                            {/* Lightbox Navigation Controls */}
+                            {allImages.length > 1 && (
+                                <>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActiveIdx((prev) => (prev - 1 + allImages.length) % allImages.length);
+                                        }}
+                                        aria-label="Previous photo"
+                                        className="absolute left-3 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/80 text-white border border-white/20 transition-all hover:border-orange-500 hover:text-orange-400 active:scale-95 shadow-lg"
+                                    >
+                                        <FiChevronLeft size={20} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            setActiveIdx((prev) => (prev + 1) % allImages.length);
+                                        }}
+                                        aria-label="Next photo"
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-black/80 text-white border border-white/20 transition-all hover:border-orange-500 hover:text-orange-400 active:scale-95 shadow-lg"
+                                    >
+                                        <FiChevronRight size={20} />
+                                    </button>
+
+                                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 rounded-full border border-white/15 bg-black/80 px-3 py-1 text-xs font-bold text-zinc-300">
+                                        {safeActiveIdx + 1} of {allImages.length}
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
