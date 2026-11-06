@@ -13,7 +13,6 @@ const COLUMNS = ["TYRE SIZE", "FITMENT", "AVAILABILITY", "BUSINESS PRICE", "ACTI
 
 // One product with its size table. Links stay inside the portal (/tyres/<tyre> and /tyres/<tyre>/<size>).
 function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }) {
-    const description = getProductDescription(product);
     const href = tyreHref(product);
 
     const [familyData, setFamilyData] = useState(null);
@@ -43,6 +42,8 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
             isMounted = false;
         };
     }, [product?.identifier]);
+
+    const heroText = familyData?.hero?.subtitle || familyData?.description || product?.description || "";
 
     // Collect all available product images including family images, size images, and catalogue stock images
     const allImages = useMemo(() => {
@@ -137,27 +138,6 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                     </div>
 
                     <div className="min-w-0">
-                        {/* Hero Specification - Displayed right after image */}
-                        {(familyData?.hero?.subtitle || (Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0)) && (
-                            <div className="mb-2 rounded-lg bg-black/40 border border-white/5 p-2">
-                                {familyData?.hero?.subtitle && (
-                                    <p className="text-[11px] font-semibold text-orange-400 leading-snug">
-                                        {familyData.hero.subtitle}
-                                    </p>
-                                )}
-                                {Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0 && (
-                                    <div className="flex flex-wrap gap-1 mt-1">
-                                        {familyData.hero.highlights.slice(0, 2).map((h, i) => (
-                                            <span key={i} className="inline-flex items-center gap-1 rounded bg-white/5 px-1.5 py-0.5 text-[9px] font-medium text-zinc-300">
-                                                <span className="h-1 w-1 rounded-full bg-orange-400" />
-                                                {h}
-                                            </span>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
                         {/* Brand Badge */}
                         {product.brand && (
                             <div className="mb-1.5 sm:mb-2">
@@ -184,10 +164,24 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                             <span>{product.category?.name || "SUPER SPORT"}</span>
                         </div>
 
-                        {/* Product Description */}
-                        <p className="line-clamp-2 text-xs sm:text-sm text-zinc-400 font-medium leading-relaxed">
-                            {description}
-                        </p>
+                        {/* Hero Subtitle from Backend (zero hardcoded strings) */}
+                        {heroText && (
+                            <p className="line-clamp-2 text-xs sm:text-sm text-zinc-300 font-medium leading-relaxed">
+                                {heroText}
+                            </p>
+                        )}
+
+                        {/* Hero Highlights chips if available */}
+                        {Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0 && (
+                            <div className="flex flex-wrap gap-1 mt-1.5">
+                                {familyData.hero.highlights.slice(0, 2).map((h, i) => (
+                                    <span key={i} className="inline-flex items-center gap-1 rounded bg-black/40 border border-white/10 px-1.5 py-0.5 text-[9px] font-medium text-zinc-300">
+                                        <span className="h-1 w-1 rounded-full bg-orange-400" />
+                                        {h}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
 
                     </div>
                 </div>

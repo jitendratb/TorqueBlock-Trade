@@ -196,46 +196,29 @@ export function parseTyreSize(rawSize = "", spec = "", sizeObj = null) {
 }
 
 /**
- * Generates an informative, rich, and attractive fallback description based on tyre product category.
+ * Resolves product description or hero subtitle directly from backend data (familyData or product).
+ * Contains zero hardcoded descriptions.
  */
-export function getProductDescription(product) {
-    if (product?.description && product.description.trim().length > 15) {
+export function getProductDescription(product, familyData = null) {
+    if (familyData?.hero?.subtitle && familyData.hero.subtitle.trim().length > 5) {
+        return familyData.hero.subtitle.trim();
+    }
+    if (familyData?.description && familyData.description.trim().length > 10) {
+        return familyData.description.trim();
+    }
+    if (product?.description && product.description.trim().length > 10) {
         return product.description.trim();
     }
-    const name = product?.name || "Motorcycle Tyre";
-    const brand = product?.brand?.name ? `${product.brand.name} ` : "";
-    const cat = `${product?.category?.name || ""} ${product?.name || ""}`.toLowerCase();
-
-    if (cat.includes("track") || cat.includes("race") || cat.includes("supersport") || cat.includes("superbike") || cat.includes("slick")) {
-        return `Engineered for intense track performance and high-speed precision, the ${brand}${name} delivers maximum cornering grip and razor-sharp feedback at extreme lean angles. Its racing-derived compound enables rapid temperature buildup and consistent heat cycles, while the specialized profile maximizes the contact patch under aggressive braking and hard cornering exits.`;
+    if (familyData?.aiSearch?.summary && familyData.aiSearch.summary.trim().length > 10) {
+        return familyData.aiSearch.summary.trim();
     }
-    if (cat.includes("sport") || cat.includes("hypersport") || cat.includes("rad")) {
-        return `Crafted for spirited road carving and agile street performance, the ${brand}${name} blends rapid directional agility with reassuring edge grip. Featuring advanced silica-infused compounds, it ensures quick warm-up in all weather conditions, outstanding wet-road braking distances, and extended tread life for everyday performance enthusiasts.`;
-    }
-    if (cat.includes("adventure") || cat.includes("adv") || cat.includes("trail") || cat.includes("dual") || cat.includes("enduro")) {
-        return `Built for riders who demand unrestricted freedom across tarmac and rough trails, the ${brand}${name} features a heavy-duty reinforced carcass and optimized multi-pitch tread blocks. Delivering aggressive off-road bite, high resistance to cuts and punctures, and smooth high-speed highway stability, it's the ultimate dual-purpose companion.`;
-    }
-    if (cat.includes("touring") || cat.includes("tour") || cat.includes("highway") || cat.includes("gt")) {
-        return `Designed for marathon cross-country journeys and all-weather touring, the ${brand}${name} prioritizes rider comfort, heavy-payload stability, and exceptional tread longevity. Deep water-dispersion sipes prevent hydroplaning in torrential rain, while its dual-compound construction resists center-tread squaring over thousands of highway kilometers.`;
-    }
-    if (cat.includes("cruiser") || cat.includes("custom") || cat.includes("classic") || cat.includes("retro") || cat.includes("chopper")) {
-        return `Specially engineered for heavyweight cruisers and retro classics, the ${brand}${name} delivers effortless straight-line tracking, smooth road-vibration absorption, and dependable wet braking. Constructed with high-strength belt plies to comfortably handle high kerb weights, it pairs authentic classic aesthetics with modern high-mileage rubber.`;
-    }
-    if (cat.includes("scooter") || cat.includes("moped")) {
-        return `Tailored for agile city mobility and everyday convenience, the ${brand}${name} provides nimble handling, low road noise, and plush ride quality. Its specialized commuter profile allows effortless maneuvering through dense traffic, with responsive braking and dependable all-weather traction.`;
-    }
-    if (cat.includes("commuter") || cat.includes("city") || cat.includes("street") || cat.includes("urban")) {
-        return `Engineered for daily urban commuting and grueling city road conditions, the ${brand}${name} is built for long-lasting tread wear, puncture resistance, and low rolling resistance. Its high-mileage compound and optimized water-channeling grooves provide instant braking response and confident grip over wet asphalt, potholes, and painted road markings.`;
-    }
-    if (cat.includes("cross") || cat.includes("dirt") || cat.includes("motocross") || cat.includes("mx")) {
-        return `Developed for extreme off-road dominance across mud, sand, and gravel, the ${brand}${name} features deep, aggressive self-cleaning knobs with reinforced bases to resist tearing. It provides relentless forward drive, powerful braking bite, and maximum steering control on challenging loose surfaces.`;
-    }
-    return `The ${brand}${name} is a premium motorcycle tyre engineered for optimal performance, durability, and superior wet & dry grip. Designed with high-tensile casing plies and an optimized compound architecture, it delivers confident cornering, short braking distances, and consistent reliability across diverse road surfaces.`;
+    return "";
 }
 
 /**
  * Extracts and formats multi-paragraph product overview, highlights, and technical details.
  * Prioritizes backend intent data (familyData) from MongoDB /intent/:identifier API.
+ * Contains zero hardcoded paragraphs.
  */
 export function buildProductParagraphs(product, familyData) {
     const paragraphs = [];
@@ -246,19 +229,25 @@ export function buildProductParagraphs(product, familyData) {
         const parts = rawDesc
             .split(/\n{2,}|\r\n\r\n|\n/)
             .map((p) => p.trim())
-            .filter((p) => p.length > 25);
+            .filter((p) => p.length > 20);
         if (parts.length > 0) {
             paragraphs.push(...parts);
         }
     }
 
-    // 2. AI Search Summary from backend
+    // 2. Hero subtitle from backend (if not already included in paragraphs)
+    const heroSub = familyData?.hero?.subtitle?.trim();
+    if (heroSub && !paragraphs.some((p) => p.includes(heroSub.slice(0, 25)))) {
+        paragraphs.push(heroSub);
+    }
+
+    // 3. AI Search Summary from backend
     const aiSummary = familyData?.aiSearch?.summary?.trim();
-    if (aiSummary && !paragraphs.some((p) => p.includes(aiSummary.slice(0, 30)))) {
+    if (aiSummary && !paragraphs.some((p) => p.includes(aiSummary.slice(0, 25)))) {
         paragraphs.push(aiSummary);
     }
 
-    // 3. Best Suited For / Operational Use Cases from backend
+    // 4. Best Suited For / Operational Use Cases from backend
     const bestSuited = Array.isArray(familyData?.bestSuitedFor) ? familyData.bestSuitedFor.filter(Boolean) : [];
     const useCases = Array.isArray(familyData?.useCases) ? familyData.useCases.filter(Boolean) : [];
     if (bestSuited.length > 0 || useCases.length > 0) {
@@ -273,29 +262,6 @@ export function buildProductParagraphs(product, familyData) {
         if (suitText && !paragraphs.some((p) => p.includes("Best Suited For"))) {
             paragraphs.push(suitText);
         }
-    }
-
-    // 4. Ensure we have at least 3 descriptive paragraphs
-    if (paragraphs.length < 3) {
-        const catDesc = getProductDescription(product);
-        if (!paragraphs.some((p) => p.includes(catDesc.slice(0, 30)))) {
-            paragraphs.unshift(catDesc);
-        }
-    }
-
-    const brand = product?.brand?.name ? `${product.brand.name} ` : "";
-    const name = product?.name || "this tyre";
-
-    if (paragraphs.length < 2) {
-        paragraphs.push(
-            `Engineered with advanced compound blending and heat-dissipating carcass belts, the ${brand}${name} is built to endure sustained high-speed loads, unpredictable asphalt conditions, and thermal cycles without compromising grip consistency.`
-        );
-    }
-
-    if (paragraphs.length < 3) {
-        paragraphs.push(
-            `Precision-tested for demanding Indian road environments, it delivers confident directional stability, short braking distances in wet and dry conditions, and extended tread wear life for motorcycle enthusiasts and commercial riders alike.`
-        );
     }
 
     return paragraphs;
