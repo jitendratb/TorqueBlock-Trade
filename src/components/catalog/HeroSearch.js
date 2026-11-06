@@ -166,9 +166,8 @@ function SearchBox({ initialQuery, onSearch, index, tradePaths, examples = [] })
                     <button
                         type="submit"
                         aria-label="Search"
-                        className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 cursor-pointer ${
-                            query ? "bg-orange-500 text-white shadow-md shadow-orange-500/30 hover:bg-orange-600" : "bg-white/20 text-white/70 hover:bg-white/30"
-                        }`}
+                        className={`flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-full transition-all active:scale-95 cursor-pointer ${query ? "bg-orange-500 text-white shadow-md shadow-orange-500/30 hover:bg-orange-600" : "bg-white/20 text-white/70 hover:bg-white/30"
+                            }`}
                     >
                         {loading ? <FiLoader className="text-lg animate-spin" /> : <PiArrowUpBold className="text-lg sm:text-xl" />}
                     </button>
@@ -225,7 +224,6 @@ export function HeroSlides({ images = [], alt }) {
             alt={i === 0 ? alt : ""}
             fill
             priority={i === 0}
-            loading={i === 0 ? "eager" : "lazy"}
             sizes="100vw"
             quality={75}
             className={`object-cover transition-opacity duration-1000 ${i === active ? "opacity-100" : "opacity-0"}`}

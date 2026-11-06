@@ -80,8 +80,7 @@ export default function CustomImage({
                 fill={renderFill}
                 width={resolvedWidth}
                 height={resolvedHeight}
-                preload={priority}
-                fetchPriority={finalFetchPriority}
+                priority={priority}
                 quality={quality}
                 sizes={finalSizes}
                 className={clsx(
