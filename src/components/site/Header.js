@@ -76,13 +76,31 @@ export default function Header() {
     }, [pathname, setMenuOpen]);
 
     useEffect(() => {
+        const getScrollTop = () => {
+            return (
+                window.pageYOffset ||
+                window.scrollY ||
+                document.documentElement?.scrollTop ||
+                document.body?.scrollTop ||
+                0
+            );
+        };
+
         const onScroll = () => {
-            const top = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+            const top = getScrollTop();
             setScrolled(top > 12);
         };
+
         window.addEventListener("scroll", onScroll, { passive: true });
+        document.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("touchmove", onScroll, { passive: true });
         onScroll();
-        return () => window.removeEventListener("scroll", onScroll);
+
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+            document.removeEventListener("scroll", onScroll);
+            window.removeEventListener("touchmove", onScroll);
+        };
     }, []);
 
     const expertLink = whatsappLink(settings.contact?.whatsapp, EXPERT_WHATSAPP_MESSAGE);
@@ -98,8 +116,8 @@ export default function Header() {
                 data-scrolled={scrolled}
                 className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${
                     scrolled
-                        ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
-                        : "pt-0 px-0 bg-white/10 backdrop-blur-md border-b border-white/15"
+                        ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-3 min-[360px]:px-3.5 sm:px-6 lg:px-8 bg-transparent"
+                        : "pt-0 px-0 bg-[#0B0F19]/65 backdrop-blur-md border-b border-white/10"
                 }`}
             >
                 <nav

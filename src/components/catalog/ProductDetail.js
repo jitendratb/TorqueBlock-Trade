@@ -291,10 +291,7 @@ export default function ProductDetail({ product, size = null }) {
 
                                                 {/* Stock Status Badge */}
                                                 <div className="flex items-center gap-2">
-                                                    <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[11px] font-semibold border ${badge.className}`}>
-                                                        <span className={`h-1.5 w-1.5 rounded-full ${badge.dot}`} />
-                                                        <span>{badge.label}</span>
-                                                    </span>
+                                                    <StockBadge size={s} />
                                                 </div>
                                             </div>
 
