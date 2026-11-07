@@ -298,11 +298,10 @@ export default function ProductDetail({ product, size = null }) {
                                         type="button"
                                         onClick={() => setActiveIdx(idx)}
                                         aria-label={`View photo ${idx + 1}`}
-                                        className={`relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-xl overflow-hidden transition-all bg-white/5 select-none ${
-                                            idx === safeActiveIdx
-                                                ? "border-2 border-orange-500 ring-2 ring-orange-500/30 scale-105 shadow-md"
-                                                : "border border-white/10 opacity-70 hover:opacity-100"
-                                        }`}
+                                        className={`relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-xl overflow-hidden transition-all bg-white/5 select-none ${idx === safeActiveIdx
+                                            ? "border-2 border-orange-500 ring-2 ring-orange-500/30 scale-105 shadow-md"
+                                            : "border border-white/10 opacity-70 hover:opacity-100"
+                                            }`}
                                     >
                                         <CustomImage
                                             src={img}
@@ -346,19 +345,13 @@ export default function ProductDetail({ product, size = null }) {
                     <h1 className="text-2xl sm:text-3xl lg:text-[3rem] font-black text-white tracking-tight leading-[1.08] mb-3 drop-shadow-lg">
                         {headlineParts ? (
                             <>
-                                <span className="text-white">Is {headlineParts.brand} </span>
+                                <span className="text-white">{headlineParts.brand} </span>
                                 <span className="text-orange-500">{headlineParts.model}</span>
-                                <span className="block text-zinc-200 font-bold text-xl sm:text-2xl lg:text-[1.85rem] mt-1.5 drop-shadow-md">
-                                    right for your motorcycle?
-                                </span>
+
                             </>
                         ) : (
                             <>
-                                <span className="text-white">Is </span>
                                 <span className="text-orange-500">{product.name}</span>
-                                <span className="block text-zinc-200 font-bold text-xl sm:text-2xl lg:text-[1.85rem] mt-1.5 drop-shadow-md">
-                                    right for your motorcycle?
-                                </span>
                             </>
                         )}
                     </h1>
@@ -406,13 +399,9 @@ export default function ProductDetail({ product, size = null }) {
                                     className="inline-flex items-center gap-2 text-xl sm:text-2xl lg:text-[26px] font-black text-orange-400 hover:text-orange-300 transition-colors py-0.5 cursor-pointer group/login text-left"
                                 >
                                     <FiLock className="text-lg sm:text-xl text-orange-500 group-hover/login:scale-110 transition-transform shrink-0" />
-                                    <span className="underline decoration-orange-500/40 underline-offset-4 group-hover/login:decoration-orange-400">
-                                        Login for Trade Price
-                                    </span>
+                                    <span className="decoration-white-500/40 group-hover/login:decoration-white-400"> Login for Trade Price</span>
                                 </button>
-                                <p className="text-[11px] sm:text-xs text-zinc-400">
-                                    Exclusive trade wholesale pricing for registered dealers
-                                </p>
+                                <p className="text-[11px] sm:text-xs text-zinc-400"> Exclusive trade wholesale pricing for registered dealers </p>
                             </div>
                         )}
                     </div>

@@ -1,33 +1,17 @@
 import axios from "axios";
 
 // ============================================================================
-// 1. Base URL Configuration (Automatic Environment & Host Detection)
+// 1. Base URL Configuration (Configured exclusively via .env)
 // ============================================================================
 
-const getResolvedBaseURL = () => {
-    // 1. Explicit environment variable override
-    if (process.env.NEXT_PUBLIC_API_URL) {
-        return process.env.NEXT_PUBLIC_API_URL;
-    }
-    // 2. Client-side hostname detection:
-    if (typeof window !== "undefined") {
-        const host = window.location.hostname;
-        // If running in production on torqueblock.com domain
-        if (host && host.includes("torqueblock.com")) {
-            return "https://api.torqueblock.com/api/v1";
-        }
-        // Localhost, 127.0.0.1, or local network IP (e.g. 172.x.x.x, 192.168.x.x)
-        return "http://localhost:4000/api/v1";
-    }
-    // 3. Server-side rendering (Node.js):
-    if (process.env.NODE_ENV === "development") {
-        return "http://localhost:4000/api/v1";
-    }
-    return "https://api.torqueblock.com/api/v1";
-};
+// export const baseURL = "http://localhost:4000/api/v1";
 
-export const baseURL = getResolvedBaseURL();
-export const API_BASE_URL = baseURL;
+// export const baseURL = "https://test.torqueblock.com/api/v1";
+
+export const baseURL = "https://api.torqueblock.com/api/v1";
+
+
+// export const API_BASE_URL = baseURL;
 
 // ============================================================================
 // 2. Axios defaults — API modules call axios directly: axios.get(`${baseURL}/trade/stock`)
