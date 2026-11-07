@@ -170,19 +170,6 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
                                 {heroText}
                             </p>
                         )}
-
-                        {/* Hero Highlights chips if available */}
-                        {Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0 && (
-                            <div className="flex flex-wrap gap-1 mt-1.5">
-                                {familyData.hero.highlights.slice(0, 2).map((h, i) => (
-                                    <span key={i} className="inline-flex items-center gap-1 rounded bg-black/40 border border-white/10 px-1.5 py-0.5 text-[9px] font-medium text-zinc-300">
-                                        <span className="h-1 w-1 rounded-full bg-orange-400" />
-                                        {h}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-
                     </div>
                 </div>
 

@@ -13,6 +13,7 @@ import {
     FiShoppingCart,
     FiLock,
     FiCheckCircle,
+    FiShield,
     FiTruck,
     FiSliders,
     FiFileText,
@@ -31,7 +32,6 @@ import {
     tyreHref,
     parseTyreSize,
     buildProductParagraphs,
-    getProductHighlights,
 } from "@/lib/catalog.utils";
 import { useAuthStore, selectIsApproved } from "@/store/authStore";
 import { useCatalogStore } from "@/store/catalogStore";
@@ -125,27 +125,6 @@ export default function ProductDetail({ product, size = null }) {
         () => buildProductParagraphs(product, familyData),
         [product, familyData]
     );
-
-    const highlights = useMemo(
-        () => getProductHighlights(product, familyData),
-        [product, familyData]
-    );
-
-    // Exactly 4 Key Highlights for the description section
-    const fourHighlights = useMemo(() => {
-        const list = Array.isArray(highlights) ? [...highlights] : [];
-        const defaults = [
-            "100% Genuine Direct Supply",
-            "Superior Wet & Dry Braking",
-            "High-Speed Tread Stability",
-            "Extended Durability & Mileage",
-        ];
-        for (const d of defaults) {
-            if (list.length >= 4) break;
-            if (!list.includes(d)) list.push(d);
-        }
-        return list.slice(0, 4);
-    }, [highlights]);
 
     // Sizes to display (either the single requested size or all sizes)
     const sizesToDisplay = size ? [size] : (product.sizes || []);
@@ -395,30 +374,38 @@ export default function ProductDetail({ product, size = null }) {
                                 {product.name}
                             </h1>
 
-                            {/* Hero Specification - under product title (e.g. Metzeler Racetec TD Slick) */}
-                            {(familyData?.hero?.subtitle || (Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0)) ? (
-                                <div className="mt-1 sm:mt-1.5 space-y-1">
-                                    {familyData?.hero?.subtitle && (
-                                        <p className="text-xs sm:text-sm font-semibold text-orange-400/95 leading-snug">
-                                            {familyData.hero.subtitle}
-                                        </p>
-                                    )}
-                                    {Array.isArray(familyData?.hero?.highlights) && familyData.hero.highlights.length > 0 && (
-                                        <div className="flex flex-wrap gap-1.5 pt-0.5">
-                                            {familyData.hero.highlights.map((h, i) => (
-                                                <span key={i} className="inline-flex items-center gap-1 rounded-md bg-black/40 border border-white/10 px-2 py-0.5 text-[10px] sm:text-[11px] font-medium text-zinc-300">
-                                                    <span className="h-1 w-1 rounded-full bg-orange-400" />
-                                                    {h}
-                                                </span>
-                                            ))}
-                                        </div>
-                                    )}
-                                </div>
+                            {/* Hero Specification - under product title */}
+                            {familyData?.hero?.subtitle ? (
+                                <p className="mt-1 sm:mt-1.5 text-xs sm:text-sm font-semibold text-orange-400/95 leading-snug">
+                                    {familyData.hero.subtitle}
+                                </p>
                             ) : (
                                 <p className="mt-1 text-xs text-zinc-400">
                                     {product.category?.name || "Motorcycle Tyre"} • Engineered for Superior Grip &amp; Precision
                                 </p>
                             )}
+
+                            {/* Trust Factor - Single Row */}
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2.5">
+                                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#161A22] px-2.5 py-2 shadow-sm">
+                                    <FiCheckCircle className="text-emerald-400 text-sm shrink-0" />
+                                    <span className="text-[11px] font-semibold text-zinc-200 leading-tight">
+                                        100% Genuine Direct Supply from Brand
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#161A22] px-2.5 py-2 shadow-sm">
+                                    <FiShield className="text-[#F59E0B] text-sm shrink-0" />
+                                    <span className="text-[11px] font-semibold text-zinc-200 leading-tight">
+                                        Official GST Tax Invoice &amp; 18% ITC Eligible
+                                    </span>
+                                </div>
+                                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#161A22] px-2.5 py-2 shadow-sm">
+                                    <FiTruck className="text-sky-400 text-sm shrink-0" />
+                                    <span className="text-[11px] font-semibold text-zinc-200 leading-tight">
+                                        Direct Commercial Dispatch Across India
+                                    </span>
+                                </div>
+                            </div>
                         </div>
 
                         {/* SIZES LIST SECTION - Direct scrollable table with centered SIZE, FITMENT, AVAILABILITY */}
@@ -667,26 +654,6 @@ export default function ProductDetail({ product, size = null }) {
                                         {familyData?.description || familyData?.hero?.subtitle || product?.description || paragraphs[0] || ""}
                                     </p>
                                 )}
-                            </div>
-
-                            {/* Key Highlights: Exactly 4 Cards */}
-                            <div className="pt-2 border-t border-white/10 space-y-1.5">
-                                <p className="text-[10px] font-bold uppercase tracking-wider text-[#F59E0B]">
-                                    Key Highlights
-                                </p>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                    {fourHighlights.map((h, i) => (
-                                        <div
-                                            key={i}
-                                            className="flex items-center gap-2 rounded-xl bg-[#131720] border border-white/10 p-2 sm:p-2.5 shadow-sm"
-                                        >
-                                            <FiCheckCircle className="text-orange-500 text-sm shrink-0" />
-                                            <span className="text-[11px] sm:text-xs font-semibold text-zinc-200 leading-tight">
-                                                {h}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
                         </div>
                     </div>
