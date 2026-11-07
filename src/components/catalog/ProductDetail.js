@@ -1,6 +1,6 @@
 "use client";
 
-import { buildProductParagraphs, parseTyreSize, tyreHref, } from "@/lib/catalog.utils";
+import { buildProductParagraphs, parseTyreSize, tyreHref } from "@/lib/catalog.utils";
 import { formatINR } from "@/lib/format";
 import { fetchProductFamily } from "@/services/CatalogService";
 import { selectIsApproved, useAuthStore } from "@/store/authStore";
@@ -11,7 +11,20 @@ import { CustomImage, ShareButtons } from "@/ui";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { BsCheckCircleFill, BsHeadset, BsPatchCheck } from "react-icons/bs";
-import { FiChevronDown, FiChevronLeft, FiChevronRight, FiChevronUp, FiFileText, FiLock, FiMaximize2, FiMinus, FiPlus, FiShoppingCart, FiSliders, FiX } from "react-icons/fi";
+import {
+    FiChevronDown,
+    FiChevronLeft,
+    FiChevronRight,
+    FiChevronUp,
+    FiFileText,
+    FiLock,
+    FiMaximize2,
+    FiMinus,
+    FiPlus,
+    FiShoppingCart,
+    FiSliders,
+    FiX,
+} from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
 import StockBadge, { getAvailabilityLevel } from "./StockBadge";
 
@@ -84,7 +97,9 @@ export default function ProductDetail({ product, size = null }) {
 
     // Price range calculation (from product sizes or backend family intent data)
     const priceRange = useMemo(() => {
-        const prices = (product.sizes || []).map((s) => tradePrices?.[s.id] ?? s.tradePrice ?? s.price ?? s.mrp).filter((p) => typeof p === "number" && p > 0);
+        const prices = (product.sizes || [])
+            .map((s) => tradePrices?.[s.id] ?? s.tradePrice ?? s.price ?? s.mrp)
+            .filter((p) => typeof p === "number" && p > 0);
 
         if (prices.length > 0) {
             return {
@@ -133,9 +148,9 @@ export default function ProductDetail({ product, size = null }) {
         }
         if (categoryName.includes("sport") || categoryName.includes("racing") || categoryName.includes("track")) {
             return [
-                "Track-tested edge grip & lean angle stability",
-                "Rapid warm-up dual compound technology",
-                "Ultra-precise cornering & high-speed feedback",
+                "High Performance Super Sport Radial",
+                "Racing-Inspired Design",
+                "Dual Compound Technology (Rear)",
             ];
         }
         return [
@@ -154,8 +169,11 @@ export default function ProductDetail({ product, size = null }) {
     // Hero description text from backend or category fallback
     const heroDescription = useMemo(() => {
         return (
-            familyData?.hero?.subtitle || familyData?.description || product.description ||
-            paragraphs[0] || "Premium 80/20 road-biased scrambler tyre delivering confident road grip, light off-road capability, excellent stability, and all-day comfort for modern scramblers, café racers, and adventure motorcycles."
+            familyData?.hero?.subtitle ||
+            familyData?.description ||
+            product.description ||
+            paragraphs[0] ||
+            "Race-inspired grip, razor-sharp handling, and exceptional high-speed stability for riders who demand premium supersport performance on every road."
         );
     }, [familyData, product.description, paragraphs]);
 
@@ -167,7 +185,8 @@ export default function ProductDetail({ product, size = null }) {
         );
     }, [size, familyData]);
 
-    const parsedSpec = useMemo(() => (size ? parseTyreSize(size.size, size.spec, matchedBackendSize || size) : null),
+    const parsedSpec = useMemo(
+        () => (size ? parseTyreSize(size.size, size.spec, matchedBackendSize || size) : null),
         [size, matchedBackendSize]
     );
 
@@ -194,15 +213,21 @@ export default function ProductDetail({ product, size = null }) {
     };
 
     return (
-        <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto">
-            {/* Top Navigation & Breadcrumbs - Matching Reference Image 3 */}
+        <div className="space-y-8 sm:space-y-10 max-w-7xl mx-auto">
+            {/* Top Navigation & Breadcrumbs - Matching Reference Image */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pt-1">
                 <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-400">
-                    <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                    <Link href="/" className="hover:text-white transition-colors">
+                        Home
+                    </Link>
                     <span className="text-zinc-600">›</span>
-                    <Link href="/stock" className="hover:text-white transition-colors">Tyres</Link>
+                    <Link href="/#stock" className="hover:text-white transition-colors">
+                        Tyres
+                    </Link>
                     <span className="text-zinc-600">›</span>
-                    <span className="text-zinc-200 font-semibold truncate max-w-[260px] sm:max-w-none" aria-current="page"> {size ? `${product.name} (${size.size})` : product.name}</span>
+                    <span className="text-zinc-200 font-semibold truncate max-w-[260px] sm:max-w-none" aria-current="page">
+                        {size ? `${product.name} (${size.size})` : product.name}
+                    </span>
                 </nav>
 
                 <div className="hidden sm:block">
@@ -210,10 +235,10 @@ export default function ProductDetail({ product, size = null }) {
                 </div>
             </div>
 
-            {/* MAIN 2-COLUMN HERO SHOWCASE - Formatted 1:1 matching Reference Image 3 */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
-                {/* LEFT COLUMN: Large Showcase Photo Box + Horizontal Thumbnails Carousel */}
-                <div className="lg:col-span-5 flex flex-col space-y-3">
+            {/* MAIN 2-COLUMN HERO SHOWCASE - 50% Image / 50% Details matching Reference Image */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                {/* LEFT COLUMN: 50% Large Showcase Photo Box + Horizontal Thumbnails Carousel */}
+                <div className="flex flex-col space-y-4">
                     {/* Big Showcase Photo Box - Floating Clean on Page (No Background, No Border) */}
                     <div
                         role="button"
@@ -223,7 +248,7 @@ export default function ProductDetail({ product, size = null }) {
                             if (e.key === "Enter" || e.key === " ") setIsPhotoOpen(true);
                         }}
                         title="Click to view full photo"
-                        className="relative w-full h-[380px] sm:h-[450px] lg:h-[480px] flex items-center justify-center group/img cursor-zoom-in select-none"
+                        className="relative w-full h-[400px] sm:h-[480px] lg:h-[520px] flex items-center justify-center group/img cursor-zoom-in select-none"
                     >
                         {/* Zoom / Expand Icon in Bottom-Right Corner (Matching Reference Image) */}
                         <button
@@ -244,12 +269,12 @@ export default function ProductDetail({ product, size = null }) {
                             alt={`${product.name} - image ${safeActiveIdx + 1}`}
                             fill
                             priority
-                            sizes="(max-width: 1024px) 100vw, 550px"
-                            imageClassName="object-contain w-full h-full transition-transform duration-500 group-hover/img:scale-105 filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]"
+                            sizes="(max-width: 1024px) 100vw, 600px"
+                            imageClassName="object-contain w-full h-full transition-transform duration-500 group-hover/img:scale-105 filter drop-shadow-[0_24px_40px_rgba(0,0,0,0.9)]"
                         />
                     </div>
 
-                    {/* Horizontal Thumbnails Row with Arrow Controls (Matching Reference Image 3) */}
+                    {/* Horizontal Thumbnails Row with Arrow Controls (Matching Reference Image) */}
                     {allImages.length > 1 && (
                         <div className="relative flex items-center gap-1.5 pt-1">
                             {/* Left Scroll Button */}
@@ -273,10 +298,11 @@ export default function ProductDetail({ product, size = null }) {
                                         type="button"
                                         onClick={() => setActiveIdx(idx)}
                                         aria-label={`View photo ${idx + 1}`}
-                                        className={`relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-xl overflow-hidden transition-all bg-white/5 select-none ${idx === safeActiveIdx
-                                            ? "border-2 border-orange-500 ring-2 ring-orange-500/30 scale-105 shadow-md"
-                                            : "border border-white/10 opacity-70 hover:opacity-100"
-                                            }`}
+                                        className={`relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-xl overflow-hidden transition-all bg-white/5 select-none ${
+                                            idx === safeActiveIdx
+                                                ? "border-2 border-orange-500 ring-2 ring-orange-500/30 scale-105 shadow-md"
+                                                : "border border-white/10 opacity-70 hover:opacity-100"
+                                        }`}
                                     >
                                         <CustomImage
                                             src={img}
@@ -302,29 +328,37 @@ export default function ProductDetail({ product, size = null }) {
                     )}
                 </div>
 
-                {/* RIGHT COLUMN: Eyebrow, Big Headline, Feature Pills, Subtitle, Price Range, Button, & 3 Trust Cards */}
-                <div className="lg:col-span-7 flex flex-col justify-start">
-                    {/* 1. Brand & Category Eyebrow Tag (✦ EUROGRIP | DUAL SPORT) */}
+                {/* RIGHT COLUMN: 50% Eyebrow, Big Headline, Feature Pills, Subtitle, Price Range, Button, & 3 Trust Cards */}
+                <div className="flex flex-col justify-start">
+                    {/* 1. Brand & Category Eyebrow Tag (✦ VREDESTEIN | SUPER SPORT) */}
                     <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-2">
                         <span className="text-orange-500 flex items-center gap-1 font-black">
                             <HiSparkles className="text-sm shrink-0" />
-                            {product.brand?.name || "EUROGRIP"}
+                            {product.brand?.name || "VREDESTEIN"}
                         </span>
                         <span className="text-zinc-600 font-normal">|</span>
-                        <span className="text-zinc-300 font-bold"> {product.category?.name || "DUAL SPORT"} </span>
+                        <span className="text-zinc-300 font-bold">
+                            {product.category?.name || "SUPER SPORT"}
+                        </span>
                     </div>
 
-                    {/* 2. Main Headline: Is Eurogrip Trailhound SCR right for your motorcycle? */}
-                    <h1 className="text-2xl sm:text-3xl lg:text-[36px] font-black text-white tracking-tight leading-[1.15] mb-3">
+                    {/* 2. Main Headline: Is Vredestein Centauro NS right for your motorcycle? */}
+                    <h1 className="text-2xl sm:text-3xl lg:text-[3rem] font-black text-white tracking-tight leading-[1.08] mb-3 drop-shadow-lg">
                         {headlineParts ? (
                             <>
-                                <span className="text-white">{headlineParts.brand} </span>
+                                <span className="text-white">Is {headlineParts.brand} </span>
                                 <span className="text-orange-500">{headlineParts.model}</span>
-
+                                <span className="block text-zinc-200 font-bold text-xl sm:text-2xl lg:text-[1.85rem] mt-1.5 drop-shadow-md">
+                                    right for your motorcycle?
+                                </span>
                             </>
                         ) : (
                             <>
+                                <span className="text-white">Is </span>
                                 <span className="text-orange-500">{product.name}</span>
+                                <span className="block text-zinc-200 font-bold text-xl sm:text-2xl lg:text-[1.85rem] mt-1.5 drop-shadow-md">
+                                    right for your motorcycle?
+                                </span>
                             </>
                         )}
                     </h1>
@@ -349,19 +383,41 @@ export default function ProductDetail({ product, size = null }) {
                         {heroDescription}
                     </p>
 
-                    {/* 5. PRICE RANGE Card Container */}
+                    {/* 5. PRICE RANGE Card Container (Login Required for Wholesale Trade Price) */}
                     <div className="rounded-2xl border border-orange-500/20 bg-[#121622]/95 p-4 sm:p-5 shadow-lg mb-3.5 space-y-1.5">
                         <div className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-orange-500">
                             PRICE RANGE
                         </div>
-                        <div className="text-2xl sm:text-3xl lg:text-[34px] font-black text-white tracking-tight leading-none"> {displayPriceRange} </div>
-                        <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-zinc-400 pt-0.5">
-                            <BsCheckCircleFill className="text-emerald-500 text-xs shrink-0" />
-                            <span>Inclusive of all taxes • Varies by size</span>
-                        </div>
+                        {isApproved ? (
+                            <>
+                                <div className="text-2xl sm:text-3xl lg:text-[34px] font-black text-white tracking-tight leading-none">
+                                    {displayPriceRange}
+                                </div>
+                                <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-zinc-400 pt-0.5">
+                                    <BsCheckCircleFill className="text-emerald-500 text-xs shrink-0" />
+                                    <span>Inclusive of all taxes • Varies by size</span>
+                                </div>
+                            </>
+                        ) : (
+                            <div className="pt-0.5 space-y-1">
+                                <button
+                                    type="button"
+                                    onClick={openLogin}
+                                    className="inline-flex items-center gap-2 text-xl sm:text-2xl lg:text-[26px] font-black text-orange-400 hover:text-orange-300 transition-colors py-0.5 cursor-pointer group/login text-left"
+                                >
+                                    <FiLock className="text-lg sm:text-xl text-orange-500 group-hover/login:scale-110 transition-transform shrink-0" />
+                                    <span className="underline decoration-orange-500/40 underline-offset-4 group-hover/login:decoration-orange-400">
+                                        Login for Trade Price
+                                    </span>
+                                </button>
+                                <p className="text-[11px] sm:text-xs text-zinc-400">
+                                    Exclusive trade wholesale pricing for registered dealers
+                                </p>
+                            </div>
+                        )}
                     </div>
 
-                    {/* 6. Primary Action Button: VIEW ALL 7 SIZES ⌄ */}
+                    {/* 6. Primary Action Button: VIEW ALL [N] SIZES ⌄ */}
                     <button
                         type="button"
                         onClick={scrollToSizes}
@@ -428,8 +484,55 @@ export default function ProductDetail({ product, size = null }) {
                 </div>
             </div>
 
-            {/* LOWER SECTION: Available Sizes Table, Specifications & Description */}
-            <div id="available-sizes" className="scroll-mt-28 space-y-6 pt-6 border-t border-white/10">
+            {/* DESCRIPTION SECTION (Matching Reference Image) */}
+            <div className="rounded-2xl border border-white/10 bg-[#121622]/90 p-5 sm:p-6 shadow-xl space-y-3.5">
+                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                    <div className="flex items-center gap-3">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-500 shrink-0 shadow-sm">
+                            <FiFileText size={18} />
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-black uppercase tracking-[0.18em] text-white leading-tight">
+                                DESCRIPTION
+                            </h3>
+                            <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
+                                Tyre Details & Overview
+                            </p>
+                        </div>
+                    </div>
+
+                    {paragraphs.length > 1 && (
+                        <button
+                            type="button"
+                            onClick={() => setIsDescriptionExpanded((prev) => !prev)}
+                            className="inline-flex items-center gap-1 text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors"
+                        >
+                            <span>{isDescriptionExpanded ? "Show Less" : "Read More"}</span>
+                            {isDescriptionExpanded ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
+                        </button>
+                    )}
+                </div>
+
+                {/* Description Content */}
+                <div className="text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
+                    {isDescriptionExpanded ? (
+                        <div className="max-h-[260px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
+                            {paragraphs.map((para, idx) => (
+                                <p key={idx} className="text-zinc-300">
+                                    {para}
+                                </p>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className="text-zinc-300 font-normal leading-relaxed">
+                            {familyData?.description || familyData?.hero?.subtitle || product?.description || paragraphs[0] || ""}
+                        </p>
+                    )}
+                </div>
+            </div>
+
+            {/* LOWER SECTION: Available Sizes Table & Specifications */}
+            <div id="available-sizes" className="scroll-mt-28 space-y-6 pt-2">
                 {/* Compact Technical Specifications (when size is opened via /tyres/[tyre]/[size]) */}
                 {size && parsedSpec && (
                     <div className="rounded-2xl border border-white/10 bg-[#161B26] p-4 sm:p-5 space-y-3 shadow-lg">
@@ -489,7 +592,9 @@ export default function ProductDetail({ product, size = null }) {
                 {/* SIZES LIST SECTION - Direct scrollable table with centered SIZE, FITMENT, AVAILABILITY */}
                 <div className="rounded-2xl border border-white/10 bg-[#161B26] p-4 sm:p-5 shadow-lg space-y-3">
                     <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                        <h2 className="text-sm font-bold uppercase tracking-[0.08em] text-white"> AVAILABLE TYRE SIZES ({sizesToDisplay.length}) </h2>
+                        <h2 className="text-sm font-bold uppercase tracking-[0.08em] text-white">
+                            AVAILABLE TYRE SIZES ({sizesToDisplay.length})
+                        </h2>
                         {size && product.sizes?.length > 1 && (
                             <Link
                                 href={modelHref}
@@ -510,7 +615,7 @@ export default function ProductDetail({ product, size = null }) {
                     </div>
 
                     {/* Directly Scrollable Sizes Container */}
-                    <div className="max-h-[300px] overflow-y-auto custom-scroll pr-1 space-y-2">
+                    <div className="max-h-[320px] overflow-y-auto custom-scroll pr-1 space-y-2">
                         {sizesToDisplay.map((s) => {
                             const availability = getAvailabilityLevel(s);
                             const tradePrice = tradePrices?.[s.id] ?? s.tradePrice;
@@ -663,14 +768,29 @@ export default function ProductDetail({ product, size = null }) {
                                             <div>
                                                 {cartItem ? (
                                                     <div className="flex items-center gap-1 bg-[#121622] border border-orange-500/40 rounded-lg p-0.5">
-                                                        <button type="button" onClick={() => { if (cartItem.quantity <= 1) remove(s.id); else setQuantity(s.id, cartItem.quantity - 1); }} className="h-6 w-6 text-zinc-300 flex items-center justify-center">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                if (cartItem.quantity <= 1) remove(s.id);
+                                                                else setQuantity(s.id, cartItem.quantity - 1);
+                                                            }}
+                                                            className="h-6 w-6 text-zinc-300 flex items-center justify-center"
+                                                        >
                                                             <FiMinus size={10} />
                                                         </button>
                                                         <span className="min-w-4 text-center text-xs font-black text-white">{cartItem.quantity}</span>
-                                                        <button type="button" onClick={() => setQuantity(s.id, cartItem.quantity + 1)} className="h-6 w-6 text-zinc-300 flex items-center justify-center">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setQuantity(s.id, cartItem.quantity + 1)}
+                                                            className="h-6 w-6 text-zinc-300 flex items-center justify-center"
+                                                        >
                                                             <FiPlus size={10} />
                                                         </button>
-                                                        <button type="button" onClick={() => setOrderListOpen(true)} className="px-2 py-0.5 rounded bg-orange-500 text-[9px] font-black uppercase text-white">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => setOrderListOpen(true)}
+                                                            className="px-2 py-0.5 rounded bg-orange-500 text-[9px] font-black uppercase text-white"
+                                                        >
                                                             Cart
                                                         </button>
                                                     </div>
@@ -691,43 +811,6 @@ export default function ProductDetail({ product, size = null }) {
                                 </div>
                             );
                         })}
-                    </div>
-                </div>
-
-                {/* PRODUCT OVERVIEW & DETAILED DESCRIPTION BOX */}
-                <div className="rounded-2xl border border-white/10 bg-[#161B26] p-4 sm:p-5 shadow-lg space-y-3">
-                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                        <div className="flex items-center gap-2">
-                            <FiFileText className="text-orange-500 text-sm shrink-0" />
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-white">Description</h3>
-                        </div>
-                        {paragraphs.length > 1 && (
-                            <button
-                                type="button"
-                                onClick={() => setIsDescriptionExpanded((prev) => !prev)}
-                                className="inline-flex items-center gap-1 text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors"
-                            >
-                                <span>{isDescriptionExpanded ? "Show Less" : "Read More"}</span>
-                                {isDescriptionExpanded ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
-                            </button>
-                        )}
-                    </div>
-
-                    {/* Description Content */}
-                    <div className="text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
-                        {isDescriptionExpanded ? (
-                            <div className="max-h-[220px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
-                                {paragraphs.map((para, idx) => (
-                                    <p key={idx} className="text-zinc-300">
-                                        {para}
-                                    </p>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="line-clamp-3 text-zinc-300 font-normal">
-                                {familyData?.description || familyData?.hero?.subtitle || product?.description || paragraphs[0] || ""}
-                            </p>
-                        )}
                     </div>
                 </div>
             </div>
