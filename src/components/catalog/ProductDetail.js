@@ -1,46 +1,18 @@
 "use client";
 
-import { useEffect, useState, useMemo, useRef } from "react";
-import Link from "next/link";
-import {
-    FiArrowLeft,
-    FiChevronLeft,
-    FiChevronRight,
-    FiChevronDown,
-    FiChevronUp,
-    FiMinus,
-    FiPlus,
-    FiShoppingCart,
-    FiLock,
-    FiCheckCircle,
-    FiShield,
-    FiTruck,
-    FiSliders,
-    FiFileText,
-    FiX,
-    FiZoomIn,
-    FiMaximize2,
-} from "react-icons/fi";
-import {
-    BsLightningChargeFill,
-    BsShieldCheck,
-    BsPatchCheck,
-    BsHeadset,
-    BsCheckCircleFill,
-} from "react-icons/bs";
-import { HiSparkles } from "react-icons/hi2";
-import { CustomImage, ShareButtons } from "@/ui";
+import { buildProductParagraphs, parseTyreSize, tyreHref, } from "@/lib/catalog.utils";
 import { formatINR } from "@/lib/format";
-import {
-    tyreHref,
-    parseTyreSize,
-    buildProductParagraphs,
-} from "@/lib/catalog.utils";
-import { useAuthStore, selectIsApproved } from "@/store/authStore";
-import { useCatalogStore } from "@/store/catalogStore";
-import { useOrderListStore, toLine } from "@/store/orderStore";
-import { useUiStore } from "@/store/ui.store";
 import { fetchProductFamily } from "@/services/CatalogService";
+import { selectIsApproved, useAuthStore } from "@/store/authStore";
+import { useCatalogStore } from "@/store/catalogStore";
+import { toLine, useOrderListStore } from "@/store/orderStore";
+import { useUiStore } from "@/store/ui.store";
+import { CustomImage, ShareButtons } from "@/ui";
+import Link from "next/link";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { BsCheckCircleFill, BsHeadset, BsPatchCheck } from "react-icons/bs";
+import { FiChevronDown, FiChevronLeft, FiChevronRight, FiChevronUp, FiFileText, FiLock, FiMaximize2, FiMinus, FiPlus, FiShoppingCart, FiSliders, FiX } from "react-icons/fi";
+import { HiSparkles } from "react-icons/hi2";
 import StockBadge, { getAvailabilityLevel } from "./StockBadge";
 
 export default function ProductDetail({ product, size = null }) {
@@ -112,9 +84,7 @@ export default function ProductDetail({ product, size = null }) {
 
     // Price range calculation (from product sizes or backend family intent data)
     const priceRange = useMemo(() => {
-        const prices = (product.sizes || [])
-            .map((s) => tradePrices?.[s.id] ?? s.tradePrice ?? s.price ?? s.mrp)
-            .filter((p) => typeof p === "number" && p > 0);
+        const prices = (product.sizes || []).map((s) => tradePrices?.[s.id] ?? s.tradePrice ?? s.price ?? s.mrp).filter((p) => typeof p === "number" && p > 0);
 
         if (prices.length > 0) {
             return {
@@ -133,8 +103,8 @@ export default function ProductDetail({ product, size = null }) {
 
     const displayPriceRange = useMemo(() => {
         if (!priceRange.min && !priceRange.max) return "Wholesale Trade Pricing";
-        if (priceRange.min === priceRange.max) return `₹${formatINR(priceRange.min)}`;
-        return `₹${formatINR(priceRange.min)} - ₹${formatINR(priceRange.max)}`;
+        if (priceRange.min === priceRange.max) return `${formatINR(priceRange.min)}`;
+        return `${formatINR(priceRange.min)} - ${formatINR(priceRange.max)}`;
     }, [priceRange]);
 
     // Headline brand/model separation matching reference image
@@ -184,11 +154,8 @@ export default function ProductDetail({ product, size = null }) {
     // Hero description text from backend or category fallback
     const heroDescription = useMemo(() => {
         return (
-            familyData?.hero?.subtitle ||
-            familyData?.description ||
-            product.description ||
-            paragraphs[0] ||
-            "Premium 80/20 road-biased scrambler tyre delivering confident road grip, light off-road capability, excellent stability, and all-day comfort for modern scramblers, café racers, and adventure motorcycles."
+            familyData?.hero?.subtitle || familyData?.description || product.description ||
+            paragraphs[0] || "Premium 80/20 road-biased scrambler tyre delivering confident road grip, light off-road capability, excellent stability, and all-day comfort for modern scramblers, café racers, and adventure motorcycles."
         );
     }, [familyData, product.description, paragraphs]);
 
@@ -196,14 +163,11 @@ export default function ProductDetail({ product, size = null }) {
     const matchedBackendSize = useMemo(() => {
         if (!size || !Array.isArray(familyData?.sizesIds)) return null;
         return (
-            familyData.sizesIds.find(
-                (s) => String(s._id) === String(size.id) || s.size === size.size
-            ) || null
+            familyData.sizesIds.find((s) => String(s._id) === String(size.id) || s.size === size.size) || null
         );
     }, [size, familyData]);
 
-    const parsedSpec = useMemo(
-        () => (size ? parseTyreSize(size.size, size.spec, matchedBackendSize || size) : null),
+    const parsedSpec = useMemo(() => (size ? parseTyreSize(size.size, size.spec, matchedBackendSize || size) : null),
         [size, matchedBackendSize]
     );
 
@@ -225,10 +189,7 @@ export default function ProductDetail({ product, size = null }) {
 
     const scrollThumbs = (direction) => {
         if (thumbScrollRef.current) {
-            thumbScrollRef.current.scrollBy({
-                left: direction === "left" ? -140 : 140,
-                behavior: "smooth",
-            });
+            thumbScrollRef.current.scrollBy({ left: direction === "left" ? -140 : 140, behavior: "smooth" });
         }
     };
 
@@ -237,17 +198,11 @@ export default function ProductDetail({ product, size = null }) {
             {/* Top Navigation & Breadcrumbs - Matching Reference Image 3 */}
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between pt-1">
                 <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-400">
-                    <Link href="/" className="hover:text-white transition-colors">
-                        Home
-                    </Link>
+                    <Link href="/" className="hover:text-white transition-colors">Home</Link>
                     <span className="text-zinc-600">›</span>
-                    <Link href="/#stock" className="hover:text-white transition-colors">
-                        Tyres
-                    </Link>
+                    <Link href="/stock" className="hover:text-white transition-colors">Tyres</Link>
                     <span className="text-zinc-600">›</span>
-                    <span className="text-zinc-200 font-semibold truncate max-w-[260px] sm:max-w-none" aria-current="page">
-                        {size ? `${product.name} (${size.size})` : product.name}
-                    </span>
+                    <span className="text-zinc-200 font-semibold truncate max-w-[260px] sm:max-w-none" aria-current="page"> {size ? `${product.name} (${size.size})` : product.name}</span>
                 </nav>
 
                 <div className="hidden sm:block">
@@ -259,7 +214,7 @@ export default function ProductDetail({ product, size = null }) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
                 {/* LEFT COLUMN: Large Showcase Photo Box + Horizontal Thumbnails Carousel */}
                 <div className="lg:col-span-5 flex flex-col space-y-3">
-                    {/* Big Showcase Photo Box - Fills completely with object-cover (No letterbox/padding) */}
+                    {/* Big Showcase Photo Box - Floating Clean on Page (No Background, No Border) */}
                     <div
                         role="button"
                         tabIndex={0}
@@ -268,9 +223,9 @@ export default function ProductDetail({ product, size = null }) {
                             if (e.key === "Enter" || e.key === " ") setIsPhotoOpen(true);
                         }}
                         title="Click to view full photo"
-                        className="relative w-full h-[400px] sm:h-[480px] lg:h-[500px] rounded-2xl lg:rounded-3xl bg-[#141824] border border-white/10 overflow-hidden shadow-2xl group/img cursor-zoom-in select-none"
+                        className="relative w-full h-[380px] sm:h-[450px] lg:h-[480px] flex items-center justify-center group/img cursor-zoom-in select-none"
                     >
-                        {/* Zoom / Expand Icon in Bottom-Right Corner (Matching Reference Image 3) */}
+                        {/* Zoom / Expand Icon in Bottom-Right Corner (Matching Reference Image) */}
                         <button
                             type="button"
                             onClick={(e) => {
@@ -278,19 +233,19 @@ export default function ProductDetail({ product, size = null }) {
                                 setIsPhotoOpen(true);
                             }}
                             aria-label="Expand image to full size"
-                            className="absolute bottom-3 right-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-black/60 hover:bg-black/85 text-zinc-200 hover:text-white border border-white/20 backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-md"
+                            className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 z-10 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-zinc-300 hover:text-white border border-white/15 backdrop-blur-md transition-all hover:scale-105 active:scale-95 shadow-md"
                         >
-                            <FiMaximize2 size={13} />
+                            <FiMaximize2 size={14} />
                         </button>
 
-                        {/* Main Tyre Photo - Full-Bleed Object-Cover without grey letterbox padding */}
+                        {/* Main Tyre Photo - Centered floating tyre without background or border */}
                         <CustomImage
                             src={currentImage}
                             alt={`${product.name} - image ${safeActiveIdx + 1}`}
                             fill
                             priority
                             sizes="(max-width: 1024px) 100vw, 550px"
-                            imageClassName="object-cover w-full h-full transition-transform duration-500 group-hover/img:scale-105"
+                            imageClassName="object-contain w-full h-full transition-transform duration-500 group-hover/img:scale-105 filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.85)]"
                         />
                     </div>
 
@@ -318,18 +273,17 @@ export default function ProductDetail({ product, size = null }) {
                                         type="button"
                                         onClick={() => setActiveIdx(idx)}
                                         aria-label={`View photo ${idx + 1}`}
-                                        className={`relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-xl overflow-hidden transition-all bg-[#141824] select-none ${
-                                            idx === safeActiveIdx
-                                                ? "border-2 border-orange-500 ring-2 ring-orange-500/30 scale-105 shadow-md"
-                                                : "border border-white/10 opacity-70 hover:opacity-100"
-                                        }`}
+                                        className={`relative h-14 w-14 sm:h-16 sm:w-16 shrink-0 rounded-xl overflow-hidden transition-all bg-white/5 select-none ${idx === safeActiveIdx
+                                            ? "border-2 border-orange-500 ring-2 ring-orange-500/30 scale-105 shadow-md"
+                                            : "border border-white/10 opacity-70 hover:opacity-100"
+                                            }`}
                                     >
                                         <CustomImage
                                             src={img}
                                             alt={`Thumbnail ${idx + 1}`}
                                             fill
                                             sizes="64px"
-                                            imageClassName="object-cover w-full h-full"
+                                            imageClassName="object-contain w-full h-full p-1"
                                         />
                                     </button>
                                 ))}
@@ -357,28 +311,20 @@ export default function ProductDetail({ product, size = null }) {
                             {product.brand?.name || "EUROGRIP"}
                         </span>
                         <span className="text-zinc-600 font-normal">|</span>
-                        <span className="text-zinc-300 font-bold">
-                            {product.category?.name || "DUAL SPORT"}
-                        </span>
+                        <span className="text-zinc-300 font-bold"> {product.category?.name || "DUAL SPORT"} </span>
                     </div>
 
                     {/* 2. Main Headline: Is Eurogrip Trailhound SCR right for your motorcycle? */}
                     <h1 className="text-2xl sm:text-3xl lg:text-[36px] font-black text-white tracking-tight leading-[1.15] mb-3">
                         {headlineParts ? (
                             <>
-                                <span className="text-white">Is {headlineParts.brand} </span>
+                                <span className="text-white">{headlineParts.brand} </span>
                                 <span className="text-orange-500">{headlineParts.model}</span>
-                                <span className="block text-zinc-200 font-bold text-xl sm:text-2xl lg:text-[28px] mt-1">
-                                    right for your motorcycle?
-                                </span>
+
                             </>
                         ) : (
                             <>
-                                <span className="text-white">Is </span>
                                 <span className="text-orange-500">{product.name}</span>
-                                <span className="block text-zinc-200 font-bold text-xl sm:text-2xl lg:text-[28px] mt-1">
-                                    right for your motorcycle?
-                                </span>
                             </>
                         )}
                     </h1>
@@ -408,9 +354,7 @@ export default function ProductDetail({ product, size = null }) {
                         <div className="text-[10px] sm:text-[11px] font-black uppercase tracking-wider text-orange-500">
                             PRICE RANGE
                         </div>
-                        <div className="text-2xl sm:text-3xl lg:text-[34px] font-black text-white tracking-tight leading-none">
-                            {displayPriceRange}
-                        </div>
+                        <div className="text-2xl sm:text-3xl lg:text-[34px] font-black text-white tracking-tight leading-none"> {displayPriceRange} </div>
                         <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-zinc-400 pt-0.5">
                             <BsCheckCircleFill className="text-emerald-500 text-xs shrink-0" />
                             <span>Inclusive of all taxes • Varies by size</span>
@@ -545,9 +489,7 @@ export default function ProductDetail({ product, size = null }) {
                 {/* SIZES LIST SECTION - Direct scrollable table with centered SIZE, FITMENT, AVAILABILITY */}
                 <div className="rounded-2xl border border-white/10 bg-[#161B26] p-4 sm:p-5 shadow-lg space-y-3">
                     <div className="flex items-center justify-between pb-2 border-b border-white/10">
-                        <h2 className="text-sm font-bold uppercase tracking-[0.08em] text-white">
-                            AVAILABLE TYRE SIZES ({sizesToDisplay.length})
-                        </h2>
+                        <h2 className="text-sm font-bold uppercase tracking-[0.08em] text-white"> AVAILABLE TYRE SIZES ({sizesToDisplay.length}) </h2>
                         {size && product.sizes?.length > 1 && (
                             <Link
                                 href={modelHref}
@@ -757,7 +699,7 @@ export default function ProductDetail({ product, size = null }) {
                     <div className="flex items-center justify-between pb-2 border-b border-white/10">
                         <div className="flex items-center gap-2">
                             <FiFileText className="text-orange-500 text-sm shrink-0" />
-                            <h3 className="text-sm font-bold uppercase tracking-wider text-white">Product Overview & Specifications</h3>
+                            <h3 className="text-sm font-bold uppercase tracking-wider text-white">Description</h3>
                         </div>
                         {paragraphs.length > 1 && (
                             <button
