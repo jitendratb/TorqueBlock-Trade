@@ -13,14 +13,18 @@ import {
     FiShoppingCart,
     FiLock,
     FiCheckCircle,
-    FiShield,
     FiTruck,
     FiSliders,
     FiFileText,
     FiX,
     FiZoomIn,
 } from "react-icons/fi";
-import { BsLightningChargeFill } from "react-icons/bs";
+import {
+    BsLightningChargeFill,
+    BsShieldCheck,
+    BsPatchCheck,
+    BsHeadset,
+} from "react-icons/bs";
 import { CustomImage, ShareButtons } from "@/ui";
 import { formatINR } from "@/lib/format";
 import {
@@ -127,6 +131,22 @@ export default function ProductDetail({ product, size = null }) {
         [product, familyData]
     );
 
+    // Exactly 4 Key Highlights for the description section
+    const fourHighlights = useMemo(() => {
+        const list = Array.isArray(highlights) ? [...highlights] : [];
+        const defaults = [
+            "100% Genuine Direct Supply",
+            "Superior Wet & Dry Braking",
+            "High-Speed Tread Stability",
+            "Extended Durability & Mileage",
+        ];
+        for (const d of defaults) {
+            if (list.length >= 4) break;
+            if (!list.includes(d)) list.push(d);
+        }
+        return list.slice(0, 4);
+    }, [highlights]);
+
     // Sizes to display (either the single requested size or all sizes)
     const sizesToDisplay = size ? [size] : (product.sizes || []);
 
@@ -167,10 +187,10 @@ export default function ProductDetail({ product, size = null }) {
                 <ShareButtons path={path} title={title} text={`${title} – Trade stock & wholesale pricing on Torque Block`} />
             </div>
 
-            {/* Main Product Card Container - Compact 1-Page Layout with #3C3F47 Studio Background */}
-            <div className="rounded-2xl sm:rounded-3xl bg-[#3C3F47] border border-white/10 p-3.5 sm:p-5 lg:p-6 shadow-2xl text-white">
+            {/* Main Product Card Container - Compact 1-Page Layout */}
+            <div className="rounded-xl sm:rounded-2xl bg-[#22262E]/95 border border-white/10 p-3.5 sm:p-5 lg:p-6 shadow-xl backdrop-blur-xl text-white">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-7 items-start">
-                    {/* LEFT COLUMN: Premium Tyre Showcase + Specifications & Key Highlights */}
+                    {/* LEFT COLUMN: Premium Tyre Showcase + Trade Assurance Cards (Reference Image 1) */}
                     <div className="lg:col-span-5 flex flex-col space-y-3">
                         {/* Premium Studio Showcase Image Box (Click to open photo lightbox) */}
                         <div
@@ -181,7 +201,7 @@ export default function ProductDetail({ product, size = null }) {
                                 if (e.key === "Enter" || e.key === " ") setIsPhotoOpen(true);
                             }}
                             title="Click to view full photo"
-                            className="relative w-full max-w-[320px] sm:max-w-[350px] lg:max-w-[380px] mx-auto aspect-square rounded-2xl bg-gradient-to-b from-[#2D313A] via-[#242831] to-[#1C1F26] border border-white/15 p-3 sm:p-4 flex items-center justify-center overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] group/img cursor-zoom-in"
+                            className="relative w-full max-w-[320px] sm:max-w-[350px] lg:max-w-[380px] mx-auto aspect-square rounded-2xl bg-gradient-to-b from-[#1E232E] via-[#141822] to-[#0D1017] border border-white/15 p-3 sm:p-4 flex items-center justify-center overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.12)] group/img cursor-zoom-in"
                         >
                             {/* Studio Lighting Vignette */}
                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.07)_0%,rgba(0,0,0,0.75)_100%)] pointer-events-none" />
@@ -254,8 +274,11 @@ export default function ProductDetail({ product, size = null }) {
                                         type="button"
                                         onClick={() => setActiveIdx(idx)}
                                         aria-label={`View photo ${idx + 1}`}
-                                        className={`relative h-10 w-10 shrink-0 rounded-lg bg-black border p-0.5 overflow-hidden transition-all
-                                             ${idx === safeActiveIdx ? "border-orange-500 ring-2 ring-orange-500/30 scale-105" : "border-white/10 hover:border-white/30 opacity-70 hover:opacity-100"}`}
+                                        className={`relative h-10 w-10 shrink-0 rounded-lg bg-black border p-0.5 overflow-hidden transition-all ${
+                                            idx === safeActiveIdx
+                                                ? "border-orange-500 ring-2 ring-orange-500/30 scale-105"
+                                                : "border-white/10 hover:border-white/30 opacity-70 hover:opacity-100"
+                                        }`}
                                     >
                                         <CustomImage src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="40px" imageClassName="object-contain p-0.5" />
                                     </button>
@@ -264,8 +287,8 @@ export default function ProductDetail({ product, size = null }) {
                         )}
 
                         {/* Compact Technical Specifications (when size is opened) */}
-                        {size && parsedSpec && (
-                            <div className="rounded-xl border border-white/10 bg-[#2D313A] p-2.5 sm:p-3 space-y-2 shadow-md">
+                        {size && parsedSpec ? (
+                            <div className="rounded-xl border border-white/10 bg-[#262A34] p-2.5 sm:p-3 space-y-2 shadow-md">
                                 <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
                                     <div className="flex items-center gap-1.5">
                                         <FiSliders className="text-[#F59E0B] text-xs shrink-0" />
@@ -317,52 +340,46 @@ export default function ProductDetail({ product, size = null }) {
                                     </div>
                                 </div>
                             </div>
-                        )}
-
-                        {/* Redesigned Key Highlights & Trade Assured Card */}
-                        <div className="rounded-xl border border-white/10 bg-[#2D313A] p-3 space-y-2.5 shadow-md">
-                            <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
-                                <div className="flex items-center gap-1.5">
-                                    <BsLightningChargeFill className="text-[#F59E0B] text-xs shrink-0" />
-                                    <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                                        Key Highlights
-                                    </h3>
-                                </div>
-                                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-emerald-400">
-                                    <FiShield className="text-[10px]" />
-                                    Trade Assured
-                                </span>
-                            </div>
-
-                            {/* Backend Key Highlights List */}
-                            <div className="space-y-1.5">
-                                {(highlights.length > 0 ? highlights : [
-                                    product.brand ? `100% Genuine Direct Supply from ${product.brand.name}` : "100% Genuine Direct Brand Supply",
-                                    `High-Performance ${product.category?.name || "Motorcycle"} Compound & Grip`,
-                                    "Direct Commercial Dispatch Across India & 18% GST ITC Eligible",
-                                ]).map((h, i) => (
-                                    <div
-                                        key={i}
-                                        className="flex items-start gap-2 rounded-lg bg-black/25 px-2.5 py-1.5 border border-white/5 text-[11px] text-zinc-200 transition-colors hover:border-orange-500/30"
-                                    >
-                                        <FiCheckCircle className="text-emerald-400 shrink-0 text-xs mt-0.5" />
-                                        <span className="leading-snug">{h}</span>
+                        ) : (
+                            /* Trade Assurance Highlights - Formatted matching Reference Image 1 */
+                            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-2.5 pt-1">
+                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131720] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
+                                    <BsShieldCheck className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
+                                    <div className="min-w-0">
+                                        <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
+                                            Secure Payments
+                                        </h4>
+                                        <p className="text-[10px] sm:text-[11px] text-zinc-400 mt-0.5 leading-tight">
+                                            Safe online checkout
+                                        </p>
                                     </div>
-                                ))}
-                            </div>
+                                </div>
 
-                            {/* Sleek Trade Assurance Trust Strip */}
-                            <div className="pt-2 border-t border-white/10 grid grid-cols-2 gap-1.5 text-[10px]">
-                                <div className="flex items-center gap-1.5 rounded-md bg-black/30 px-2 py-1 border border-white/5 text-zinc-300">
-                                    <FiShield className="text-[#F59E0B] text-xs shrink-0" />
-                                    <span className="font-semibold truncate">Official GST Invoice (18% ITC)</span>
+                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131720] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
+                                    <BsPatchCheck className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
+                                    <div className="min-w-0">
+                                        <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
+                                            100% Genuine Products
+                                        </h4>
+                                        <p className="text-[10px] sm:text-[11px] text-zinc-400 mt-0.5 leading-tight">
+                                            Authentic branded tyres
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-1.5 rounded-md bg-black/30 px-2 py-1 border border-white/5 text-zinc-300">
-                                    <FiTruck className="text-sky-400 text-xs shrink-0" />
-                                    <span className="font-semibold truncate">All-India Fast Dispatch</span>
+
+                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131720] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
+                                    <BsHeadset className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
+                                    <div className="min-w-0">
+                                        <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
+                                            Expert Guidance
+                                        </h4>
+                                        <p className="text-[10px] sm:text-[11px] text-zinc-400 mt-0.5 leading-tight">
+                                            Tyre advice when needed
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     {/* RIGHT COLUMN: Product Header with Hero Spec, Scrollable Sizes Table (Centered), & Description */}
@@ -440,7 +457,7 @@ export default function ProductDetail({ product, size = null }) {
                                     return (
                                         <div key={s.id}>
                                             {/* Desktop Table Row (Centered Text Alignment) */}
-                                            <div className="hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] items-center gap-2 rounded-xl border border-white/10 bg-[#2D313A] hover:bg-[#343842] hover:border-orange-500/30 transition-colors px-3.5 py-2 text-center shadow-sm">
+                                            <div className="hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] items-center gap-2 rounded-xl border border-white/10 bg-[#262A34] hover:bg-[#2B303B] hover:border-orange-500/30 transition-colors px-3.5 py-2 text-center shadow-sm">
                                                 {/* SIZE (Centered) */}
                                                 <div className="flex items-center justify-center">
                                                     {size ? (
@@ -547,7 +564,7 @@ export default function ProductDetail({ product, size = null }) {
                                             </div>
 
                                             {/* Mobile View (< sm) */}
-                                            <div className="flex sm:hidden flex-col gap-2 p-2.5 rounded-xl border border-white/10 bg-[#2D313A] shadow-sm">
+                                            <div className="flex sm:hidden flex-col gap-2 p-2.5 rounded-xl border border-white/10 bg-[#262A34] shadow-sm">
                                                 <div className="flex items-center justify-between gap-2">
                                                     <div className="flex items-center gap-1.5 min-w-0">
                                                         {size ? (
@@ -614,8 +631,8 @@ export default function ProductDetail({ product, size = null }) {
                             </div>
                         </div>
 
-                        {/* PRODUCT DESCRIPTION BOX (Title: Description, backend content with 2-3 line preview + Read More) */}
-                        <div className="rounded-xl border border-white/10 bg-[#2D313A] p-3 sm:p-3.5 shadow-md space-y-2">
+                        {/* PRODUCT DESCRIPTION BOX with Exactly 4 Key Highlight Cards */}
+                        <div className="rounded-xl border border-white/10 bg-[#262A34] p-3.5 sm:p-4 shadow-md space-y-2.5">
                             <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
                                 <div className="flex items-center gap-1.5">
                                     <FiFileText className="text-[#F59E0B] text-xs shrink-0" />
@@ -638,7 +655,7 @@ export default function ProductDetail({ product, size = null }) {
                             {/* Description Content from Backend: 2-3 lines preview initially, full when expanded */}
                             <div className="text-xs text-zinc-300 leading-relaxed">
                                 {isDescriptionExpanded ? (
-                                    <div className="max-h-[160px] sm:max-h-[200px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
+                                    <div className="max-h-[140px] sm:max-h-[160px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
                                         {paragraphs.map((para, idx) => (
                                             <p key={idx} className="text-zinc-300">
                                                 {para}
@@ -647,9 +664,29 @@ export default function ProductDetail({ product, size = null }) {
                                     </div>
                                 ) : (
                                     <p className="line-clamp-2 sm:line-clamp-3 text-zinc-300 font-normal">
-                                        {familyData?.description || product?.description || paragraphs[0] || ""}
+                                        {familyData?.description || familyData?.hero?.subtitle || product?.description || paragraphs[0] || ""}
                                     </p>
                                 )}
+                            </div>
+
+                            {/* Key Highlights: Exactly 4 Cards */}
+                            <div className="pt-2 border-t border-white/10 space-y-1.5">
+                                <p className="text-[10px] font-bold uppercase tracking-wider text-[#F59E0B]">
+                                    Key Highlights
+                                </p>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                    {fourHighlights.map((h, i) => (
+                                        <div
+                                            key={i}
+                                            className="flex items-center gap-2 rounded-xl bg-[#131720] border border-white/10 p-2 sm:p-2.5 shadow-sm"
+                                        >
+                                            <FiCheckCircle className="text-orange-500 text-sm shrink-0" />
+                                            <span className="text-[11px] sm:text-xs font-semibold text-zinc-200 leading-tight">
+                                                {h}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
