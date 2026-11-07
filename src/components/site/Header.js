@@ -130,12 +130,8 @@ export default function Header() {
                         />
                         <span className="h-6 min-[360px]:h-7 sm:h-8 md:h-8 lg:h-9 w-px bg-white/20 shrink-0 block" />
                         <span className="flex shrink-0 flex-col">
-                            <span className="text-xs min-[360px]:text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">
-                                TRADE
-                            </span>
-                            <span className="text-[6px] min-[360px]:text-[7px] min-[400px]:text-[7.5px] sm:text-[8.5px] md:text-[9.5px] lg:text-[10px] font-black uppercase tracking-[0.12em] min-[360px]:tracking-[0.14em] sm:tracking-[0.18em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">
-                                BUSINESS PORTAL
-                            </span>
+                            <span className="text-xs min-[360px]:text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">TRADE</span>
+                            <span className="text-[6px] min-[360px]:text-[7px] min-[400px]:text-[7.5px] sm:text-[8.5px] md:text-[9.5px] lg:text-[10px] font-black uppercase tracking-[0.12em] min-[360px]:tracking-[0.14em] sm:tracking-[0.18em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">BUSINESS PORTAL</span>
                         </span>
                     </Link>
 
