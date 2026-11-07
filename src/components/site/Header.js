@@ -96,19 +96,29 @@ export default function Header() {
         <div>
             <header
                 data-scrolled={scrolled}
-                className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${
-                    scrolled
-                        ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
-                        : "pt-0 px-0 bg-white/10 backdrop-blur-md border-b border-white/15"
-                }`}
+                className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${scrolled
+                    ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
+                    : "pt-0 px-0 bg-white/10 backdrop-blur-xl border-b border-white/15"
+                    }`}
+                style={
+                    !scrolled ? {
+                        backdropFilter: "blur(24px)",
+                        WebkitBackdropFilter: "blur(24px)",
+                    } : undefined
+                }
             >
                 <nav
                     data-scrolled={scrolled}
-                    className={`pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 text-white transition-all duration-300 ${
-                        scrolled
-                            ? "glass-header-pill px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl min-h-[64px] min-[360px]:min-h-[68px] sm:min-h-[72px] lg:min-h-[76px]"
-                            : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-3.5 min-[360px]:py-4 sm:py-4 lg:py-4.5 rounded-none min-h-[66px] min-[360px]:min-h-[70px] sm:min-h-[72px] lg:min-h-[76px]"
-                    }`}
+                    className={`pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 text-white transition-all duration-300 ${scrolled
+                        ? "glass-header-pill backdrop-blur-xl px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl min-h-[64px] min-[360px]:min-h-[68px] sm:min-h-[72px] lg:min-h-[76px]"
+                        : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-3.5 min-[360px]:py-4 sm:py-4 lg:py-4.5 rounded-none min-h-[66px] min-[360px]:min-h-[70px] sm:min-h-[72px] lg:min-h-[76px]"
+                        }`}
+                    style={
+                        scrolled ? {
+                            backdropFilter: "blur(24px)",
+                            WebkitBackdropFilter: "blur(24px)",
+                        } : undefined
+                    }
                 >
                     {/* Brand Left: Company Logo + TRADE BUSINESS PORTAL */}
                     <Link href="/" className="flex shrink-0 items-center gap-2 min-[360px]:gap-2.5 sm:gap-3.5 select-none group" aria-label="Torque Block Trade Home">
@@ -245,11 +255,10 @@ export default function Header() {
                             <button
                                 type="button"
                                 onClick={() => handleNavigate("/")}
-                                className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${
-                                    pathname === "/"
-                                        ? "bg-[#181E2C] border-white/20 shadow-sm"
-                                        : "bg-[#131823] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
-                                }`}
+                                className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${pathname === "/"
+                                    ? "bg-[#181E2C] border-white/20 shadow-sm"
+                                    : "bg-[#131823] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
+                                    }`}
                             >
                                 <FiHome className="text-xl text-zinc-300" />
                                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-white">
@@ -261,11 +270,10 @@ export default function Header() {
                             <button
                                 type="button"
                                 onClick={() => handleNavigate("/orders")}
-                                className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${
-                                    pathname === "/orders"
-                                        ? "bg-[#251A18] border-[#FF5B26]/50 shadow-sm shadow-[#FF5B26]/10"
-                                        : "bg-[#221818] border-[#FF5B26]/35 hover:border-[#FF5B26]/55 hover:bg-[#281b1b]"
-                                }`}
+                                className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${pathname === "/orders"
+                                    ? "bg-[#251A18] border-[#FF5B26]/50 shadow-sm shadow-[#FF5B26]/10"
+                                    : "bg-[#221818] border-[#FF5B26]/35 hover:border-[#FF5B26]/55 hover:bg-[#281b1b]"
+                                    }`}
                             >
                                 <FiFileText className="text-xl text-[#FF5B26]" />
                                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#FF5B26]">
@@ -277,11 +285,10 @@ export default function Header() {
                             <button
                                 type="button"
                                 onClick={() => (token ? handleNavigate("/account") : openLogin())}
-                                className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${
-                                    pathname === "/account"
-                                        ? "bg-[#181E2C] border-white/20 shadow-sm"
-                                        : "bg-[#131823] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
-                                }`}
+                                className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${pathname === "/account"
+                                    ? "bg-[#181E2C] border-white/20 shadow-sm"
+                                    : "bg-[#131823] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
+                                    }`}
                             >
                                 <FiUser className="text-xl text-zinc-300" />
                                 <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-white">
