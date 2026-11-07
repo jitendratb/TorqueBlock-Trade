@@ -79,12 +79,12 @@ function ProductCard({ product, isApproved, tradePrices, titleAs: Title = "h3" }
     const currentImage = allImages[safeActiveIdx] || allImages[0];
 
     return (
-        <article className="overflow-hidden rounded-2xl border border-orange-500/30 bg-[#0E1118]/90 backdrop-blur-md transition-all hover:border-orange-500/60 shadow-xl">
+        <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#3C3F47] transition-all hover:border-orange-500/40 shadow-xl text-white">
             <div className="grid grid-cols-1 lg:grid-cols-[230px_1fr] xl:grid-cols-[260px_1fr]">
                 {/* Left column: image and product info */}
                 <div className="border-b border-white/10 p-3.5 sm:p-5 grid grid-cols-[96px_1fr] items-center gap-3.5 sm:grid-cols-[120px_1fr] md:grid-cols-[140px_1fr] md:gap-5 lg:block lg:p-5 lg:border-b-0 lg:border-r">
                     {/* Tyre Image with arrow controls for browsing all product images */}
-                    <div className="relative group/img h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 lg:h-40 lg:w-full shrink-0 overflow-hidden rounded-xl bg-white lg:mb-3 flex items-center justify-center select-none shadow-sm">
+                    <div className="relative group/img h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 lg:h-40 lg:w-full shrink-0 overflow-hidden rounded-xl bg-[#2D313A] border border-white/10 lg:mb-3 flex items-center justify-center select-none shadow-sm">
                             <CustomImage
                                 src={currentImage}
                                 alt={`${product.name} - photo ${safeActiveIdx + 1}`}
