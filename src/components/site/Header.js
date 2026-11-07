@@ -96,19 +96,11 @@ export default function Header() {
         <div>
             <header
                 data-scrolled={scrolled}
-                className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${
-                    scrolled
-                        ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
-                        : "pt-0 px-0 bg-white/10 backdrop-blur-md border-b border-white/15"
-                }`}
+                className="fixed top-0 left-0 right-0 w-full z-50 pt-2 min-[360px]:pt-2.5 sm:pt-3.5 px-2.5 sm:px-4 lg:px-6 pointer-events-none transition-all duration-300"
             >
                 <nav
                     data-scrolled={scrolled}
-                    className={`pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 text-white transition-all duration-300 ${
-                        scrolled
-                            ? "glass-header-pill px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl min-h-[64px] min-[360px]:min-h-[68px] sm:min-h-[72px] lg:min-h-[76px]"
-                            : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-3.5 min-[360px]:py-4 sm:py-4 lg:py-4.5 rounded-none min-h-[66px] min-[360px]:min-h-[70px] sm:min-h-[72px] lg:min-h-[76px]"
-                    }`}
+                    className="glass-header-pill pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl min-h-[64px] min-[360px]:min-h-[68px] sm:min-h-[72px] lg:min-h-[76px] text-white transition-all duration-300"
                 >
                     {/* Brand Left: Company Logo + TRADE BUSINESS PORTAL */}
                     <Link href="/" className="flex shrink-0 items-center gap-2 min-[360px]:gap-2.5 sm:gap-3.5 select-none group" aria-label="Torque Block Trade Home">

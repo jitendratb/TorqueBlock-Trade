@@ -180,11 +180,8 @@ export default function ProductDetail({ product, size = null }) {
                                 if (e.key === "Enter" || e.key === " ") setIsPhotoOpen(true);
                             }}
                             title="Click to view full photo"
-                            className="relative w-full max-w-[320px] sm:max-w-[350px] lg:max-w-[380px] mx-auto aspect-square rounded-2xl bg-gradient-to-b from-[#1E232E] via-[#141822] to-[#0D1017] border border-white/15 p-3 sm:p-4 flex items-center justify-center overflow-hidden shadow-[0_12px_32px_rgba(0,0,0,0.65),inset_0_1px_0_rgba(255,255,255,0.12)] group/img cursor-zoom-in"
+                            className="relative w-full max-w-[320px] sm:max-w-[350px] lg:max-w-[380px] mx-auto aspect-square rounded-2xl bg-[#3C3F47] border border-white/10 p-3 sm:p-4 flex items-center justify-center overflow-hidden shadow-xl group/img cursor-zoom-in"
                         >
-                            {/* Studio Lighting Vignette */}
-                            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.07)_0%,rgba(0,0,0,0.75)_100%)] pointer-events-none" />
-
                             {/* Brand Badge */}
                             {product.brand && (
                                 <div className="absolute top-2.5 left-2.5 z-10">
@@ -319,9 +316,10 @@ export default function ProductDetail({ product, size = null }) {
                                 </div>
                             </div>
                         ) : (
-                            /* Trade Assurance Highlights - Formatted matching Reference Image 1 */
-                            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-2.5 pt-1">
-                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131720] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
+                            /* Trade Assurance Highlights - 3 Distinct Cards matching Reference Image 1 */
+                            <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2.5 pt-1">
+                                {/* Card 1: Secure Payments */}
+                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131823] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
                                     <BsShieldCheck className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
                                     <div className="min-w-0">
                                         <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
@@ -331,7 +329,10 @@ export default function ProductDetail({ product, size = null }) {
                                             Safe online checkout
                                         </p>
                                     </div>
+                                </div>
 
+                                {/* Card 2: 100% Genuine Products */}
+                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131823] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
                                     <BsPatchCheck className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
                                     <div className="min-w-0">
                                         <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
@@ -341,7 +342,10 @@ export default function ProductDetail({ product, size = null }) {
                                             Authentic branded tyres
                                         </p>
                                     </div>
+                                </div>
 
+                                {/* Card 3: Expert Guidance */}
+                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131823] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
                                     <BsHeadset className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
                                     <div className="min-w-0">
                                         <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
