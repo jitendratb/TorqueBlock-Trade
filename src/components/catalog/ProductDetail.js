@@ -253,11 +253,10 @@ export default function ProductDetail({ product, size = null }) {
                                         type="button"
                                         onClick={() => setActiveIdx(idx)}
                                         aria-label={`View photo ${idx + 1}`}
-                                        className={`relative h-10 w-10 shrink-0 rounded-lg bg-black border p-0.5 overflow-hidden transition-all ${
-                                            idx === safeActiveIdx
-                                                ? "border-orange-500 ring-2 ring-orange-500/30 scale-105"
-                                                : "border-white/10 hover:border-white/30 opacity-70 hover:opacity-100"
-                                        }`}
+                                        className={`relative h-10 w-10 shrink-0 rounded-lg bg-black border p-0.5 overflow-hidden transition-all ${idx === safeActiveIdx
+                                            ? "border-orange-500 ring-2 ring-orange-500/30 scale-105"
+                                            : "border-white/10 hover:border-white/30 opacity-70 hover:opacity-100"
+                                            }`}
                                     >
                                         <CustomImage src={img} alt={`Thumbnail ${idx + 1}`} fill sizes="40px" imageClassName="object-contain p-0.5" />
                                     </button>
@@ -332,9 +331,7 @@ export default function ProductDetail({ product, size = null }) {
                                             Safe online checkout
                                         </p>
                                     </div>
-                                </div>
 
-                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131720] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
                                     <BsPatchCheck className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
                                     <div className="min-w-0">
                                         <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
@@ -344,9 +341,7 @@ export default function ProductDetail({ product, size = null }) {
                                             Authentic branded tyres
                                         </p>
                                     </div>
-                                </div>
 
-                                <div className="flex items-center gap-3 sm:gap-3.5 rounded-2xl border border-white/10 bg-[#131720] p-3 sm:p-3.5 transition-colors hover:border-orange-500/30 shadow-sm">
                                     <BsHeadset className="text-orange-500 text-2xl sm:text-3xl shrink-0" />
                                     <div className="min-w-0">
                                         <h4 className="text-xs sm:text-[13px] font-bold text-white leading-tight">
@@ -384,28 +379,6 @@ export default function ProductDetail({ product, size = null }) {
                                     {product.category?.name || "Motorcycle Tyre"} • Engineered for Superior Grip &amp; Precision
                                 </p>
                             )}
-
-                            {/* Trust Factor - Single Row */}
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2.5">
-                                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#161A22] px-2.5 py-2 shadow-sm">
-                                    <FiCheckCircle className="text-emerald-400 text-sm shrink-0" />
-                                    <span className="text-[11px] font-semibold text-zinc-200 leading-tight">
-                                        100% Genuine Direct Supply from Brand
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#161A22] px-2.5 py-2 shadow-sm">
-                                    <FiShield className="text-[#F59E0B] text-sm shrink-0" />
-                                    <span className="text-[11px] font-semibold text-zinc-200 leading-tight">
-                                        Official GST Tax Invoice &amp; 18% ITC Eligible
-                                    </span>
-                                </div>
-                                <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-[#161A22] px-2.5 py-2 shadow-sm">
-                                    <FiTruck className="text-sky-400 text-sm shrink-0" />
-                                    <span className="text-[11px] font-semibold text-zinc-200 leading-tight">
-                                        Direct Commercial Dispatch Across India
-                                    </span>
-                                </div>
-                            </div>
                         </div>
 
                         {/* SIZES LIST SECTION - Direct scrollable table with centered SIZE, FITMENT, AVAILABILITY */}
@@ -623,9 +596,7 @@ export default function ProductDetail({ product, size = null }) {
                             <div className="flex items-center justify-between pb-1.5 border-b border-white/10">
                                 <div className="flex items-center gap-1.5">
                                     <FiFileText className="text-[#F59E0B] text-xs shrink-0" />
-                                    <h3 className="text-xs font-bold uppercase tracking-wider text-white">
-                                        Description
-                                    </h3>
+                                    <h3 className="text-xs font-bold uppercase tracking-wider text-white">Description</h3>
                                 </div>
                                 {paragraphs.length > 1 && (
                                     <button
