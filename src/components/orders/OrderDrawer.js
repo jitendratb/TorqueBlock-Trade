@@ -38,7 +38,7 @@ function StepHeader({ step, units, hasItems, onBack }) {
                     </p>
                 </div>
                 {hasItems && (
-                    <span className="inline-flex items-center rounded-full border border-[#A35229]/40 bg-[#A35229]/20 px-2.5 py-0.5 text-[11px] font-bold text-[#F59E0B]">
+                    <span className="inline-flex items-center rounded-full border border-orange-500/40 bg-orange-500/15 px-2.5 py-0.5 text-[11px] font-bold text-orange-400">
                         {units} {units === 1 ? "tyre" : "tyres"}
                     </span>
                 )}
@@ -58,7 +58,7 @@ function StepHeader({ step, units, hasItems, onBack }) {
             </button>
             <div>
                 <h2 className="text-sm sm:text-base font-black tracking-[0.08em] uppercase text-white">
-                    {title} <span className="text-[#A35229]">{accent}</span>
+                    {title} <span className="text-orange-500">{accent}</span>
                 </h2>
                 <p className="text-[11px] text-zinc-400">{subtitle}</p>
             </div>
@@ -170,12 +170,12 @@ export default function OrderDrawer() {
                 open={open}
                 onClose={close}
                 label="Order list"
-                className="w-full max-w-full sm:max-w-md md:max-w-lg bg-[#22262E] text-white border-l border-white/10"
+                className="w-full max-w-full sm:max-w-md md:max-w-lg bg-zinc-950/95 backdrop-blur-2xl text-white border-l border-white/10 shadow-2xl"
                 header={<StepHeader step={currentStep} units={units} hasItems={items.length > 0} onBack={setStep} />}
             >
                 {items.length === 0 ? (
                     <div className="flex flex-1 flex-col items-center justify-center gap-3.5 px-8 text-center">
-                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-[#2D323B] text-zinc-400">
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm text-zinc-400">
                             <IoCartOutline className="text-3xl" />
                         </div>
                         <div>
@@ -185,7 +185,7 @@ export default function OrderDrawer() {
                         <Link
                             href="/#stock"
                             onClick={close}
-                            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-[#A35229] hover:bg-[#8F4420] py-3 px-5 text-xs font-bold uppercase tracking-[0.08em] text-white transition-all shadow-md shadow-[#A35229]/25"
+                            className="mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 py-3 px-5 text-xs font-black uppercase tracking-[0.08em] text-white transition-all shadow-lg shadow-orange-500/25"
                         >
                             <span>BROWSE TYRE STOCK</span>
                             <span>→</span>

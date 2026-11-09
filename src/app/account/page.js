@@ -11,7 +11,7 @@ export const metadata = {
 
 export default function AccountPage() {
     return (
-        <main className="bg-[#0B0E17] min-h-[calc(100vh-120px)] pt-20 sm:pt-24 pb-20">
+        <main className="bg-[#0B0E17] min-h-[calc(100vh-120px)] pt-[100px] min-[400px]:pt-[104px] sm:pt-[110px] lg:pt-[116px] pb-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5">
                 {/* Breadcrumbs matching reference screenshot */}
                 <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm font-semibold pt-1">

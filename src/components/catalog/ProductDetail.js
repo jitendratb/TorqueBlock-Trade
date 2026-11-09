@@ -288,91 +288,93 @@ export default function ProductDetail({ product, size = null }) {
                     </div>
                 </div>
 
-                {/* MAIN 2-COLUMN HERO SHOWCASE - Exact Classes & Spacing from torqueblock.com */}
+                {/* MAIN 2-COLUMN HERO SHOWCASE - Exact Classes & Sizing 1:1 from torqueblock.com */}
                 <section className="w-full relative">
-                    <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2 lg:gap-8 items-start">
-                        {/* LEFT COLUMN: Showcase Photo Box + Horizontal Thumbnails */}
-                        <div className="flex flex-col gap-2.5 sm:gap-3">
-                            <div className="relative w-full rounded-2xl overflow-hidden h-[300px] min-[400px]:h-[340px] sm:h-[380px] md:h-[400px] lg:h-[420px] xl:h-[440px] flex items-center justify-center">
-                                <div
-                                    role="button"
-                                    tabIndex={0}
-                                    aria-label="View Tyre full screen"
-                                    onClick={() => setIsPhotoOpen(true)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter" || e.key === " ") setIsPhotoOpen(true);
-                                    }}
-                                    className="group relative w-full cursor-zoom-in touch-pan-y overflow-hidden h-full flex items-center justify-center select-none"
-                                >
-                                    <CustomImage
-                                        src={currentImage}
-                                        alt={`${product.name} - image ${safeActiveIdx + 1}`}
-                                        fill
-                                        priority
-                                        sizes="(max-width: 768px) 100vw, 50vw"
-                                        imageClassName="transition-opacity duration-300 opacity-100 object-contain transition-transform duration-500 group-hover:scale-105"
-                                    />
-
-                                    {/* Zoom / Expand Icon in Bottom-Right Corner */}
-                                    <span
-                                        aria-hidden="true"
-                                        className="pointer-events-none absolute right-2.5 bottom-2.5 flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-white/10 bg-white/20 text-white/80 backdrop-blur-xl transition-colors group-hover:border-orange-500/40 group-hover:text-orange-400"
-                                    >
-                                        <svg
-                                            stroke="currentColor"
-                                            fill="none"
-                                            strokeWidth="2"
-                                            viewBox="0 0 24 24"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="text-xs"
-                                            height="1em"
-                                            width="1em"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <polyline points="15 3 21 3 21 9" />
-                                            <polyline points="9 21 3 21 3 15" />
-                                            <line x1="21" y1="3" x2="14" y2="10" />
-                                            <line x1="3" y1="21" x2="10" y2="14" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Horizontal Thumbnails Row */}
-                            {allImages.length > 1 && (
-                                <div className="relative">
+                    <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2">
+                        {/* LEFT COLUMN: Large Showcase Photo Box + Horizontal Thumbnails */}
+                        <div className="flex flex-col gap-4">
+                            <div className="space-y-4">
+                                <div className="relative w-full rounded-lg overflow-hidden h-[300px] lg:h-[540px] flex items-center justify-center">
                                     <div
-                                        ref={thumbScrollRef}
-                                        role="tablist"
-                                        aria-label="Product images"
-                                        className="relative flex gap-2 sm:gap-2.5 overflow-x-auto pb-0.5 scrollbar-none px-0.5"
+                                        role="button"
+                                        tabIndex={0}
+                                        aria-label="View Tyre full screen"
+                                        onClick={() => setIsPhotoOpen(true)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter" || e.key === " ") setIsPhotoOpen(true);
+                                        }}
+                                        className="group relative w-full cursor-zoom-in touch-pan-y overflow-hidden h-full flex items-center justify-center select-none"
                                     >
-                                        {allImages.map((img, idx) => (
-                                            <button
-                                                key={idx}
-                                                type="button"
-                                                role="tab"
-                                                aria-selected={idx === safeActiveIdx}
-                                                onClick={() => setActiveIdx(idx)}
-                                                aria-label={`View photo ${idx + 1}`}
-                                                className={`relative cursor-pointer h-12 w-12 sm:h-14 sm:w-14 lg:h-[54px] lg:w-[54px] shrink-0 overflow-hidden rounded-xl border transition-all duration-300 ${idx === safeActiveIdx
-                                                    ? "border-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.35)] ring-1 ring-orange-500/40"
-                                                    : "border-white/10 bg-white/[0.03] hover:border-white/25"
-                                                    }`}
+                                        <CustomImage
+                                            src={currentImage}
+                                            alt={`${product.name} - image ${safeActiveIdx + 1}`}
+                                            fill
+                                            priority
+                                            sizes="(max-width: 768px) 100vw, 50vw"
+                                            imageClassName="transition-opacity duration-300 opacity-100 object-contain transition-transform duration-500 group-hover:scale-105"
+                                        />
+
+                                        {/* Zoom / Expand Icon in Bottom-Right Corner */}
+                                        <span
+                                            aria-hidden="true"
+                                            className="pointer-events-none absolute right-2 bottom-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/20 text-white/80 backdrop-blur-xl transition-colors group-hover:border-orange-500/40 group-hover:text-orange-400"
+                                        >
+                                            <svg
+                                                stroke="currentColor"
+                                                fill="none"
+                                                strokeWidth="2"
+                                                viewBox="0 0 24 24"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                className="text-sm"
+                                                height="1em"
+                                                width="1em"
+                                                xmlns="http://www.w3.org/2000/svg"
                                             >
-                                                <CustomImage
-                                                    src={img}
-                                                    alt={`Thumbnail ${idx + 1}`}
-                                                    fill
-                                                    sizes="64px"
-                                                    imageClassName="transition-opacity duration-300 object-contain p-1 transition-transform duration-300 hover:scale-105"
-                                                />
-                                            </button>
-                                        ))}
+                                                <polyline points="15 3 21 3 21 9" />
+                                                <polyline points="9 21 3 21 3 15" />
+                                                <line x1="21" y1="3" x2="14" y2="10" />
+                                                <line x1="3" y1="21" x2="10" y2="14" />
+                                            </svg>
+                                        </span>
                                     </div>
                                 </div>
-                            )}
+
+                                {/* Horizontal Thumbnails Row */}
+                                {allImages.length > 1 && (
+                                    <div className="relative">
+                                        <div
+                                            ref={thumbScrollRef}
+                                            role="tablist"
+                                            aria-label="Product images"
+                                            className="relative flex gap-3 overflow-x-auto pb-1 scrollbar-none px-0.5"
+                                        >
+                                            {allImages.map((img, idx) => (
+                                                <button
+                                                    key={idx}
+                                                    type="button"
+                                                    role="tab"
+                                                    aria-selected={idx === safeActiveIdx}
+                                                    onClick={() => setActiveIdx(idx)}
+                                                    aria-label={`View photo ${idx + 1}`}
+                                                    className={`relative cursor-pointer h-15 w-15 sm:h-15 sm:w-15 h-[60px] w-[60px] shrink-0 overflow-hidden rounded-xl border transition-all duration-300 ${idx === safeActiveIdx
+                                                        ? "border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)] ring-1 ring-orange-500/40"
+                                                        : "border-zinc-800 hover:border-zinc-600 bg-white/[0.03]"
+                                                        }`}
+                                                >
+                                                    <CustomImage
+                                                        src={img}
+                                                        alt={`Thumbnail ${idx + 1}`}
+                                                        fill
+                                                        sizes="60px"
+                                                        imageClassName="transition-opacity duration-300 object-cover transition-transform duration-300 hover:scale-105"
+                                                    />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         </div>
 
                         {/* RIGHT COLUMN: Eyebrow, Big Headline, Feature Pills, Subtitle, Price Range, Button, & 3 Trust Badges */}
@@ -401,14 +403,15 @@ export default function ProductDetail({ product, size = null }) {
 
                             {/* 2. Main Headline: Is Brand Model right for your motorcycle? */}
                             <div>
-                                <h1 className="text-2xl sm:text-3xl lg:text-[2.25rem] xl:text-[2.5rem] font-black leading-[1.12] tracking-tight text-white">
+                                <h1 className="text-3xl md:text-5xl lg:text-3xl font-black leading-[1.05] tracking-tighter text-white">
                                     <span className="sr-only"> {product.name} Motorcycle Tyre </span>
                                     <span aria-hidden="true">
-                                        <span className="drop-shadow-lg">
-                                            Is <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
+                                        Is{" "}
+                                        <span className="lg:text-[3rem] drop-shadow-lg">
+                                            <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
                                             <span className="text-orange-500">{headlineParts ? headlineParts.model : ""}</span>
                                         </span>
-                                        <span className="block text-zinc-400 text-lg sm:text-xl lg:text-2xl font-medium tracking-tight mt-0.5 sm:mt-1">
+                                        <span className="block text-zinc-400 text-xl md:text-2xl lg:text-3xl font-medium tracking-tight mt-1">
                                             right for your motorcycle?
                                         </span>
                                     </span>
@@ -421,7 +424,7 @@ export default function ProductDetail({ product, size = null }) {
                                     {featurePills.map((pill, idx) => (
                                         <div
                                             key={idx}
-                                            className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/20 bg-white/[0.04] backdrop-blur-sm px-2.5 sm:px-3 py-1 shadow-sm"
+                                            className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/20 bg-orange-500/5 px-3 py-1.5 text-[10px] font-semibold text-orange-300 whitespace-nowrap"
                                         >
                                             <svg
                                                 stroke="currentColor"
@@ -435,80 +438,73 @@ export default function ProductDetail({ product, size = null }) {
                                             >
                                                 <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z" />
                                             </svg>
-                                            <span className="text-[10px] sm:text-[11px] font-semibold text-orange-300 whitespace-nowrap">
-                                                {pill}
-                                            </span>
+                                            <span>{pill}</span>
                                         </div>
                                     ))}
                                 </div>
                             )}
 
                             {/* 4. Product Subtitle Paragraph Description */}
-                            <p className="text-xs sm:text-[13px] md:text-sm leading-relaxed text-zinc-400 line-clamp-2 md:line-clamp-3">
+                            <p className="text-sm leading-relaxed text-zinc-400 md:text-[15px] line-clamp-3">
                                 {heroDescription}
                             </p>
 
                             {/* 5. PRICE RANGE Card Container (Light Frosted Blur matching torqueblock.com) */}
-                            <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-orange-500/[0.05] p-3.5 sm:p-4 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
-                                {/* Soft light glow orbs - Subtle ambient reflection */}
-                                <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-400/15 rounded-full blur-3xl pointer-events-none group-hover:bg-orange-400/25 transition-colors duration-700" />
-                                <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
-                                <div className="relative">
-                                    <p className="text-[10px] font-black uppercase tracking-[0.25em] text-orange-500 mb-1 drop-shadow-sm">
-                                        Price Range
-                                    </p>
-                                    {isApproved ? (
-                                        <>
-                                            <div className="flex items-baseline flex-wrap gap-x-2 gap-y-1">
-                                                <span className="text-2xl sm:text-3xl font-black text-white tracking-tighter drop-shadow-md">
-                                                    {formatINR(priceRange.min)}
-                                                </span>
-                                                {priceRange.min !== priceRange.max && (
-                                                    <>
-                                                        <span className="text-lg font-bold text-zinc-500 mx-0.5 drop-shadow-sm">-</span>
-                                                        <span className="text-xl sm:text-2xl font-black text-zinc-300 tracking-tighter drop-shadow-md">
-                                                            {formatINR(priceRange.max)}
-                                                        </span>
-                                                    </>
-                                                )}
-                                            </div>
-                                            <div className="mt-1.5 flex items-center gap-1.5 border-t border-white/10 pt-1.5">
-                                                <svg
-                                                    stroke="currentColor"
-                                                    fill="currentColor"
-                                                    strokeWidth="0"
-                                                    viewBox="0 0 24 24"
-                                                    className="text-green-400 text-sm drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]"
-                                                    height="1em"
-                                                    width="1em"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path fill="none" d="M0 0h24v24H0z" />
-                                                    <path d="m23 12-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z" />
-                                                </svg>
-                                                <p className="text-zinc-400 text-[10px] sm:text-[11px] font-medium tracking-wide">
-                                                    Inclusive of all taxes • Varies by size
-                                                </p>
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <div className="pt-0.5 space-y-1">
-                                            <button
-                                                type="button"
-                                                onClick={openLogin}
-                                                className="inline-flex items-center gap-2 text-xl sm:text-2xl font-black text-orange-400 hover:text-orange-300 transition-colors py-0.5 cursor-pointer group/login text-left tracking-tight"
-                                            >
-                                                <FiLock className="text-lg sm:text-xl text-orange-500 group-hover/login:scale-110 transition-transform shrink-0" />
-                                                <span>Login for Trade Price</span>
-                                            </button>
-                                            <div className="mt-1.5 flex items-center gap-1.5 border-t border-white/10 pt-1.5">
-                                                <p className="text-zinc-400 text-[10px] sm:text-[11px] font-medium tracking-wide">
-                                                    Exclusive trade wholesale pricing for registered dealers
-                                                </p>
-                                            </div>
+                            <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-transparent p-4 shadow-[0_0_40px_rgba(249,115,22,0.1)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
+                                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-orange-500 mb-1 drop-shadow-sm">
+                                    Price Range
+                                </p>
+                                {isApproved ? (
+                                    <>
+                                        <div className="flex items-baseline flex-wrap gap-x-2 gap-y-1">
+                                            <span className="text-2xl sm:text-3xl font-black text-white tracking-tighter drop-shadow-md">
+                                                {formatINR(priceRange.min)}
+                                            </span>
+                                            {priceRange.min !== priceRange.max && (
+                                                <>
+                                                    <span className="text-lg font-bold text-zinc-500 mx-0.5 drop-shadow-sm">-</span>
+                                                    <span className="text-xl sm:text-2xl font-black text-zinc-300 tracking-tighter drop-shadow-md">
+                                                        {formatINR(priceRange.max)}
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
-                                    )}
-                                </div>
+                                        <div className="mt-1.5 flex items-center gap-1.5 border-t border-white/10 pt-1.5">
+                                            <svg
+                                                stroke="currentColor"
+                                                fill="currentColor"
+                                                strokeWidth="0"
+                                                viewBox="0 0 24 24"
+                                                className="text-green-400 text-sm drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]"
+                                                height="1em"
+                                                width="1em"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path fill="none" d="M0 0h24v24H0z" />
+                                                <path d="m23 12-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z" />
+                                            </svg>
+                                            <p className="text-zinc-400 text-[10px] sm:text-[11px] font-medium tracking-wide">
+                                                Inclusive of all taxes • Varies by size
+                                            </p>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <div className="pt-0.5 space-y-1">
+                                        <button
+                                            type="button"
+                                            onClick={openLogin}
+                                            className="inline-flex items-center gap-2 text-xl sm:text-2xl font-black text-orange-400 hover:text-orange-300 transition-colors py-0.5 cursor-pointer group/login text-left tracking-tight"
+                                        >
+                                            <FiLock className="text-lg sm:text-xl text-orange-500 group-hover/login:scale-110 transition-transform shrink-0" />
+                                            <span>Login for Trade Price</span>
+                                        </button>
+                                        <div className="mt-1.5 flex items-center gap-1.5 border-t border-white/10 pt-1.5">
+                                            <p className="text-zinc-400 text-[10px] sm:text-[11px] font-medium tracking-wide">
+                                                Exclusive trade wholesale pricing for registered dealers
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* 6. Primary Action Button: VIEW ALL [N] SIZES ⌵ */}
@@ -516,9 +512,9 @@ export default function ProductDetail({ product, size = null }) {
                                 <button
                                     type="button"
                                     onClick={scrollToSizes}
-                                    className="group relative w-full flex items-center justify-center gap-2.5 overflow-hidden rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-5 py-3 sm:py-3.5 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-lg shadow-orange-500/20"
+                                    className="relative w-full overflow-hidden rounded-xl bg-orange-500 px-6 py-4 font-black uppercase tracking-[0.2em] text-white shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all duration-300 hover:bg-orange-600 hover:shadow-[0_0_40px_rgba(249,115,22,0.5)] active:scale-[0.99] flex items-center justify-center gap-2 group cursor-pointer text-xs md:text-sm"
                                 >
-                                    <span className="relative z-10 text-xs sm:text-[13px] md:text-sm font-black uppercase tracking-[0.2em] text-white drop-shadow-md">
+                                    <span className="relative z-10 drop-shadow-md">
                                         View All {product.sizes?.length || 1} Sizes
                                     </span>
                                     <div className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:translate-y-0.5">
@@ -539,8 +535,8 @@ export default function ProductDetail({ product, size = null }) {
                             </div>
 
                             {/* 7. Trust Assurance Cards: 3 Cards in a Row (Light Frosted Glass) */}
-                            <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                <li className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-2.5 sm:p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
+                            <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 transition-colors duration-300 hover:border-orange-500/40">
                                     <svg
                                         stroke="currentColor"
                                         fill="none"
@@ -548,7 +544,7 @@ export default function ProductDetail({ product, size = null }) {
                                         viewBox="0 0 24 24"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="shrink-0 text-xl sm:text-2xl text-orange-500"
+                                        className="h-6 w-6 shrink-0 text-orange-500"
                                         aria-hidden="true"
                                         height="1em"
                                         width="1em"
@@ -562,7 +558,7 @@ export default function ProductDetail({ product, size = null }) {
                                         <span className="text-[10px] leading-tight text-zinc-400">Safe online checkout</span>
                                     </span>
                                 </li>
-                                <li className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-2.5 sm:p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
+                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 transition-colors duration-300 hover:border-orange-500/40">
                                     <svg
                                         stroke="currentColor"
                                         fill="none"
@@ -570,7 +566,7 @@ export default function ProductDetail({ product, size = null }) {
                                         viewBox="0 0 24 24"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="shrink-0 text-xl sm:text-2xl text-orange-500"
+                                        className="h-6 w-6 shrink-0 text-orange-500"
                                         aria-hidden="true"
                                         height="1em"
                                         width="1em"
@@ -584,7 +580,7 @@ export default function ProductDetail({ product, size = null }) {
                                         <span className="text-[10px] leading-tight text-zinc-400">Authentic branded tyres</span>
                                     </span>
                                 </li>
-                                <li className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-2.5 sm:p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
+                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 transition-colors duration-300 hover:border-orange-500/40">
                                     <svg
                                         stroke="currentColor"
                                         fill="none"
@@ -592,15 +588,16 @@ export default function ProductDetail({ product, size = null }) {
                                         viewBox="0 0 24 24"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="shrink-0 text-xl sm:text-2xl text-orange-500"
+                                        className="h-6 w-6 shrink-0 text-orange-500"
                                         aria-hidden="true"
                                         height="1em"
                                         width="1em"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
                                         <path d="M4 14v-3a8 8 0 0 1 16 0v3" />
-                                        <path d="M18 19c0 1.657 -1.343 3 -3 3l-1 0c-1.657 0 -3 -1.343 -3 -3l0 -2c0 -1.657 1.343 -3 3 -3l1 0c1.657 0 3 1.343 3 3l0 2z" />
-                                        <path d="M4 19c0 1.657 1.343 3 3 3l1 0c1.657 0 3 -1.343 3 -3l0 -2c0 -1.657 -1.343 -3 -3 -3l-1 0c-1.657 0 -3 1.343 -3 3l0 2z" />
+                                        <path d="M18 19c0 1.657-2.686 3-6 3s-6-1.343-6-3 2.686-3 6-3 6 1.343 6 3z" />
+                                        <path d="M4 14c0 1.657 1.343 3 3 3h1" />
+                                        <path d="M20 14c0 1.657-1.343 3-3 3h-1" />
                                     </svg>
                                     <span className="flex min-w-0 flex-col gap-0.5">
                                         <span className="text-xs font-bold leading-tight text-white">Expert Guidance</span>
