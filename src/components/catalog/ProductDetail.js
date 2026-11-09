@@ -439,7 +439,7 @@ export default function ProductDetail({ product, size = null }) {
                             {featurePills.map((pill, idx) => (
                                 <div
                                     key={idx}
-                                    className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/20 bg-orange-500/5 px-3 py-1.5"
+                                    className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/20 bg-white/[0.04] backdrop-blur-sm px-3 py-1.5 shadow-sm"
                                 >
                                     <svg
                                         stroke="currentColor"
@@ -466,10 +466,11 @@ export default function ProductDetail({ product, size = null }) {
                         {heroDescription}
                     </p>
 
-                    {/* 5. PRICE RANGE Card Container (Glowing Gradient Card with Backdrop-Blur) */}
-                    <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 to-transparent p-4 shadow-[0_0_40px_rgba(249,115,22,0.1)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
-                        <div className="absolute -top-12 -right-12 w-40 h-40 bg-orange-500/20 rounded-full blur-3xl pointer-events-none group-hover:bg-orange-500/30 transition-colors duration-700" />
-                        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-orange-600/10 rounded-full blur-2xl pointer-events-none" />
+                    {/* 5. PRICE RANGE Card Container (Light Frosted Blur matching torqueblock.com) */}
+                    <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-orange-500/[0.05] p-4 sm:p-5 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
+                        {/* Soft light glow orbs - Subtle ambient reflection */}
+                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-400/15 rounded-full blur-3xl pointer-events-none group-hover:bg-orange-400/25 transition-colors duration-700" />
+                        <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
                         <div className="relative">
                             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 mb-2 drop-shadow-sm">
                                 Price Range
@@ -555,9 +556,9 @@ export default function ProductDetail({ product, size = null }) {
                         </button>
                     </div>
 
-                    {/* 7. Trust Assurance Cards: 3 Cards in a Row */}
+                    {/* 7. Trust Assurance Cards: 3 Cards in a Row (Light Frosted Glass) */}
                     <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 gap-2 md:grid-cols-3">
-                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 transition-colors duration-300 hover:border-orange-500/40">
+                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
                             <svg
                                 stroke="currentColor"
                                 fill="none"
@@ -579,7 +580,7 @@ export default function ProductDetail({ product, size = null }) {
                                 <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Safe online checkout</span>
                             </span>
                         </li>
-                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 transition-colors duration-300 hover:border-orange-500/40">
+                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
                             <svg
                                 stroke="currentColor"
                                 fill="none"
@@ -601,7 +602,7 @@ export default function ProductDetail({ product, size = null }) {
                                 <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Authentic branded tyres</span>
                             </span>
                         </li>
-                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 transition-colors duration-300 hover:border-orange-500/40">
+                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
                             <svg
                                 stroke="currentColor"
                                 fill="none"
@@ -630,9 +631,10 @@ export default function ProductDetail({ product, size = null }) {
         </section>
     </div>
 
-            {/* DESCRIPTION SECTION (Matching Reference Image) */}
-            <div className="rounded-2xl border border-white/10 bg-[#121622]/90 p-5 sm:p-6 shadow-xl space-y-3.5">
-                <div className="flex items-center justify-between pb-3 border-b border-white/10">
+            {/* DESCRIPTION SECTION (Light Frosted Blur matching torqueblock.com) */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-5 sm:p-6 backdrop-blur-xl shadow-xl space-y-3.5">
+                <div className="absolute -top-12 -right-12 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
+                <div className="relative flex items-center justify-between pb-3 border-b border-white/10">
                     <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-500 shrink-0 shadow-sm">
                             <FiFileText size={18} />
@@ -660,7 +662,7 @@ export default function ProductDetail({ product, size = null }) {
                 </div>
 
                 {/* Description Content */}
-                <div className="text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
+                <div className="relative text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
                     {isDescriptionExpanded ? (
                         <div className="max-h-[260px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
                             {paragraphs.map((para, idx) => (
@@ -681,8 +683,9 @@ export default function ProductDetail({ product, size = null }) {
             <div id="available-sizes" className="scroll-mt-28 space-y-6 pt-2">
                 {/* Compact Technical Specifications (when size is opened via /tyres/[tyre]/[size]) */}
                 {size && parsedSpec && (
-                    <div className="rounded-2xl border border-white/10 bg-[#161B26] p-4 sm:p-5 space-y-3 shadow-lg">
-                        <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-transparent p-4 sm:p-5 backdrop-blur-xl shadow-lg space-y-3">
+                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
+                        <div className="relative flex items-center justify-between pb-2 border-b border-white/10">
                             <div className="flex items-center gap-2">
                                 <FiSliders className="text-orange-500 text-sm shrink-0" />
                                 <h3 className="text-sm font-bold uppercase tracking-wider text-white">
@@ -694,38 +697,38 @@ export default function ProductDetail({ product, size = null }) {
                             </span>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                        <div className="relative grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Width</span>
                                 <span className="font-bold text-white">{parsedSpec.width}</span>
                             </div>
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Aspect</span>
                                 <span className="font-bold text-white">{parsedSpec.aspect}</span>
                             </div>
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Rim</span>
                                 <span className="font-bold text-white">{parsedSpec.rim}</span>
                             </div>
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Position</span>
                                 <span className="font-bold text-white">{size.position || "Front / Rear"}</span>
                             </div>
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Construction</span>
                                 <span className="font-bold text-white truncate max-w-[100px]" title={parsedSpec.construction}>
                                     {parsedSpec.construction}
                                 </span>
                             </div>
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Load / Speed</span>
                                 <span className="font-bold text-white">{parsedSpec.loadSpeed}</span>
                             </div>
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Type</span>
                                 <span className="font-bold text-white">{parsedSpec.tubeType}</span>
                             </div>
-                            <div className="rounded-xl bg-black/40 px-3 py-2 border border-white/5 flex items-center justify-between">
+                            <div className="rounded-xl bg-white/[0.03] backdrop-blur-sm px-3 py-2 border border-white/10 flex items-center justify-between">
                                 <span className="text-zinc-400">Segment</span>
                                 <span className="font-bold text-white truncate max-w-[100px]" title={product.category?.name || "Motorcycle Tyre"}>
                                     {product.category?.name || "Tyre"}
@@ -736,8 +739,9 @@ export default function ProductDetail({ product, size = null }) {
                 )}
 
                 {/* SIZES LIST SECTION - Direct scrollable table with centered SIZE, FITMENT, AVAILABILITY */}
-                <div className="rounded-2xl border border-white/10 bg-[#161B26] p-4 sm:p-5 shadow-lg space-y-3">
-                    <div className="flex items-center justify-between pb-2 border-b border-white/10">
+                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-transparent p-4 sm:p-5 backdrop-blur-xl shadow-lg space-y-3">
+                    <div className="absolute -top-12 -right-12 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
+                    <div className="relative flex items-center justify-between pb-2 border-b border-white/10">
                         <h2 className="text-sm font-bold uppercase tracking-[0.08em] text-white">
                             AVAILABLE TYRE SIZES ({sizesToDisplay.length})
                         </h2>
@@ -752,7 +756,7 @@ export default function ProductDetail({ product, size = null }) {
                     </div>
 
                     {/* Table Column Headers (Centered) */}
-                    <div className="hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] gap-2 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 border-b border-white/10 text-center">
+                    <div className="relative hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] gap-2 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-wider text-zinc-400 border-b border-white/10 text-center">
                         <span>SIZE</span>
                         <span>FITMENT</span>
                         <span>AVAILABILITY</span>
@@ -761,7 +765,7 @@ export default function ProductDetail({ product, size = null }) {
                     </div>
 
                     {/* Directly Scrollable Sizes Container */}
-                    <div className="max-h-[320px] overflow-y-auto custom-scroll pr-1 space-y-2">
+                    <div className="relative max-h-[320px] overflow-y-auto custom-scroll pr-1 space-y-2">
                         {sizesToDisplay.map((s) => {
                             const availability = getAvailabilityLevel(s);
                             const tradePrice = tradePrices?.[s.id] ?? s.tradePrice;
@@ -771,7 +775,7 @@ export default function ProductDetail({ product, size = null }) {
                             return (
                                 <div key={s.id}>
                                     {/* Desktop Table Row (Centered Text Alignment) */}
-                                    <div className="hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] items-center gap-2 rounded-xl border border-white/10 bg-[#1E2433] hover:bg-[#252C3D] hover:border-orange-500/30 transition-colors px-3.5 py-2.5 text-center shadow-sm">
+                                    <div className="hidden sm:grid grid-cols-[1.4fr_0.9fr_1.1fr_1.1fr_125px] items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.07] hover:border-orange-500/30 backdrop-blur-sm transition-colors px-3.5 py-2.5 text-center shadow-sm">
                                         {/* SIZE (Centered) */}
                                         <div className="flex items-center justify-center">
                                             {size ? (
@@ -832,7 +836,7 @@ export default function ProductDetail({ product, size = null }) {
                                         {/* ACTION (Centered) */}
                                         <div className="flex items-center justify-center">
                                             {cartItem ? (
-                                                <div className="flex items-center gap-1 bg-[#121622] border border-orange-500/40 rounded-lg p-0.5 shadow-sm">
+                                                <div className="flex items-center gap-1 bg-white/[0.05] border border-orange-500/40 rounded-lg p-0.5 shadow-sm">
                                                     <button
                                                         type="button"
                                                         onClick={() => {
@@ -878,7 +882,7 @@ export default function ProductDetail({ product, size = null }) {
                                     </div>
 
                                     {/* Mobile View (< sm) */}
-                                    <div className="flex sm:hidden flex-col gap-2 p-3 rounded-xl border border-white/10 bg-[#1E2433] shadow-sm">
+                                    <div className="flex sm:hidden flex-col gap-2 p-3 rounded-xl border border-white/10 bg-white/[0.03] backdrop-blur-sm shadow-sm">
                                         <div className="flex items-center justify-between gap-2">
                                             <div className="flex items-center gap-1.5 min-w-0">
                                                 {size ? (
@@ -889,7 +893,7 @@ export default function ProductDetail({ product, size = null }) {
                                                     </Link>
                                                 )}
                                                 {s.position && (
-                                                    <span className="rounded border border-white/15 bg-black/40 px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-300">
+                                                    <span className="rounded border border-white/15 bg-white/[0.05] px-1.5 py-0.5 text-[9px] font-bold uppercase text-zinc-300">
                                                         {s.position}
                                                     </span>
                                                 )}
@@ -913,7 +917,7 @@ export default function ProductDetail({ product, size = null }) {
 
                                             <div>
                                                 {cartItem ? (
-                                                    <div className="flex items-center gap-1 bg-[#121622] border border-orange-500/40 rounded-lg p-0.5">
+                                                    <div className="flex items-center gap-1 bg-white/[0.05] border border-orange-500/40 rounded-lg p-0.5">
                                                         <button
                                                             type="button"
                                                             onClick={() => {
