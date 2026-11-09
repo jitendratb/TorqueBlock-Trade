@@ -389,11 +389,11 @@ export default function ProductDetail({ product, size = null }) {
                                         viewBox="0 0 24 24"
                                         className="text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]"
                                         aria-hidden="true"
-                                        height="14"
-                                        width="14"
+                                        height="15"
+                                        width="15"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
-                                        <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z" />
+                                        <path d="m19 9 1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25z" />
                                     </svg>
                                     <span className="text-xs lg:text-[13px] font-black uppercase tracking-[0.25em] text-orange-400">{product.brand?.name} </span>
                                 </span>
@@ -403,15 +403,13 @@ export default function ProductDetail({ product, size = null }) {
 
                             {/* 2. Main Headline: Is Brand Model right for your motorcycle? */}
                             <div>
-                                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-4xl xl:text-[2.75rem] font-black leading-[1.08] tracking-tight text-white">
+                                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3rem] font-black leading-[1.05] tracking-tight text-white">
                                     <span className="sr-only"> {product.name} Motorcycle Tyre </span>
                                     <span aria-hidden="true">
-                                        Is{" "}
-                                        <span className="text-3xl sm:text-4xl md:text-5xl lg:text-[2.75rem] xl:text-[3.25rem] drop-shadow-lg">
-                                            <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
-                                            <span className="text-orange-500">{headlineParts ? headlineParts.model : ""}</span>
-                                        </span>
-                                        <span className="block text-zinc-400 text-lg sm:text-xl md:text-2xl lg:text-2xl font-medium tracking-tight mt-1 sm:mt-1.5">
+                                        <span className="text-white">Is</span>{" "}
+                                        <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
+                                        <span className="text-orange-500">{headlineParts ? headlineParts.model : ""}</span>
+                                        <span className="block text-zinc-400 text-xl md:text-2xl lg:text-3xl font-medium tracking-tight mt-1">
                                             right for your motorcycle?
                                         </span>
                                     </span>
@@ -424,7 +422,7 @@ export default function ProductDetail({ product, size = null }) {
                                     {featurePills.map((pill, idx) => (
                                         <div
                                             key={idx}
-                                            className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/20 bg-orange-500/5 px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold text-orange-300 whitespace-nowrap"
+                                            className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/25 bg-orange-500/[0.06] px-3.5 py-1.5 text-xs font-semibold text-orange-200 whitespace-nowrap"
                                         >
                                             <svg
                                                 stroke="currentColor"
@@ -436,7 +434,7 @@ export default function ProductDetail({ product, size = null }) {
                                                 width="1em"
                                                 xmlns="http://www.w3.org/2000/svg"
                                             >
-                                                <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z" />
+                                                <path d="m19 9 1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25z" />
                                             </svg>
                                             <span>{pill}</span>
                                         </div>
@@ -445,37 +443,37 @@ export default function ProductDetail({ product, size = null }) {
                             )}
 
                             {/* 4. Product Subtitle Paragraph Description */}
-                            <p className="text-sm sm:text-[15px] md:text-base leading-relaxed text-zinc-300 line-clamp-3">
+                            <p className="text-sm md:text-[15px] leading-relaxed text-zinc-400 line-clamp-3">
                                 {heroDescription}
                             </p>
 
                             {/* 5. PRICE RANGE Card Container (Light Frosted Blur matching torqueblock.com) */}
-                            <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 via-white/[0.02] to-transparent p-4 sm:p-5 shadow-[0_0_40px_rgba(249,115,22,0.12)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
-                                <p className="text-[11px] sm:text-xs font-black uppercase tracking-[0.25em] text-orange-500 mb-1.5 drop-shadow-sm">
+                            <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-orange-500/10 via-transparent to-transparent p-4 sm:p-5 shadow-[0_0_40px_rgba(249,115,22,0.1)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
+                                <p className="text-[11px] font-black uppercase tracking-[0.25em] text-orange-500 mb-2 drop-shadow-sm">
                                     Price Range
                                 </p>
                                 {isApproved ? (
                                     <>
                                         <div className="flex items-baseline flex-wrap gap-x-2.5 gap-y-1">
-                                            <span className="text-3xl sm:text-4xl font-black text-white tracking-tighter drop-shadow-md">
+                                            <span className="text-3xl sm:text-4xl font-black text-white tracking-tight drop-shadow-md">
                                                 {formatINR(priceRange.min)}
                                             </span>
                                             {priceRange.min !== priceRange.max && (
                                                 <>
-                                                    <span className="text-xl font-bold text-zinc-500 mx-0.5 drop-shadow-sm">-</span>
-                                                    <span className="text-2xl sm:text-3xl font-black text-zinc-300 tracking-tighter drop-shadow-md">
+                                                    <span className="text-xl font-bold text-zinc-500 mx-1 drop-shadow-sm">-</span>
+                                                    <span className="text-2xl sm:text-3xl font-black text-zinc-300 tracking-tight drop-shadow-md">
                                                         {formatINR(priceRange.max)}
                                                     </span>
                                                 </>
                                             )}
                                         </div>
-                                        <div className="mt-2 flex items-center gap-2 border-t border-white/10 pt-2">
+                                        <div className="mt-3 flex items-center gap-2 border-t border-white/10 pt-2.5">
                                             <svg
                                                 stroke="currentColor"
                                                 fill="currentColor"
                                                 strokeWidth="0"
                                                 viewBox="0 0 24 24"
-                                                className="text-green-400 text-base drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]"
+                                                className="text-green-500 text-base drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]"
                                                 height="1em"
                                                 width="1em"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -483,7 +481,7 @@ export default function ProductDetail({ product, size = null }) {
                                                 <path fill="none" d="M0 0h24v24H0z" />
                                                 <path d="m23 12-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z" />
                                             </svg>
-                                            <p className="text-zinc-300 text-xs sm:text-[13px] font-medium tracking-wide">
+                                            <p className="text-zinc-400 text-xs font-medium tracking-wide">
                                                 Inclusive of all taxes • Varies by size
                                             </p>
                                         </div>
@@ -498,8 +496,8 @@ export default function ProductDetail({ product, size = null }) {
                                             <FiLock className="text-xl sm:text-2xl text-orange-500 group-hover/login:scale-110 transition-transform shrink-0" />
                                             <span>Login for Trade Price</span>
                                         </button>
-                                        <div className="mt-2 flex items-center gap-1.5 border-t border-white/10 pt-2">
-                                            <p className="text-zinc-400 text-xs sm:text-[13px] font-medium tracking-wide">
+                                        <div className="mt-2.5 flex items-center gap-1.5 border-t border-white/10 pt-2.5">
+                                            <p className="text-zinc-400 text-xs font-medium tracking-wide">
                                                 Exclusive trade wholesale pricing for registered dealers
                                             </p>
                                         </div>
@@ -512,12 +510,12 @@ export default function ProductDetail({ product, size = null }) {
                                 <button
                                     type="button"
                                     onClick={scrollToSizes}
-                                    className="relative w-full overflow-hidden rounded-xl bg-orange-500 px-6 py-4 sm:py-4.5 font-black uppercase tracking-[0.2em] text-white shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all duration-300 hover:bg-orange-600 hover:shadow-[0_0_40px_rgba(249,115,22,0.5)] active:scale-[0.99] flex items-center justify-center gap-2.5 group cursor-pointer text-xs sm:text-sm md:text-[15px]"
+                                    className="relative w-full overflow-hidden rounded-2xl bg-[#FF5A1F] hover:bg-[#E54815] px-6 py-4 font-black uppercase tracking-[0.2em] text-white shadow-[0_0_30px_rgba(249,115,22,0.3)] transition-all duration-300 active:scale-[0.99] flex items-center justify-center gap-2.5 group cursor-pointer text-xs sm:text-sm"
                                 >
                                     <span className="relative z-10 drop-shadow-md">
                                         View All {product.sizes?.length || 1} Sizes
                                     </span>
-                                    <div className="relative z-10 flex h-5 w-5 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:translate-y-0.5">
+                                    <div className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:translate-y-0.5">
                                         <svg
                                             stroke="currentColor"
                                             fill="currentColor"
@@ -535,8 +533,8 @@ export default function ProductDetail({ product, size = null }) {
                             </div>
 
                             {/* 7. Trust Assurance Cards: 3 Cards in a Row (Light Frosted Glass) */}
-                            <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-2.5">
-                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:p-3.5 transition-colors duration-300 hover:border-orange-500/40">
+                            <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                                <li className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3.5 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
                                     <svg
                                         stroke="currentColor"
                                         fill="none"
@@ -544,7 +542,7 @@ export default function ProductDetail({ product, size = null }) {
                                         viewBox="0 0 24 24"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="h-6 w-6 sm:h-7 sm:w-7 shrink-0 text-orange-500"
+                                        className="h-6 w-6 shrink-0 text-orange-500"
                                         aria-hidden="true"
                                         height="1em"
                                         width="1em"
@@ -554,11 +552,11 @@ export default function ProductDetail({ product, size = null }) {
                                         <path d="M15 19l2 2l4 -4" />
                                     </svg>
                                     <span className="flex min-w-0 flex-col gap-0.5">
-                                        <span className="text-xs sm:text-[13px] font-bold leading-tight text-white">Secure Payments</span>
-                                        <span className="text-[10px] sm:text-[11px] leading-tight text-zinc-400">Safe online checkout</span>
+                                        <span className="text-xs font-bold leading-tight text-white">Secure Payments</span>
+                                        <span className="text-[10px] leading-tight text-zinc-400">Safe online checkout</span>
                                     </span>
                                 </li>
-                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:p-3.5 transition-colors duration-300 hover:border-orange-500/40">
+                                <li className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3.5 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
                                     <svg
                                         stroke="currentColor"
                                         fill="none"
@@ -566,7 +564,7 @@ export default function ProductDetail({ product, size = null }) {
                                         viewBox="0 0 24 24"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="h-6 w-6 sm:h-7 sm:w-7 shrink-0 text-orange-500"
+                                        className="h-6 w-6 shrink-0 text-orange-500"
                                         aria-hidden="true"
                                         height="1em"
                                         width="1em"
@@ -576,11 +574,11 @@ export default function ProductDetail({ product, size = null }) {
                                         <path d="M9 12l2 2l4 -4" />
                                     </svg>
                                     <span className="flex min-w-0 flex-col gap-0.5">
-                                        <span className="text-xs sm:text-[13px] font-bold leading-tight text-white">100% Genuine Products</span>
-                                        <span className="text-[10px] sm:text-[11px] leading-tight text-zinc-400">Authentic branded tyres</span>
+                                        <span className="text-xs font-bold leading-tight text-white">100% Genuine Products</span>
+                                        <span className="text-[10px] leading-tight text-zinc-400">Authentic branded tyres</span>
                                     </span>
                                 </li>
-                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 sm:p-3.5 transition-colors duration-300 hover:border-orange-500/40">
+                                <li className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3.5 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
                                     <svg
                                         stroke="currentColor"
                                         fill="none"
@@ -588,7 +586,7 @@ export default function ProductDetail({ product, size = null }) {
                                         viewBox="0 0 24 24"
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
-                                        className="h-6 w-6 sm:h-7 sm:w-7 shrink-0 text-orange-500"
+                                        className="h-6 w-6 shrink-0 text-orange-500"
                                         aria-hidden="true"
                                         height="1em"
                                         width="1em"
@@ -600,8 +598,8 @@ export default function ProductDetail({ product, size = null }) {
                                         <path d="M20 14c0 1.657-1.343 3-3 3h-1" />
                                     </svg>
                                     <span className="flex min-w-0 flex-col gap-0.5">
-                                        <span className="text-xs sm:text-[13px] font-bold leading-tight text-white">Expert Guidance</span>
-                                        <span className="text-[10px] sm:text-[11px] leading-tight text-zinc-400">Tyre advice when needed</span>
+                                        <span className="text-xs font-bold leading-tight text-white">Expert Guidance</span>
+                                        <span className="text-[10px] leading-tight text-zinc-400">Tyre advice when needed</span>
                                     </span>
                                 </li>
                             </ul>
