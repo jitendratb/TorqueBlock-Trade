@@ -341,17 +341,18 @@ export default function ProductDetail({ product, size = null }) {
                                                 aria-selected={idx === safeActiveIdx}
                                                 onClick={() => setActiveIdx(idx)}
                                                 aria-label={`View photo ${idx + 1}`}
-                                                className={`relative cursor-pointer h-12 w-12 sm:h-14 sm:w-14 lg:h-[54px] lg:w-[54px] shrink-0 overflow-hidden rounded-xl border transition-all duration-300 ${idx === safeActiveIdx
-                                                    ? "border-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.35)] ring-1 ring-orange-500/40"
-                                                    : "border-white/10 bg-white/[0.03] hover:border-white/25"
-                                                    }`}
+                                                className={`relative cursor-pointer h-12 w-12 sm:h-14 sm:w-14 lg:h-[54px] lg:w-[54px] shrink-0 overflow-hidden rounded-xl border transition-all duration-300 bg-transparent ${
+                                                    idx === safeActiveIdx
+                                                        ? "border-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.35)] opacity-100"
+                                                        : "border-transparent opacity-60 hover:opacity-100 hover:border-white/20"
+                                                }`}
                                             >
                                                 <CustomImage
                                                     src={img}
                                                     alt={`Thumbnail ${idx + 1}`}
                                                     fill
                                                     sizes="64px"
-                                                    imageClassName="transition-opacity duration-300 object-contain p-1 transition-transform duration-300 hover:scale-105"
+                                                    imageClassName="transition-opacity duration-300 object-contain p-0.5 transition-transform duration-300 hover:scale-105"
                                                 />
                                             </button>
                                         ))}

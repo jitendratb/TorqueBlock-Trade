@@ -85,49 +85,49 @@ export default function Header() {
             <header
                 data-scrolled={scrolled}
                 className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${scrolled
-                    ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
-                    : "pt-0 px-0 bg-white/[0.08] backdrop-blur-2xl border-b border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
+                    ? "pt-1.5 sm:pt-2 px-2.5 sm:px-6 lg:px-8 bg-transparent"
+                    : "pt-0 px-0 bg-white/[0.11] backdrop-blur-xl border-b border-white/20 shadow-[0_4px_20px_rgba(0,0,0,0.15)]"
                     }`}
                 style={
                     !scrolled ? {
-                        background: "rgba(255, 255, 255, 0.08)",
-                        backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%)",
-                        backdropFilter: "blur(24px)",
-                        WebkitBackdropFilter: "blur(24px)",
-                        borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
+                        background: "rgba(255, 255, 255, 0.11)",
+                        backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%)",
+                        backdropFilter: "blur(20px)",
+                        WebkitBackdropFilter: "blur(20px)",
+                        borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
                     } : undefined
                 }
             >
                 <nav
                     data-scrolled={scrolled}
                     className={`pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 text-white transition-all duration-300 ${scrolled
-                        ? "glass-header-pill backdrop-blur-xl px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl min-h-[64px] min-[360px]:min-h-[68px] sm:min-h-[72px] lg:min-h-[76px]"
-                        : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-3.5 min-[360px]:py-4 sm:py-4 lg:py-4.5 rounded-none min-h-[66px] min-[360px]:min-h-[70px] sm:min-h-[72px] lg:min-h-[76px]"
+                        ? "glass-header-pill backdrop-blur-xl px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-7 py-2 sm:py-2.5 lg:py-2.5 rounded-2xl lg:rounded-3xl min-h-[54px] sm:min-h-[58px] lg:min-h-[62px]"
+                        : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-2.5 sm:py-3 lg:py-3 rounded-none min-h-[56px] sm:min-h-[60px] lg:min-h-[64px]"
                         }`}
                     style={
                         scrolled ? {
-                            backdropFilter: "blur(24px)",
-                            WebkitBackdropFilter: "blur(24px)",
+                            backdropFilter: "blur(20px)",
+                            WebkitBackdropFilter: "blur(20px)",
                         } : undefined
                     }
                 >
                     {/* Brand Left: Company Logo + TRADE BUSINESS PORTAL */}
-                    <Link href="/" className="flex shrink-0 items-center gap-2 min-[360px]:gap-2.5 sm:gap-3.5 select-none group" aria-label="Torque Block Trade Home">
+                    <Link href="/" className="flex shrink-0 items-center gap-2 min-[360px]:gap-2.5 sm:gap-3 select-none group" aria-label="Torque Block Trade Home">
                         <Logo
                             href={null}
                             name={settings.companyName}
                             priority
-                            className="w-[78px] min-[360px]:w-[92px] min-[400px]:w-[105px] sm:w-[120px] md:w-[130px] lg:w-[145px] h-auto shrink-0"
+                            className="w-[74px] min-[360px]:w-[84px] min-[400px]:w-[95px] sm:w-[108px] md:w-[115px] lg:w-[125px] h-auto shrink-0"
                         />
-                        <span className="h-6 min-[360px]:h-7 sm:h-8 md:h-8 lg:h-9 w-px bg-white/20 shrink-0 block" />
+                        <span className="h-5 min-[360px]:h-5.5 sm:h-6 md:h-6.5 lg:h-7 w-px bg-white/20 shrink-0 block" />
                         <span className="flex shrink-0 flex-col">
-                            <span className="text-xs min-[360px]:text-sm min-[400px]:text-base sm:text-lg md:text-xl lg:text-2xl font-black uppercase tracking-tight text-orange-500 leading-none">TRADE</span>
-                            <span className="text-[6px] min-[360px]:text-[7px] min-[400px]:text-[7.5px] sm:text-[8.5px] md:text-[9.5px] lg:text-[10px] font-black uppercase tracking-[0.12em] min-[360px]:tracking-[0.14em] sm:tracking-[0.18em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">BUSINESS PORTAL</span>
+                            <span className="text-xs min-[360px]:text-sm min-[400px]:text-[15px] sm:text-base md:text-lg lg:text-xl font-black uppercase tracking-tight text-orange-500 leading-none">TRADE</span>
+                            <span className="text-[5.5px] min-[360px]:text-[6.5px] min-[400px]:text-[7px] sm:text-[7.5px] md:text-[8px] lg:text-[8.5px] font-black uppercase tracking-[0.12em] min-[360px]:tracking-[0.14em] sm:tracking-[0.16em] text-zinc-300 group-hover:text-white transition-colors leading-tight mt-0.5 whitespace-nowrap">BUSINESS PORTAL</span>
                         </span>
                     </Link>
 
                     {/* Right Action Buttons */}
-                    <div className="flex shrink-0 items-center justify-end gap-1.5 min-[360px]:gap-2 sm:gap-3">
+                    <div className="flex shrink-0 items-center justify-end gap-1.5 min-[360px]:gap-2 sm:gap-2.5">
                         {!token && (
                             <>
                                 {/* Business Login Button - Hidden on mobile, visible on tablet & laptop */}
@@ -135,9 +135,9 @@ export default function Header() {
                                     type="button"
                                     onClick={() => openLogin()}
                                     aria-label="Business Login"
-                                    className="hidden md:inline-flex h-10.5 lg:h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-3.5 lg:px-4.5 text-xs lg:text-sm font-semibold text-white transition-all hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
+                                    className="hidden md:inline-flex h-9 sm:h-9.5 lg:h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-3 lg:px-4 text-xs lg:text-[13px] font-semibold text-white transition-all hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
                                 >
-                                    <FiUser className="text-sm lg:text-base text-zinc-300 shrink-0" />
+                                    <FiUser className="text-sm text-zinc-300 shrink-0" />
                                     <span>Business Login</span>
                                 </button>
 
@@ -145,9 +145,9 @@ export default function Header() {
                                 <Link
                                     href="/register"
                                     aria-label="Register Your Business"
-                                    className="hidden md:inline-flex h-10.5 lg:h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-orange-500 px-3.5 lg:px-5 text-xs lg:text-sm font-bold text-white transition-all hover:bg-orange-600 shadow-md shadow-orange-500/25 active:scale-95 whitespace-nowrap"
+                                    className="hidden md:inline-flex h-9 sm:h-9.5 lg:h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl bg-orange-500 px-3 lg:px-4 text-xs lg:text-[13px] font-bold text-white transition-all hover:bg-orange-600 shadow-md shadow-orange-500/25 active:scale-95 whitespace-nowrap"
                                 >
-                                    <FiFileText className="text-sm lg:text-base text-white shrink-0" />
+                                    <FiFileText className="text-sm text-white shrink-0" />
                                     <span className="hidden lg:inline">Register Your Business</span>
                                     <span className="inline lg:hidden">Register</span>
                                 </Link>
@@ -159,12 +159,12 @@ export default function Header() {
                             type="button"
                             aria-label="Open order list"
                             onClick={() => setOrderListOpen(true)}
-                            className="relative inline-flex h-10.5 min-[360px]:h-11 lg:h-11.5 shrink-0 items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-2.5 min-[360px]:px-3 sm:px-3.5 lg:px-4 text-xs lg:text-sm font-bold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
+                            className="relative inline-flex h-9 min-[360px]:h-9.5 lg:h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-2.5 min-[360px]:px-3 sm:px-3.5 text-xs lg:text-[13px] font-bold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
                         >
-                            <IoCartOutline className="text-base sm:text-lg shrink-0" />
+                            <IoCartOutline className="text-base shrink-0" />
                             <span className="hidden sm:inline">Cart</span>
                             {units > 0 && (
-                                <span className="flex items-center justify-center min-w-5 h-5 px-1 bg-orange-500 text-white text-[10px] font-bold rounded-full shadow-lg"> {units} </span>
+                                <span className="flex items-center justify-center min-w-4.5 h-4.5 px-1 bg-orange-500 text-white text-[9px] font-bold rounded-full shadow-lg"> {units} </span>
                             )}
                         </button>
 
@@ -174,9 +174,9 @@ export default function Header() {
                             aria-label="Open navigation menu"
                             aria-expanded={menuOpen}
                             onClick={() => setMenuOpen(true)}
-                            className="inline-flex h-10.5 w-10.5 min-[360px]:h-11 min-[360px]:w-11 sm:h-11 sm:w-11 lg:h-11.5 lg:w-11.5 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm text-white transition-all active:scale-95 shadow-sm"
+                            className="inline-flex h-9 w-9 min-[360px]:h-9.5 min-[360px]:w-9.5 lg:h-10 lg:w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm text-white transition-all active:scale-95 shadow-sm"
                         >
-                            <IoMdMenu className="text-xl sm:text-2xl" />
+                            <IoMdMenu className="text-lg sm:text-xl" />
                         </button>
                     </div>
                 </nav>
