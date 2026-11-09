@@ -28,6 +28,69 @@ import {
 import { HiSparkles } from "react-icons/hi2";
 import StockBadge, { getAvailabilityLevel } from "./StockBadge";
 
+// Comprehensive image extractor supporting single image, array, gallery, hero, and size-specific images
+const extractImageList = (product, familyData) => {
+    const list = [];
+    const addImg = (img) => {
+        if (!img) return;
+        let u = "";
+        if (typeof img === "string") {
+            u = img.trim();
+        } else if (typeof img === "object" && img !== null) {
+            u = (img.url || img.src || img.secure_url || img.heroImage || img.image || "").trim();
+            if (!u) {
+                const numericKeys = Object.keys(img)
+                    .filter((k) => k !== "_id" && !isNaN(k))
+                    .sort((a, b) => Number(a) - Number(b));
+                if (numericKeys.length > 0) {
+                    u = numericKeys.map((k) => img[k]).join("").trim();
+                }
+            }
+        }
+        if (u) {
+            if (u.startsWith("//")) u = `https:${u}`;
+            if (!list.includes(u)) list.push(u);
+        }
+    };
+
+    // 1. Primary product stock image (renders immediately on SSR and page load)
+    if (product?.image) addImg(product.image);
+    if (Array.isArray(product?.images)) product.images.forEach(addImg);
+    if (Array.isArray(product?.productImages)) product.productImages.forEach(addImg);
+    if (product?.hero?.heroImage) addImg(product.hero.heroImage);
+
+    // 2. Family product images from intent API
+    if (Array.isArray(familyData?.productImages)) familyData.productImages.forEach(addImg);
+
+    // 3. Family hero images
+    if (familyData?.hero?.heroImage) addImg(familyData.hero.heroImage);
+    if (familyData?.hero?.mobileHeroImage) addImg(familyData.hero.mobileHeroImage);
+
+    // 4. Family gallery & general images
+    if (Array.isArray(familyData?.gallery)) familyData.gallery.forEach(addImg);
+    if (Array.isArray(familyData?.images)) familyData.images.forEach(addImg);
+
+    // 5. Family sizesIds size-specific images
+    if (Array.isArray(familyData?.sizesIds)) {
+        familyData.sizesIds.forEach((s) => {
+            if (Array.isArray(s?.sizeSpecificImages)) s.sizeSpecificImages.forEach(addImg);
+            if (s?.hero?.heroImage) addImg(s.hero.heroImage);
+            if (s?.image) addImg(s.image);
+        });
+    }
+
+    // 6. Product size images
+    if (Array.isArray(product?.sizes)) {
+        product.sizes.forEach((s) => {
+            if (s?.image) addImg(s.image);
+            if (Array.isArray(s?.images)) s.images.forEach(addImg);
+            if (Array.isArray(s?.sizeSpecificImages)) s.sizeSpecificImages.forEach(addImg);
+        });
+    }
+
+    return list.length > 0 ? list : ["/newlogo.webp"];
+};
+
 export default function ProductDetail({ product, size = null }) {
     const isApproved = useAuthStore(selectIsApproved);
     const tradePrices = useCatalogStore((s) => s.tradePrices);
@@ -43,7 +106,6 @@ export default function ProductDetail({ product, size = null }) {
     const notify = useUiStore((s) => s.notify);
 
     const [familyData, setFamilyData] = useState(null);
-    const [familyImages, setFamilyImages] = useState(null);
     const [activeIdx, setActiveIdx] = useState(0);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const [isPhotoOpen, setIsPhotoOpen] = useState(false);
@@ -59,16 +121,6 @@ export default function ProductDetail({ product, size = null }) {
         fetchProductFamily(product.identifier).then((family) => {
             if (!isMounted || !family) return;
             setFamilyData(family);
-            const list = [];
-            const addImg = (img) => {
-                if (!img) return;
-                const u = typeof img === "string" ? img.trim() : (img?.url ? String(img.url).trim() : "");
-                if (u && !list.includes(u)) list.push(u);
-            };
-            if (Array.isArray(family.productImages)) {
-                family.productImages.forEach(addImg);
-            }
-            if (list.length > 0) setFamilyImages(list);
         });
         return () => {
             isMounted = false;
@@ -76,17 +128,8 @@ export default function ProductDetail({ product, size = null }) {
     }, [product?.identifier]);
 
     const allImages = useMemo(() => {
-        if (familyImages && familyImages.length > 0) return familyImages;
-        const list = [];
-        const addImg = (img) => {
-            if (!img) return;
-            const u = typeof img === "string" ? img.trim() : (img?.url ? String(img.url).trim() : "");
-            if (u && !list.includes(u)) list.push(u);
-        };
-        if (Array.isArray(product.images)) product.images.forEach(addImg);
-        if (product.image) addImg(product.image);
-        return list.length > 0 ? list : ["/newlogo.webp"];
-    }, [familyImages, product.images, product.image]);
+        return extractImageList(product, familyData);
+    }, [product, familyData]);
 
     const safeActiveIdx = activeIdx < allImages.length ? activeIdx : 0;
     const currentImage = allImages[safeActiveIdx] || allImages[0];
@@ -341,19 +384,20 @@ export default function ProductDetail({ product, size = null }) {
                         </span>
                     </div>
 
-                    {/* 2. Main Headline: Is Vredestein Centauro NS right for your motorcycle? */}
+                    {/* 2. Main Headline: Is Eurogrip Trailhound SCR right for your motorcycle? */}
                     <h1 className="text-2xl sm:text-3xl lg:text-[3rem] font-black text-white tracking-tight leading-[1.08] mb-3 drop-shadow-lg">
+                        <span>Is </span>
                         {headlineParts ? (
                             <>
                                 <span className="text-white">{headlineParts.brand} </span>
                                 <span className="text-orange-500">{headlineParts.model}</span>
-
                             </>
                         ) : (
-                            <>
-                                <span className="text-orange-500">{product.name}</span>
-                            </>
+                            <span className="text-orange-500">{product.name}</span>
                         )}
+                        <span className="block text-zinc-300 font-medium text-lg sm:text-2xl lg:text-[2.2rem] mt-1 font-sans">
+                            right for your motorcycle?
+                        </span>
                     </h1>
 
                     {/* 3. Feature Highlights Badges Row (Horizontal Pills with Sparkles) */}

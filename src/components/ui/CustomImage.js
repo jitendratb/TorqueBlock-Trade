@@ -9,15 +9,23 @@ const FALLBACK_SRC = "/newlogo.webp";
 
 const parseImageUrl = (img) => {
     if (!img) return '';
-    if (typeof img === 'string') return img;
+    if (typeof img === 'string') {
+        const trimmed = img.trim();
+        if (trimmed.startsWith('//')) return `https:${trimmed}`;
+        return trimmed;
+    }
     if (typeof img === 'object' && img !== null) {
-        if (img.url && typeof img.url === 'string') return img.url;
+        if (img.url && typeof img.url === 'string') return parseImageUrl(img.url);
+        if (img.src && typeof img.src === 'string') return parseImageUrl(img.src);
+        if (img.secure_url && typeof img.secure_url === 'string') return parseImageUrl(img.secure_url);
+        if (img.heroImage && typeof img.heroImage === 'string') return parseImageUrl(img.heroImage);
+        if (img.image && typeof img.image === 'string') return parseImageUrl(img.image);
 
         const numericKeys = Object.keys(img)
             .filter(k => k !== '_id' && !isNaN(k))
             .sort((a, b) => Number(a) - Number(b));
         if (numericKeys.length > 0) {
-            return numericKeys.map(k => img[k]).join('');
+            return numericKeys.map(k => img[k]).join('').trim();
         }
     }
     return '';
@@ -38,6 +46,7 @@ export default function CustomImage({
     fallback = FALLBACK_SRC,
     fetchPriority,
     caption,
+    unoptimized = true,
     ...props
 }) {
     const [loading, setLoading] = useState(!priority);
@@ -46,6 +55,13 @@ export default function CustomImage({
 
     const actualSrc = parseImageUrl(src);
     const safeSrc = (typeof actualSrc === "string" && actualSrc.trim()) ? actualSrc.trim() : fallback;
+    const [prevSafeSrc, setPrevSafeSrc] = useState(safeSrc);
+
+    if (prevSafeSrc !== safeSrc) {
+        setPrevSafeSrc(safeSrc);
+        setError(false);
+    }
+
     const finalAlt = (alt && alt !== "image") ? alt : (typeof src === 'object' && src?.alt ? src.alt : alt);
     // The fallback keeps the caller's fill layout so it sits inside the same box as the real image.
     const renderFill = Boolean(fill);
@@ -81,6 +97,7 @@ export default function CustomImage({
                 width={resolvedWidth}
                 height={resolvedHeight}
                 priority={priority}
+                unoptimized={unoptimized}
                 quality={quality}
                 sizes={finalSizes}
                 className={clsx(
@@ -91,7 +108,9 @@ export default function CustomImage({
                     setLoading(false);
                 }}
                 onError={() => {
-                    setError(true);
+                    if (!error) {
+                        setError(true);
+                    }
                     setLoading(false);
                 }}
                 {...props}

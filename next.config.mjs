@@ -12,11 +12,11 @@ const nextConfig = {
   },
 
   images: {
+    unoptimized: true,
     qualities: [50, 70, 75, 85, 90],
     remotePatterns: [
-      { protocol: "https", hostname: "cdn.torqueblock.com" },
-      { protocol: "https", hostname: "**.torqueblock.com" },
-      { protocol: "https", hostname: "i.postimg.cc" },
+      { protocol: "https", hostname: "**" },
+      { protocol: "http", hostname: "**" },
     ],
   },
 
