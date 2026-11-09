@@ -260,23 +260,23 @@ export default function ProductDetail({ product, size = null }) {
             {/* Top Navigation & Breadcrumbs + Hero Showcase (Tight spacing matching torqueblock.com) */}
             <div className="space-y-1.5 sm:space-y-2">
                 {/* Top Navigation & Breadcrumbs */}
-                <div className="flex items-center justify-between gap-3 py-0.5 min-h-[30px]">
+                <div className="flex items-center justify-between gap-3 py-1 min-h-[32px]">
                     <nav aria-label="Breadcrumb" className="min-w-0 flex-1">
-                        <ol className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-[13px] md:text-sm text-zinc-400 truncate">
+                        <ol className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-[13px] md:text-sm text-zinc-300 truncate">
                             <li className="flex items-center gap-1.5 shrink-0">
-                                <Link className="transition-colors text-zinc-400 hover:text-orange-400 shrink-0 font-medium" href="/">
+                                <Link className="transition-colors text-zinc-300 hover:text-orange-400 shrink-0 font-medium" href="/">
                                     Home
                                 </Link>
-                                <span className="text-zinc-600 select-none text-[11px] sm:text-xs">›</span>
+                                <span className="text-zinc-500 select-none text-[11px] sm:text-xs">›</span>
                             </li>
                             <li className="flex items-center gap-1.5 shrink-0">
-                                <Link className="transition-colors text-zinc-400 hover:text-orange-400 shrink-0 font-medium" href="/#stock">
+                                <Link className="transition-colors text-zinc-300 hover:text-orange-400 shrink-0 font-medium" href="/#stock">
                                     Tyres
                                 </Link>
-                                <span className="text-zinc-600 select-none text-[11px] sm:text-xs">›</span>
+                                <span className="text-zinc-500 select-none text-[11px] sm:text-xs">›</span>
                             </li>
                             <li className="flex items-center gap-1.5 min-w-0 truncate">
-                                <span className="text-white font-semibold truncate" aria-current="page">
+                                <span className="text-white font-bold truncate" aria-current="page">
                                     {size ? `${product.name} (${size.size})` : product.name}
                                 </span>
                             </li>
