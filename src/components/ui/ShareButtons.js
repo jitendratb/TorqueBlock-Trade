@@ -62,13 +62,13 @@ export default function ShareButtons({ path, title, text, size = "md", iconOnly 
         <div className={clsx("inline-flex items-center gap-1.5", className)}>
             {!copyOnly && (
                 <button type="button" onClick={share} aria-label={`Share ${title}`} title="Share" className={clsx(BUTTON, SIZES[size])}>
-                    <FiShare2 className="text-orange-400" />
-                    {!iconOnly && <span>Share</span>}
+                    <FiShare2 className="text-orange-400 shrink-0" />
+                    {!iconOnly && <span className="hidden min-[480px]:inline">Share</span>}
                 </button>
             )}
             <button type="button" onClick={copy} aria-label={`Copy link to ${title}`} title="Copy link" className={clsx(BUTTON, SIZES[size])}>
-                {copied ? <FiCheck className="text-emerald-400" /> : <FiLink className="text-orange-400" />}
-                {!iconOnly && <span>{copied ? "Copied" : "Copy link"}</span>}
+                {copied ? <FiCheck className="text-emerald-400 shrink-0" /> : <FiLink className="text-orange-400 shrink-0" />}
+                {!iconOnly && <span className="hidden min-[480px]:inline">{copied ? "Copied" : "Copy link"}</span>}
             </button>
         </div>
     );
