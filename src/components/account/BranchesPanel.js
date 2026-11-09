@@ -87,7 +87,7 @@ function BranchForm({ branch, onDone }) {
     };
 
     return (
-        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-4 shadow-sm">
             {isEdit && (
                 <p className="text-xs font-bold text-zinc-300">
                     Editing <span className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[10px]">{branch.branchCode}</span>
@@ -127,7 +127,7 @@ function BranchCard({ branch, canManage, onEdit }) {
     const stats = branch.stats || {};
 
     return (
-        <li className="space-y-2 rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs">
+        <li className="space-y-2 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:bg-white/[0.07] transition-colors p-3.5 text-xs shadow-sm">
             <div className="flex items-start justify-between gap-2">
                 <p className="flex flex-wrap items-center gap-2 text-sm font-black text-white">
                     <FiMapPin className="text-orange-400" /> {branch.branchName}

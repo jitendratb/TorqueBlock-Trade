@@ -41,24 +41,24 @@ export default function BusinessAccount() {
 
     return (
         <div className="space-y-4 sm:space-y-5">
-            {/* Top 4 Stat Cards - Matching Reference Screenshot */}
+            {/* Top 4 Stat Cards - Light Frosted Blur */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 {/* 1. BUSINESS PROFILE */}
                 <div
                     onClick={() => setTab("profile")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         active === "profile"
-                            ? "bg-[#181E2C] border-orange-500/40 shadow-lg shadow-orange-500/5 ring-1 ring-orange-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-orange-500/15 via-white/[0.04] to-transparent border-orange-500/40 shadow-orange-500/10 ring-1 ring-orange-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">BUSINESS PROFILE</p>
                         <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
                             {profile?.isApproved ? "VERIFIED" : "PENDING"}
                         </p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#2D2115] border border-orange-500/20 text-[#FF8A3D] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-orange-500/15 border border-orange-500/30 text-orange-400 shrink-0 shadow-sm">
                         <FiBriefcase className="text-lg sm:text-xl" />
                     </div>
                 </div>
@@ -68,19 +68,19 @@ export default function BusinessAccount() {
                     onClick={() => {
                         if (tabs.some((t) => t.id === "credit")) setTab("credit");
                     }}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         active === "credit"
-                            ? "bg-[#181E2C] border-sky-500/40 shadow-lg shadow-sky-500/5 ring-1 ring-sky-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-sky-500/15 via-white/[0.04] to-transparent border-sky-500/40 shadow-sky-500/10 ring-1 ring-sky-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">CREDIT LINE</p>
                         <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
                             {account?.creditLimit ? formatINR(account.creditLimit) : "PAY ONLINE"}
                         </p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#14233D] border border-sky-500/20 text-[#38BDF8] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-sky-500/15 border border-sky-500/30 text-sky-400 shrink-0 shadow-sm">
                         <FiCreditCard className="text-lg sm:text-xl" />
                     </div>
                 </div>
@@ -90,19 +90,19 @@ export default function BusinessAccount() {
                     onClick={() => {
                         if (tabs.some((t) => t.id === "branches")) setTab("branches");
                     }}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         active === "branches"
-                            ? "bg-[#181E2C] border-emerald-500/40 shadow-lg shadow-emerald-500/5 ring-1 ring-emerald-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-emerald-500/15 via-white/[0.04] to-transparent border-emerald-500/40 shadow-emerald-500/10 ring-1 ring-emerald-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">BRANCHES</p>
                         <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
                             {account?.branches?.length || 1}
                         </p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#132E27] border border-emerald-500/20 text-[#34D399] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shrink-0 shadow-sm">
                         <FiMapPin className="text-lg sm:text-xl" />
                     </div>
                 </div>
@@ -112,26 +112,26 @@ export default function BusinessAccount() {
                     onClick={() => {
                         if (tabs.some((t) => t.id === "team")) setTab("team");
                     }}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         active === "team"
-                            ? "bg-[#181E2C] border-rose-500/40 shadow-lg shadow-rose-500/5 ring-1 ring-rose-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-rose-500/15 via-white/[0.04] to-transparent border-rose-500/40 shadow-rose-500/10 ring-1 ring-rose-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">TEAM MEMBERS</p>
                         <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
                             {account?.team?.length || 1}
                         </p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#331824] border border-rose-500/20 text-[#F43F5E] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-400 shrink-0 shadow-sm">
                         <FiUsers className="text-lg sm:text-xl" />
                     </div>
                 </div>
             </div>
 
-            {/* Navigation / Tabs Strip - Matching Reference Screenshot */}
-            <div className="rounded-2xl bg-[#131722] border border-white/5 p-2 sm:p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+            {/* Navigation / Tabs Strip - Light Frosted Blur */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-2 sm:p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 backdrop-blur-xl shadow-lg">
                 <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
                     {tabs.map(({ id, label, Icon }) => {
                         const isActive = active === id;
@@ -142,8 +142,8 @@ export default function BusinessAccount() {
                                 onClick={() => setTab(id)}
                                 className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider transition ${
                                     isActive
-                                        ? "bg-white/10 text-white border border-white/15 shadow-sm"
-                                        : "text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent"
+                                        ? "bg-white/[0.12] text-white border border-white/20 shadow-sm backdrop-blur-sm"
+                                        : "text-zinc-400 hover:text-white hover:bg-white/[0.06] border border-transparent"
                                 }`}
                             >
                                 <Icon className="text-xs shrink-0" />
@@ -160,8 +160,9 @@ export default function BusinessAccount() {
                 </div>
             </div>
 
-            {/* Active Panel Content Card */}
-            <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-4 sm:p-5 md:p-6 space-y-4 shadow-sm">
+            {/* Active Panel Content Card - Light Frosted Glass */}
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-4 sm:p-5 md:p-6 space-y-4 shadow-xl backdrop-blur-xl">
+                <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
                 {active === "profile" ? (
                     <TradeProfilePanel />
                 ) : accountStatus === "loading" && !account ? (

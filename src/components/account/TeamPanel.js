@@ -62,7 +62,7 @@ function AddMemberForm({ onDone }) {
     };
 
     return (
-        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-white/10 bg-white/5 p-4">
+        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-4 shadow-sm">
             <FormFields fields={fields} values={form} errors={errors} onChange={onChange} idPrefix="member-" />
             <Notice>Once approved by admin, they can log in with this mobile number and order for your business at your trade prices.</Notice>
             <FormError>{error}</FormError>
@@ -109,7 +109,7 @@ function MemberRow({ member }) {
     const remove = () => run(() => removeSalesman(memberId), `Removed ${member.name} from your business account.`);
 
     return (
-        <li className="flex flex-col justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs sm:flex-row sm:items-center">
+        <li className="flex flex-col justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:bg-white/[0.07] transition-colors p-3.5 text-xs sm:flex-row sm:items-center shadow-sm">
             <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
                     <span className="text-sm font-black text-white">{member.name || member.phone}</span>
@@ -165,7 +165,7 @@ function MemberRow({ member }) {
                             setMode("edit");
                         }}
                         title={`Change branch for ${member.name}`}
-                        className="rounded-xl border border-white/10 bg-white/5 p-2 text-zinc-400 hover:border-orange-500/30 hover:bg-orange-500/10 hover:text-orange-400 transition shrink-0"
+                        className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-zinc-400 hover:border-orange-500/30 hover:bg-orange-500/10 hover:text-orange-400 backdrop-blur-sm transition shrink-0"
                     >
                         <FiEdit2 size={14} />
                     </button>
@@ -173,7 +173,7 @@ function MemberRow({ member }) {
                         type="button"
                         onClick={() => setMode("remove")}
                         title={`Remove ${member.name}`}
-                        className="rounded-xl border border-white/10 bg-white/5 p-2 text-zinc-400 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 transition shrink-0"
+                        className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-zinc-400 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 backdrop-blur-sm transition shrink-0"
                     >
                         <FiTrash2 size={14} />
                     </button>

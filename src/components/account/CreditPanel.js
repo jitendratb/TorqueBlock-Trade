@@ -34,7 +34,7 @@ function LedgerEntry({ entry }) {
     const reference = entry.orderReceipt || entry.referenceNo;
 
     return (
-        <li className="flex items-start justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 p-3 text-xs">
+        <li className="flex items-start justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:bg-white/[0.07] transition-colors p-3 text-xs shadow-sm">
             <div className="min-w-0 space-y-0.5">
                 <p className="font-bold text-white">
                     {label}

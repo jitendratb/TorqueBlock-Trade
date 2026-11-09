@@ -112,18 +112,19 @@ export default function OrderHistory() {
 
     if (!token) {
         return (
-            <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-8 sm:p-12 text-center shadow-lg space-y-4">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 shadow-sm">
+            <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-8 sm:p-12 text-center shadow-xl backdrop-blur-xl space-y-4">
+                <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="relative mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/15 border border-orange-500/30 text-orange-400 shadow-sm">
                     <FiFileText className="text-2xl" />
                 </div>
-                <div>
+                <div className="relative">
                     <h2 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white">Trade Order Portal</h2>
                     <p className="mx-auto mt-2 max-w-md text-xs sm:text-sm text-zinc-400 leading-relaxed">
                         Log in with your registered trade phone number to view live order tracking, proforma invoices, and dispatch status.
                     </p>
                 </div>
-                <div className="pt-2">
-                    <Button size="lg" className="justify-center py-3 px-8 bg-orange-500 hover:bg-orange-600 text-xs font-bold uppercase tracking-wider text-white rounded-xl shadow-lg shadow-orange-500/25" onClick={openLogin}>
+                <div className="relative pt-2">
+                    <Button size="lg" className="justify-center py-3 px-8 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-xs font-bold uppercase tracking-wider text-white rounded-xl shadow-lg shadow-orange-500/25" onClick={openLogin}>
                         Trade Login
                     </Button>
                 </div>
@@ -140,17 +141,17 @@ export default function OrderHistory() {
                 {/* 1. ALL ORDERS */}
                 <div
                     onClick={() => setActiveTab("all")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         activeTab === "all"
-                            ? "bg-[#181E2C] border-orange-500/40 shadow-lg shadow-orange-500/5 ring-1 ring-orange-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-orange-500/15 via-white/[0.04] to-transparent border-orange-500/40 shadow-orange-500/10 ring-1 ring-orange-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">ALL ORDERS</p>
                         <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.all}</p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#2D2115] border border-orange-500/20 text-[#FF8A3D] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-orange-500/15 border border-orange-500/30 text-orange-400 shrink-0 shadow-sm">
                         <FiFileText className="text-lg sm:text-xl" />
                     </div>
                 </div>
@@ -158,17 +159,17 @@ export default function OrderHistory() {
                 {/* 2. PENDING */}
                 <div
                     onClick={() => setActiveTab("pending")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         activeTab === "pending"
-                            ? "bg-[#181E2C] border-sky-500/40 shadow-lg shadow-sky-500/5 ring-1 ring-sky-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-sky-500/15 via-white/[0.04] to-transparent border-sky-500/40 shadow-sky-500/10 ring-1 ring-sky-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">PENDING</p>
                         <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.pending}</p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#14233D] border border-sky-500/20 text-[#38BDF8] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-sky-500/15 border border-sky-500/30 text-sky-400 shrink-0 shadow-sm">
                         <FiActivity className="text-lg sm:text-xl" />
                     </div>
                 </div>
@@ -176,17 +177,17 @@ export default function OrderHistory() {
                 {/* 3. CONFIRMED */}
                 <div
                     onClick={() => setActiveTab("confirmed")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         activeTab === "confirmed"
-                            ? "bg-[#181E2C] border-emerald-500/40 shadow-lg shadow-emerald-500/5 ring-1 ring-emerald-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-emerald-500/15 via-white/[0.04] to-transparent border-emerald-500/40 shadow-emerald-500/10 ring-1 ring-emerald-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">CONFIRMED</p>
                         <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.confirmed}</p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#132E27] border border-emerald-500/20 text-[#34D399] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shrink-0 shadow-sm">
                         <FiCheckCircle className="text-lg sm:text-xl" />
                     </div>
                 </div>
@@ -194,24 +195,24 @@ export default function OrderHistory() {
                 {/* 4. CANCELLED */}
                 <div
                     onClick={() => setActiveTab("cancelled")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                    className={`cursor-pointer relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg ${
                         activeTab === "cancelled"
-                            ? "bg-[#181E2C] border-rose-500/40 shadow-lg shadow-rose-500/5 ring-1 ring-rose-500/20"
-                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                            ? "bg-gradient-to-br from-rose-500/15 via-white/[0.04] to-transparent border-rose-500/40 shadow-rose-500/10 ring-1 ring-rose-500/30"
+                            : "bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent border-white/10 hover:border-white/25 hover:bg-white/[0.05]"
                     }`}
                 >
-                    <div>
+                    <div className="relative z-10">
                         <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">CANCELLED</p>
                         <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.cancelled}</p>
                     </div>
-                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#331824] border border-rose-500/20 text-[#F43F5E] shrink-0">
+                    <div className="relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-rose-500/15 border border-rose-500/30 text-rose-400 shrink-0 shadow-sm">
                         <FiXCircle className="text-lg sm:text-xl" />
                     </div>
                 </div>
             </div>
 
-            {/* Filter Tabs & Search Bar Strip - Matching Reference Screenshot */}
-            <div className="rounded-2xl bg-[#131722] border border-white/5 p-2 sm:p-2.5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm">
+            {/* Filter Tabs & Search Bar Strip - Light Frosted Blur */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-2 sm:p-2.5 flex flex-col md:flex-row md:items-center justify-between gap-3 backdrop-blur-xl shadow-lg">
                 {/* Filter Tabs on Left */}
                 <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
                     {[
@@ -231,14 +232,14 @@ export default function OrderHistory() {
                                 }}
                                 className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider transition ${
                                     active
-                                        ? "bg-white/10 text-white border border-white/15 shadow-sm"
-                                        : "text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent"
+                                        ? "bg-white/[0.12] text-white border border-white/20 shadow-sm backdrop-blur-sm"
+                                        : "text-zinc-400 hover:text-white hover:bg-white/[0.06] border border-transparent"
                                 }`}
                             >
                                 <span>{tab.label}</span>
                                 <span
                                     className={`text-[10px] px-1.5 py-0.2 rounded-full font-semibold ${
-                                        active ? "bg-white/10 text-zinc-300" : "bg-white/5 text-zinc-500"
+                                        active ? "bg-white/15 text-zinc-200" : "bg-white/5 text-zinc-500"
                                     }`}
                                 >
                                     {tab.count}
@@ -250,7 +251,7 @@ export default function OrderHistory() {
 
                 {/* Search Bar on Right */}
                 <div className="relative w-full md:w-80">
-                    <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none" />
+                    <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 text-xs pointer-events-none" />
                     <input
                         type="text"
                         value={searchQuery}
@@ -259,7 +260,7 @@ export default function OrderHistory() {
                             setState((s) => ({ ...s, page: 1 }));
                         }}
                         placeholder="Search order, tyre, tracking #..."
-                        className="w-full rounded-full bg-black/30 border border-white/10 pl-8 pr-4 py-1.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/40 transition"
+                        className="w-full rounded-full bg-white/[0.04] hover:bg-white/[0.06] border border-white/10 pl-8 pr-4 py-1.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-orange-500/40 backdrop-blur-sm transition"
                     />
                 </div>
             </div>
@@ -311,8 +312,9 @@ export default function OrderHistory() {
                     return (
                         <article
                             key={order._id}
-                            className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-4 sm:p-5 md:p-6 space-y-3.5 shadow-sm transition hover:border-white/10"
+                            className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-4 sm:p-5 md:p-6 space-y-3.5 shadow-xl backdrop-blur-xl transition hover:border-white/20"
                         >
+                            <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
                             {/* Order Card Header */}
                             <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
@@ -409,7 +411,7 @@ export default function OrderHistory() {
                                     return (
                                         <div
                                             key={item._id || idx}
-                                            className="rounded-xl sm:rounded-2xl bg-[#1A1F2C] border border-white/5 p-3.5 sm:p-4 flex items-center justify-between gap-4"
+                                            className="rounded-xl sm:rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 backdrop-blur-sm p-3.5 sm:p-4 flex items-center justify-between gap-4 transition-colors"
                                         >
                                             <div className="flex items-center gap-3.5 min-w-0">
                                                 {/* Tyre Image Box */}
@@ -472,7 +474,7 @@ export default function OrderHistory() {
                                 </button>
 
                                 {isExpanded && (
-                                    <div className="mt-3 rounded-xl sm:rounded-2xl bg-[#1A1F2C] border border-white/5 p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                    <div className="mt-3 rounded-xl sm:rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs shadow-inner">
                                         {/* Shipping / Delivery */}
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">DELIVERY DETAILS</p>

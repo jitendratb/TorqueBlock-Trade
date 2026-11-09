@@ -96,29 +96,14 @@ export default function Header() {
         <div>
             <header
                 data-scrolled={scrolled}
-                className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${scrolled
-                    ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
-                    : "pt-0 px-0 bg-white/10 backdrop-blur-xl border-b border-white/15"
-                    }`}
-                style={
-                    !scrolled ? {
-                        backdropFilter: "blur(24px)",
-                        WebkitBackdropFilter: "blur(24px)",
-                    } : undefined
-                }
+                className="fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
             >
                 <nav
                     data-scrolled={scrolled}
-                    className={`pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 text-white transition-all duration-300 ${scrolled
-                        ? "glass-header-pill backdrop-blur-xl px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl min-h-[64px] min-[360px]:min-h-[68px] sm:min-h-[72px] lg:min-h-[76px]"
-                        : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-3.5 min-[360px]:py-4 sm:py-4 lg:py-4.5 rounded-none min-h-[66px] min-[360px]:min-h-[70px] sm:min-h-[72px] lg:min-h-[76px]"
+                    className={`pointer-events-auto mx-auto w-full max-w-7xl flex items-center justify-between gap-2.5 min-[360px]:gap-3 sm:gap-4 lg:gap-6 text-white transition-all duration-300 glass-header-pill backdrop-blur-2xl rounded-2xl lg:rounded-3xl ${scrolled
+                        ? "px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2 min-[360px]:py-2.5 sm:py-3 lg:py-3.5 shadow-2xl"
+                        : "px-3.5 min-[360px]:px-4 sm:px-5 md:px-6 lg:px-8 py-2.5 min-[360px]:py-3 sm:py-3.5 lg:py-4 shadow-xl"
                         }`}
-                    style={
-                        scrolled ? {
-                            backdropFilter: "blur(24px)",
-                            WebkitBackdropFilter: "blur(24px)",
-                        } : undefined
-                    }
                 >
                     {/* Brand Left: Company Logo + TRADE BUSINESS PORTAL */}
                     <Link href="/" className="flex shrink-0 items-center gap-2 min-[360px]:gap-2.5 sm:gap-3.5 select-none group" aria-label="Torque Block Trade Home">
@@ -144,7 +129,7 @@ export default function Header() {
                                     type="button"
                                     onClick={() => openLogin()}
                                     aria-label="Business Login"
-                                    className="hidden md:inline-flex h-10.5 lg:h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 px-3.5 lg:px-4.5 text-xs lg:text-sm font-semibold text-white transition-all hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
+                                    className="hidden md:inline-flex h-10.5 lg:h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-3.5 lg:px-4.5 text-xs lg:text-sm font-semibold text-white transition-all hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
                                 >
                                     <FiUser className="text-sm lg:text-base text-zinc-300 shrink-0" />
                                     <span>Business Login</span>
@@ -168,7 +153,7 @@ export default function Header() {
                             type="button"
                             aria-label="Open order list"
                             onClick={() => setOrderListOpen(true)}
-                            className="relative inline-flex h-10.5 min-[360px]:h-11 lg:h-11.5 shrink-0 items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 px-2.5 min-[360px]:px-3 sm:px-3.5 lg:px-4 text-xs lg:text-sm font-bold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
+                            className="relative inline-flex h-10.5 min-[360px]:h-11 lg:h-11.5 shrink-0 items-center justify-center gap-1.5 sm:gap-2 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-2.5 min-[360px]:px-3 sm:px-3.5 lg:px-4 text-xs lg:text-sm font-bold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
                         >
                             <IoCartOutline className="text-base sm:text-lg shrink-0" />
                             <span className="hidden sm:inline">Cart</span>
@@ -185,7 +170,7 @@ export default function Header() {
                             aria-label="Open navigation menu"
                             aria-expanded={menuOpen}
                             onClick={() => setMenuOpen(true)}
-                            className="inline-flex h-10.5 w-10.5 min-[360px]:h-11 min-[360px]:w-11 sm:h-11 sm:w-11 lg:h-11.5 lg:w-11.5 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 text-white transition-all active:scale-95 shadow-sm"
+                            className="inline-flex h-10.5 w-10.5 min-[360px]:h-11 min-[360px]:w-11 sm:h-11 sm:w-11 lg:h-11.5 lg:w-11.5 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm text-white transition-all active:scale-95 shadow-sm"
                         >
                             <IoMdMenu className="text-xl sm:text-2xl" />
                         </button>
@@ -198,7 +183,7 @@ export default function Header() {
                 open={menuOpen}
                 onClose={() => setMenuOpen(false)}
                 label="Menu"
-                className="max-w-md w-full bg-[#0D111A]"
+                className="max-w-md w-full bg-[#0D111A]/95 backdrop-blur-2xl border-l border-white/10"
                 header={
                     <div className="flex items-center gap-2">
                         <Logo href={null} name={settings.companyName} className="w-[84px] sm:w-[100px] shrink-0" />
@@ -252,8 +237,8 @@ export default function Header() {
                                 type="button"
                                 onClick={() => handleNavigate("/")}
                                 className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${pathname === "/"
-                                    ? "bg-[#181E2C] border-white/20 shadow-sm"
-                                    : "bg-[#131823] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
+                                    ? "bg-orange-500/15 border-orange-500/40 shadow-sm shadow-orange-500/10 backdrop-blur-sm"
+                                    : "bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.08] backdrop-blur-sm"
                                     }`}
                             >
                                 <FiHome className="text-xl text-zinc-300" />
@@ -267,8 +252,8 @@ export default function Header() {
                                 type="button"
                                 onClick={() => handleNavigate("/orders")}
                                 className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${pathname === "/orders"
-                                    ? "bg-[#251A18] border-[#FF5B26]/50 shadow-sm shadow-[#FF5B26]/10"
-                                    : "bg-[#221818] border-[#FF5B26]/35 hover:border-[#FF5B26]/55 hover:bg-[#281b1b]"
+                                    ? "bg-orange-500/15 border-orange-500/40 shadow-sm shadow-orange-500/10 backdrop-blur-sm"
+                                    : "bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.08] backdrop-blur-sm"
                                     }`}
                             >
                                 <FiFileText className="text-xl text-[#FF5B26]" />
@@ -282,8 +267,8 @@ export default function Header() {
                                 type="button"
                                 onClick={() => (token ? handleNavigate("/account") : openLogin())}
                                 className={`rounded-2xl border transition-all p-3.5 text-left flex flex-col justify-between h-24 ${pathname === "/account"
-                                    ? "bg-[#181E2C] border-white/20 shadow-sm"
-                                    : "bg-[#131823] border-white/10 hover:border-white/20 hover:bg-white/[0.04]"
+                                    ? "bg-orange-500/15 border-orange-500/40 shadow-sm shadow-orange-500/10 backdrop-blur-sm"
+                                    : "bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.08] backdrop-blur-sm"
                                     }`}
                             >
                                 <FiUser className="text-xl text-zinc-300" />
@@ -312,7 +297,7 @@ export default function Header() {
                                             handleNavigate(service.path);
                                         }
                                     }}
-                                    className="w-full flex items-center justify-between rounded-2xl bg-[#131823] border border-white/10 p-3 sm:p-3.5 text-left text-white hover:bg-white/[0.06] hover:border-[#FF5B26]/40 transition group"
+                                    className="w-full flex items-center justify-between rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-[#FF5B26]/40 p-3 sm:p-3.5 text-left text-white backdrop-blur-sm transition group"
                                 >
                                     <div className="flex items-center gap-3 min-w-0">
                                         <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center shrink-0 text-[#FF5B26] group-hover:scale-105 group-hover:bg-orange-500/20 transition-all">
