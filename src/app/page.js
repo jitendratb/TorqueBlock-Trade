@@ -19,7 +19,7 @@ export default async function HomePage({ searchParams }) {
   return (
     <main className="bg-[#0B0F19]">
       <StockHero heroImages={getHeroImages(settings.heroImage)} companyName={settings.companyName} brands={stock.brands} searchIndex={toSearchIndex(stock.products)} />
-      <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-10">
+      <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <Suspense fallback={<div className="min-h-[400px]" />}>
           <StockList stock={stock} />
         </Suspense>

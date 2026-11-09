@@ -386,7 +386,6 @@ export default function ProductDetail({ product, size = null }) {
 
                     {/* 2. Main Headline: Is Eurogrip Trailhound SCR right for your motorcycle? */}
                     <h1 className="text-2xl sm:text-3xl lg:text-[3rem] font-black text-white tracking-tight leading-[1.08] mb-3 drop-shadow-lg">
-                        <span>Is </span>
                         {headlineParts ? (
                             <>
                                 <span className="text-white">{headlineParts.brand} </span>
@@ -395,9 +394,6 @@ export default function ProductDetail({ product, size = null }) {
                         ) : (
                             <span className="text-orange-500">{product.name}</span>
                         )}
-                        <span className="block text-zinc-300 font-medium text-lg sm:text-2xl lg:text-[2.2rem] mt-1 font-sans">
-                            right for your motorcycle?
-                        </span>
                     </h1>
 
                     {/* 3. Feature Highlights Badges Row (Horizontal Pills with Sparkles) */}

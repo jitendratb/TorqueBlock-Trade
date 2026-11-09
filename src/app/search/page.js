@@ -39,7 +39,7 @@ export default async function SearchPage() {
       </PageHero>
 
       <div className="bg-[#0B0F19] pb-20">
-        <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 pt-8">
+        <section id="stock" className="scroll-mt-24 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-8">
           <Suspense fallback={<div className="min-h-[400px]" />}>
             <StockList stock={stock} />
           </Suspense>

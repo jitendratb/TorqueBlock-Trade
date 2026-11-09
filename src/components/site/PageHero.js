@@ -7,7 +7,7 @@ export default function PageHero({ eyebrow, title, accent, description, children
             {/* <span aria-hidden="true" className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[60rem] -translate-x-1/2 rounded-full bg-orange-500/15 blur-3xl" /> */}
             {/* <span aria-hidden="true" className="hero-apex-line pointer-events-none absolute inset-x-0 bottom-0 h-px" /> */}
 
-            <div className="relative mx-auto max-w-7xl px-4 text-white">
+            <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
                 {eyebrow && (
                     <div className="flex items-center gap-2">
                         <BsSpeedometer2 aria-hidden="true" className="text-orange-500 text-sm sm:text-base shrink-0" />

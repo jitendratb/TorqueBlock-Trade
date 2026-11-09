@@ -136,7 +136,7 @@ export default function OrderHistory() {
             </div>
 
             {/* Status Statistics Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
                 {/* ALL ORDERS */}
                 <div
                     onClick={() => setActiveTab("all")}
@@ -405,7 +405,7 @@ export default function OrderHistory() {
                                     return (
                                         <div
                                             key={item._id || idx}
-                                            className="rounded-2xl bg-[#1C212E] p-4 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-white/5"
+                                            className="rounded-2xl bg-[#1C212E] p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 border border-white/5"
                                         >
                                             <div className="flex items-center gap-3 md:gap-4">
                                                 {/* Product Image Container with crisp white background for black tyres */}
@@ -446,7 +446,7 @@ export default function OrderHistory() {
                                                 </div>
                                             </div>
 
-                                            <div className="text-right">
+                                            <div className="text-right shrink-0">
                                                 <p className="text-base md:text-lg font-black text-white">{formatINR(itemPrice)}</p>
                                             </div>
                                         </div>

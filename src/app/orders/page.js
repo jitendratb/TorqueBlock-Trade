@@ -19,7 +19,7 @@ export default function OrdersPage() {
                 description="Monitor live dispatch status, download GST invoices, and reorder tyre stock for your workshop or dealership."
             />
             <div className="bg-[#0B0F19] pb-20">
-                <div className="mx-auto max-w-6xl px-4 md:px-6">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <OrderHistory />
                 </div>
             </div>
