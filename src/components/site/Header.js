@@ -1,36 +1,24 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
-import { IoMdMenu } from "react-icons/io";
-import { IoCartOutline } from "react-icons/io5";
-import {
-    FiHome,
-    FiFileText,
-    FiUser,
-    FiLogOut,
-    FiChevronRight,
-    FiTruck,
-    FiRotateCcw,
-    FiShield,
-    FiPackage,
-    FiSearch,
-    FiCreditCard
-} from "react-icons/fi";
-import { FaWhatsapp } from "react-icons/fa";
-import { Logo, Drawer } from "@/ui";
-import { useUiStore } from "@/store/ui.store";
 import { whatsappLink } from "@/lib/format";
 import { useAuthStore } from "@/store/authStore";
-import { useOrderListStore, selectUnits } from "@/store/orderStore";
+import { selectUnits, useOrderListStore } from "@/store/orderStore";
+import { useUiStore } from "@/store/ui.store";
+import { Drawer, Logo } from "@/ui";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
+import { FiChevronRight, FiCreditCard, FiFileText, FiHome, FiLogOut, FiPackage, FiRotateCcw, FiSearch, FiShield, FiTruck, FiUser } from "react-icons/fi";
+import { IoMdMenu } from "react-icons/io";
+import { IoCartOutline } from "react-icons/io5";
 import { useSettings } from "./SettingsProvider";
 
 const TRADE_SERVICES = [
     {
         title: "Live Stock & Inventory",
         subtitle: "Real-time tyre availability & quantities",
-        path: "/#stock",
+        path: "/stock",
         Icon: FiPackage,
     },
     {
@@ -98,15 +86,13 @@ export default function Header() {
                 data-scrolled={scrolled}
                 className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${scrolled
                     ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
-                    : "pt-0 px-0 bg-white/[0.06] backdrop-blur-xl border-b border-white/10"
+                    : "pt-0 px-0 bg-white/[10.06] backdrop-blur-xl border-b border-white/10"
                     }`}
                 style={
-                    !scrolled
-                        ? {
-                              backdropFilter: "blur(24px)",
-                              WebkitBackdropFilter: "blur(24px)",
-                          }
-                        : undefined
+                    !scrolled ? {
+                        backdropFilter: "blur(24px)",
+                        WebkitBackdropFilter: "blur(20px)",
+                    } : undefined
                 }
             >
                 <nav
@@ -116,12 +102,10 @@ export default function Header() {
                         : "px-4 min-[360px]:px-5 sm:px-6 md:px-6 lg:px-8 py-3.5 min-[360px]:py-4 sm:py-4 lg:py-4.5 rounded-none min-h-[66px] min-[360px]:min-h-[70px] sm:min-h-[72px] lg:min-h-[76px]"
                         }`}
                     style={
-                        scrolled
-                            ? {
-                                  backdropFilter: "blur(24px)",
-                                  WebkitBackdropFilter: "blur(24px)",
-                              }
-                            : undefined
+                        scrolled ? {
+                            backdropFilter: "blur(24px)",
+                            WebkitBackdropFilter: "blur(24px)",
+                        } : undefined
                     }
                 >
                     {/* Brand Left: Company Logo + TRADE BUSINESS PORTAL */}
@@ -177,9 +161,7 @@ export default function Header() {
                             <IoCartOutline className="text-base sm:text-lg shrink-0" />
                             <span className="hidden sm:inline">Cart</span>
                             {units > 0 && (
-                                <span className="flex items-center justify-center min-w-5 h-5 px-1 bg-orange-500 text-white text-[10px] font-bold rounded-full shadow-lg">
-                                    {units}
-                                </span>
+                                <span className="flex items-center justify-center min-w-5 h-5 px-1 bg-orange-500 text-white text-[10px] font-bold rounded-full shadow-lg"> {units} </span>
                             )}
                         </button>
 
@@ -208,12 +190,8 @@ export default function Header() {
                         <Logo href={null} name={settings.companyName} className="w-[84px] sm:w-[100px] shrink-0" />
                         <span className="h-5 sm:h-6 w-px bg-white/20 shrink-0 block" />
                         <span className="flex flex-col">
-                            <span className="text-xs sm:text-sm font-black uppercase tracking-tight text-orange-500 leading-none">
-                                TRADE
-                            </span>
-                            <span className="text-[6.5px] sm:text-[8px] font-black uppercase tracking-[0.14em] text-zinc-300 leading-tight mt-0.5 whitespace-nowrap">
-                                BUSINESS PORTAL
-                            </span>
+                            <span className="text-xs sm:text-sm font-black uppercase tracking-tight text-orange-500 leading-none"> TRADE </span>
+                            <span className="text-[6.5px] sm:text-[8px] font-black uppercase tracking-[0.14em] text-zinc-300 leading-tight mt-0.5 whitespace-nowrap"> BUSINESS PORTAL </span>
                         </span>
                     </div>
                 }
@@ -246,9 +224,7 @@ export default function Header() {
 
                     {/* PORTAL NAVIGATION */}
                     <div>
-                        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#FF5B26] mb-3">
-                            PORTAL NAVIGATION
-                        </p>
+                        <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[#FF5B26] mb-3"> PORTAL NAVIGATION </p>
 
                         <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
                             {/* HOME */}
@@ -261,9 +237,7 @@ export default function Header() {
                                     }`}
                             >
                                 <FiHome className="text-xl text-zinc-300" />
-                                <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-white">
-                                    HOME
-                                </span>
+                                <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-white"> HOME </span>
                             </button>
 
                             {/* MY ORDERS */}
@@ -276,9 +250,7 @@ export default function Header() {
                                     }`}
                             >
                                 <FiFileText className="text-xl text-[#FF5B26]" />
-                                <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#FF5B26]">
-                                    MY ORDERS
-                                </span>
+                                <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-[#FF5B26]"> MY ORDERS </span>
                             </button>
 
                             {/* MY ACCOUNT */}
@@ -345,7 +317,7 @@ export default function Header() {
 
                         <div className="grid grid-cols-2 gap-2">
                             <Link
-                                href="/support-and-policy/policy-shipping"
+                                href="/policy-shipping"
                                 onClick={() => setMenuOpen(false)}
                                 className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
                             >
@@ -353,7 +325,7 @@ export default function Header() {
                                 <span className="truncate">Shipping</span>
                             </Link>
                             <Link
-                                href="/support-and-policy/policy-return"
+                                href="/policy-return"
                                 onClick={() => setMenuOpen(false)}
                                 className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
                             >
@@ -361,7 +333,7 @@ export default function Header() {
                                 <span className="truncate">Returns</span>
                             </Link>
                             <Link
-                                href="/support-and-policy/policy-terms-and-condition"
+                                href="policy-terms"
                                 onClick={() => setMenuOpen(false)}
                                 className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
                             >
@@ -369,7 +341,7 @@ export default function Header() {
                                 <span className="truncate">Terms</span>
                             </Link>
                             <Link
-                                href="/support-and-policy/policy-privacy"
+                                href="policy-privacy"
                                 onClick={() => setMenuOpen(false)}
                                 className="flex items-center gap-2 rounded-2xl bg-[#131823] border border-white/10 p-3 text-xs font-bold text-zinc-300 hover:text-white hover:bg-white/[0.06] hover:border-white/20 transition"
                             >

@@ -4,8 +4,14 @@ import axios from "axios";
 // 1. Base URL Configuration (Configured exclusively via .env)
 // ============================================================================
 
-export const baseURL = (process.env.NEXT_PUBLIC_API_URL || "https://api.torqueblock.com/api/v1").trim().replace(/\/+$/, "");
-export const API_BASE_URL = baseURL;
+// export const baseURL = "http://localhost:4000/api/v1";
+
+// export const baseURL = "https://test.torqueblock.com/api/v1";
+
+export const baseURL = "https://api.torqueblock.com/api/v1";
+
+
+// export const API_BASE_URL = baseURL;
 
 // ============================================================================
 // 2. Axios defaults — API modules call axios directly: axios.get(`${baseURL}/trade/stock`)
