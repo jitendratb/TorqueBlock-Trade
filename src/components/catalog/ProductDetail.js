@@ -256,52 +256,52 @@ export default function ProductDetail({ product, size = null }) {
     };
 
     return (
-        <div className="space-y-8 sm:space-y-10 max-w-7xl mx-auto">
-            {/* Top Navigation & Breadcrumbs - Matching torqueblock.com */}
-            <div className="flex items-center justify-between gap-4 pt-1">
-                <nav aria-label="Breadcrumb" className="w-full">
-                    <ol className="flex flex-1 w-full items-center gap-2 pt-1 md:pt-0 overflow-x-auto whitespace-nowrap text-sm md:text-[15px] text-zinc-500">
-                        <li className="flex items-center gap-2 shrink-0">
-                            <Link className="transition-all text-xs md:text-sm duration-200 text-white/70 hover:text-orange-500 shrink-0" href="/">
-                                Home
-                            </Link>
-                            <span className="text-zinc-400 shrink-0 select-none">
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="13" width="13" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M294.1 256L167 129c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l144 144c9.4 9.4 9.4 24.6 0 33.9l-144 144c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l127.1-127z" />
-                                </svg>
-                            </span>
-                        </li>
-                        <li className="flex items-center gap-2 shrink-0">
-                            <Link className="text-xs md:text-sm transition-all duration-200 text-white/70 hover:text-orange-500 max-w-[300px] md:max-w-[500px] truncate inline-block" href="/#stock">
-                                Tyres
-                            </Link>
-                            <span className="text-zinc-400 shrink-0 select-none ml-1">
-                                <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="13" width="13" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M294.1 256L167 129c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l144 144c9.4 9.4 9.4 24.6 0 33.9l-144 144c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l127.1-127z" />
-                                </svg>
-                            </span>
-                        </li>
-                        <li className="flex items-center gap-2 shrink-0">
-                            <span className="text-white font-semibold truncate text-xs md:text-sm max-w-[300px] md:max-w-[500px] inline-block" aria-current="page">
-                                {size ? `${product.name} (${size.size})` : product.name}
-                            </span>
-                        </li>
-                    </ol>
-                </nav>
+        <div className="space-y-6 sm:space-y-8 max-w-7xl mx-auto">
+            {/* Top Navigation & Breadcrumbs + Hero Showcase (Tight spacing matching torqueblock.com) */}
+            <div className="space-y-2.5 sm:space-y-3">
+                {/* Top Navigation & Breadcrumbs */}
+                <div className="flex items-center justify-between gap-4">
+                    <nav aria-label="Breadcrumb" className="w-full">
+                        <ol className="flex flex-1 w-full items-center gap-2 md:pt-0 overflow-x-auto whitespace-nowrap text-sm md:text-[15px] text-zinc-500">
+                            <li className="flex items-center gap-2 shrink-0">
+                                <Link className="transition-all text-xs md:text-sm duration-200 text-white/70 hover:text-orange-500 shrink-0" href="/">
+                                    Home
+                                </Link>
+                                <span className="text-zinc-400 shrink-0 select-none">
+                                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="13" width="13" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M294.1 256L167 129c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l144 144c9.4 9.4 9.4 24.6 0 33.9l-144 144c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l127.1-127z" />
+                                    </svg>
+                                </span>
+                            </li>
+                            <li className="flex items-center gap-2 shrink-0">
+                                <Link className="text-xs md:text-sm transition-all duration-200 text-white/70 hover:text-orange-500 max-w-[300px] md:max-w-[500px] truncate inline-block" href="/#stock">
+                                    Tyres
+                                </Link>
+                                <span className="text-zinc-400 shrink-0 select-none ml-1">
+                                    <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 512 512" height="13" width="13" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M294.1 256L167 129c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l144 144c9.4 9.4 9.4 24.6 0 33.9l-144 144c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l127.1-127z" />
+                                    </svg>
+                                </span>
+                            </li>
+                            <li className="flex items-center gap-2 shrink-0">
+                                <span className="text-white font-semibold truncate text-xs md:text-sm max-w-[300px] md:max-w-[500px] inline-block" aria-current="page">
+                                    {size ? `${product.name} (${size.size})` : product.name}
+                                </span>
+                            </li>
+                        </ol>
+                    </nav>
 
-                <div className="hidden sm:block shrink-0">
-                    <ShareButtons path={path} title={title} text={`${title} – Trade stock & wholesale pricing on Torque Block`} />
+                    <div className="hidden sm:block shrink-0">
+                        <ShareButtons path={path} title={title} text={`${title} – Trade stock & wholesale pricing on Torque Block`} />
+                    </div>
                 </div>
-            </div>
 
-            {/* MAIN 2-COLUMN HERO SHOWCASE - Exact Classes & Spacing from torqueblock.com */}
-            <div className="py-4 space-y-4">
+                {/* MAIN 2-COLUMN HERO SHOWCASE - Exact Classes & Spacing from torqueblock.com */}
                 <section className="w-full relative">
                     <div className="grid grid-cols-1 gap-6 md:gap-8 lg:grid-cols-2">
                         {/* LEFT COLUMN: Large Showcase Photo Box + Horizontal Thumbnails */}
                         <div className="flex flex-col gap-4">
                             <div className="space-y-4">
-                                {/* Big Showcase Photo Box */}
                                 <div className="relative w-full rounded-lg overflow-hidden h-[300px] lg:h-[540px]">
                                     <div
                                         role="button"
@@ -365,11 +365,10 @@ export default function ProductDetail({ product, size = null }) {
                                                     aria-selected={idx === safeActiveIdx}
                                                     onClick={() => setActiveIdx(idx)}
                                                     aria-label={`View photo ${idx + 1}`}
-                                                    className={`relative cursor-pointer h-15 w-15 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 ${
-                                                        idx === safeActiveIdx
-                                                            ? "border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)]"
-                                                            : "border-zinc-800 hover:border-zinc-600"
-                                                    }`}
+                                                    className={`relative cursor-pointer h-15 w-15 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 ${idx === safeActiveIdx
+                                                        ? "border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)]"
+                                                        : "border-zinc-800 hover:border-zinc-600"
+                                                        }`}
                                                 >
                                                     <CustomImage
                                                         src={img}
@@ -386,250 +385,240 @@ export default function ProductDetail({ product, size = null }) {
                             </div>
                         </div>
 
-                {/* RIGHT COLUMN: Eyebrow, Big Headline, Feature Pills, Subtitle, Price Range, Button, & 3 Trust Badges */}
-                <div className="flex flex-col gap-4">
-                    {/* 1. Brand & Category Eyebrow Tag */}
-                    <div className="mt-2 flex min-w-0 items-center gap-2.5 md:mt-0">
-                        <span className="flex shrink-0 items-center gap-1.5">
-                            <svg
-                                stroke="currentColor"
-                                fill="currentColor"
-                                strokeWidth="0"
-                                viewBox="0 0 24 24"
-                                className="text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]"
-                                aria-hidden="true"
-                                height="14"
-                                width="14"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z" />
-                            </svg>
-                            <span className="text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] text-orange-400">
-                                {product.brand?.name || "EUROGRIP"}
-                            </span>
-                        </span>
-                        <span className="h-3.5 w-px shrink-0 bg-white/25" aria-hidden="true" />
-                        <span className="truncate text-[10px] lg:text-xs font-bold uppercase tracking-[0.2em] text-zinc-300">
-                            {product.category?.name || "SUPER SPORT"}
-                        </span>
-                    </div>
-
-                    {/* 2. Main Headline: Is Brand Model right for your motorcycle? */}
-                    <div>
-                        <h1 className="text-3xl md:text-5xl lg:text-3xl font-black leading-[1.05] tracking-tighter text-white">
-                            <span className="sr-only">
-                                {product.name} Motorcycle Tyre
-                            </span>
-                            <span aria-hidden="true">
-                                Is{" "}
-                                <span className="lg:text-[3rem] drop-shadow-lg">
-                                    <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
-                                    <span className="text-orange-500">{headlineParts ? headlineParts.model : ""}</span>
-                                </span>
-                                <span className="block text-zinc-400 text-xl md:text-2xl lg:text-3xl font-medium tracking-tight">
-                                    right for your motorcycle?
-                                </span>
-                            </span>
-                        </h1>
-                    </div>
-
-                    {/* 3. Feature Highlights Badges Row */}
-                    {featurePills.length > 0 && (
-                        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none px-1">
-                            {featurePills.map((pill, idx) => (
-                                <div
-                                    key={idx}
-                                    className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/20 bg-white/[0.04] backdrop-blur-sm px-3 py-1.5 shadow-sm"
-                                >
+                        {/* RIGHT COLUMN: Eyebrow, Big Headline, Feature Pills, Subtitle, Price Range, Button, & 3 Trust Badges */}
+                        <div className="flex flex-col gap-4">
+                            {/* 1. Brand & Category Eyebrow Tag */}
+                            <div className="mt-2 flex min-w-0 items-center gap-2.5 md:mt-0 ">
+                                <span className="flex shrink-0 items-center gap-1.5">
                                     <svg
                                         stroke="currentColor"
                                         fill="currentColor"
                                         strokeWidth="0"
                                         viewBox="0 0 24 24"
-                                        className="text-orange-400 text-[10px] shrink-0"
-                                        height="1em"
-                                        width="1em"
+                                        className="text-orange-400 drop-shadow-[0_0_8px_rgba(249,115,22,0.8)]"
+                                        aria-hidden="true"
+                                        height="14"
+                                        width="14"
                                         xmlns="http://www.w3.org/2000/svg"
                                     >
                                         <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z" />
                                     </svg>
-                                    <span className="text-[10px] font-semibold text-orange-300 whitespace-nowrap">
-                                        {pill}
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                                    <span className="text-[10px] lg:text-xs font-black uppercase tracking-[0.3em] text-orange-400">{product.brand?.name} </span>
+                                </span>
+                                <span className="h-3.5 w-px shrink-0 bg-white/25" aria-hidden="true" />
+                                <span className="truncate text-[10px] lg:text-xs font-bold uppercase tracking-[0.2em] text-zinc-300">{product.category?.name || "SUPER SPORT"} </span>
+                            </div>
 
-                    {/* 4. Product Subtitle Paragraph Description */}
-                    <p className="text-sm leading-relaxed text-zinc-400 md:text-[15px] line-clamp-3">
-                        {heroDescription}
-                    </p>
-
-                    {/* 5. PRICE RANGE Card Container (Light Frosted Blur matching torqueblock.com) */}
-                    <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-orange-500/[0.05] p-4 sm:p-5 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
-                        {/* Soft light glow orbs - Subtle ambient reflection */}
-                        <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-400/15 rounded-full blur-3xl pointer-events-none group-hover:bg-orange-400/25 transition-colors duration-700" />
-                        <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
-                        <div className="relative">
-                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 mb-2 drop-shadow-sm">
-                                Price Range
-                            </p>
-                            {isApproved ? (
-                                <>
-                                    <div className="flex items-baseline flex-wrap gap-x-2 gap-y-1">
-                                        <span className="text-3xl md:text-4xl font-black text-white tracking-tighter drop-shadow-md">
-                                            {formatINR(priceRange.min)}
+                            {/* 2. Main Headline: Is Brand Model right for your motorcycle? */}
+                            <div>
+                                <h1 className="text-3xl md:text-5xl lg:text-3xl font-black leading-[1.05] tracking-tighter text-white">
+                                    <span className="sr-only"> {product.name} Motorcycle Tyre </span>
+                                    <span aria-hidden="true">
+                                        <span className="lg:text-[3rem] drop-shadow-lg">
+                                            <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
+                                            <span className="text-orange-500">{headlineParts ? headlineParts.model : ""}</span>
                                         </span>
-                                        {priceRange.min !== priceRange.max && (
-                                            <>
-                                                <span className="text-xl font-bold text-zinc-500 mx-1 drop-shadow-sm">-</span>
-                                                <span className="text-2xl font-black text-zinc-300 tracking-tighter drop-shadow-md">
-                                                    {formatINR(priceRange.max)}
+                                    </span>
+                                </h1>
+                            </div>
+
+                            {/* 3. Feature Highlights Badges Row */}
+                            {featurePills.length > 0 && (
+                                <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none px-1">
+                                    {featurePills.map((pill, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="shrink-0 flex items-center gap-1.5 rounded-full border border-orange-500/20 bg-white/[0.04] backdrop-blur-sm px-3 py-1.5 shadow-sm"
+                                        >
+                                            <svg
+                                                stroke="currentColor"
+                                                fill="currentColor"
+                                                strokeWidth="0"
+                                                viewBox="0 0 24 24"
+                                                className="text-orange-400 text-[10px] shrink-0"
+                                                height="1em"
+                                                width="1em"
+                                                xmlns="http://www.w3.org/2000/svg"
+                                            >
+                                                <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z" />
+                                            </svg>
+                                            <span className="text-[10px] font-semibold text-orange-300 whitespace-nowrap">
+                                                {pill}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* 4. Product Subtitle Paragraph Description */}
+                            <p className="text-sm leading-relaxed text-zinc-400 md:text-[15px] line-clamp-3">
+                                {heroDescription}
+                            </p>
+
+                            {/* 5. PRICE RANGE Card Container (Light Frosted Blur matching torqueblock.com) */}
+                            <div className="relative overflow-hidden rounded-2xl border border-orange-500/30 bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-orange-500/[0.05] p-4 sm:p-5 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-xl group transition-all duration-500 hover:border-orange-500/50">
+                                {/* Soft light glow orbs - Subtle ambient reflection */}
+                                <div className="absolute -top-12 -right-12 w-48 h-48 bg-orange-400/15 rounded-full blur-3xl pointer-events-none group-hover:bg-orange-400/25 transition-colors duration-700" />
+                                <div className="absolute -bottom-10 -left-10 w-36 h-36 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
+                                <div className="relative">
+                                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-orange-500 mb-2 drop-shadow-sm">
+                                        Price Range
+                                    </p>
+                                    {isApproved ? (
+                                        <>
+                                            <div className="flex items-baseline flex-wrap gap-x-2 gap-y-1">
+                                                <span className="text-3xl md:text-4xl font-black text-white tracking-tighter drop-shadow-md">
+                                                    {formatINR(priceRange.min)}
                                                 </span>
-                                            </>
-                                        )}
-                                    </div>
-                                    <div className="mt-2 flex items-center gap-2 border-t border-white/10 pt-2">
+                                                {priceRange.min !== priceRange.max && (
+                                                    <>
+                                                        <span className="text-xl font-bold text-zinc-500 mx-1 drop-shadow-sm">-</span>
+                                                        <span className="text-2xl font-black text-zinc-300 tracking-tighter drop-shadow-md">
+                                                            {formatINR(priceRange.max)}
+                                                        </span>
+                                                    </>
+                                                )}
+                                            </div>
+                                            <div className="mt-2 flex items-center gap-2 border-t border-white/10 pt-2">
+                                                <svg
+                                                    stroke="currentColor"
+                                                    fill="currentColor"
+                                                    strokeWidth="0"
+                                                    viewBox="0 0 24 24"
+                                                    className="text-green-400 text-sm drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]"
+                                                    height="1em"
+                                                    width="1em"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path fill="none" d="M0 0h24v24H0z" />
+                                                    <path d="m23 12-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z" />
+                                                </svg>
+                                                <p className="text-zinc-400 text-[11px] font-medium tracking-wide">
+                                                    Inclusive of all taxes • Varies by size
+                                                </p>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="pt-0.5 space-y-1">
+                                            <button
+                                                type="button"
+                                                onClick={openLogin}
+                                                className="inline-flex items-center gap-2 text-2xl md:text-3xl font-black text-orange-400 hover:text-orange-300 transition-colors py-0.5 cursor-pointer group/login text-left tracking-tight"
+                                            >
+                                                <FiLock className="text-xl md:text-2xl text-orange-500 group-hover/login:scale-110 transition-transform shrink-0" />
+                                                <span>Login for Trade Price</span>
+                                            </button>
+                                            <div className="mt-2 flex items-center gap-2 border-t border-white/10 pt-2">
+                                                <p className="text-zinc-400 text-[11px] font-medium tracking-wide">
+                                                    Exclusive trade wholesale pricing for registered dealers
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* 6. Primary Action Button: VIEW ALL [N] SIZES ⌵ */}
+                            <div className="w-full">
+                                <button
+                                    type="button"
+                                    onClick={scrollToSizes}
+                                    className="group relative w-full flex items-center justify-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg shadow-orange-500/20"
+                                >
+                                    <span className="relative z-10 text-xs md:text-sm font-black uppercase tracking-[0.25em] text-white drop-shadow-md">
+                                        View All {product.sizes?.length || 1} Sizes
+                                    </span>
+                                    <div className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:translate-y-1">
                                         <svg
                                             stroke="currentColor"
                                             fill="currentColor"
                                             strokeWidth="0"
-                                            viewBox="0 0 24 24"
-                                            className="text-green-400 text-sm drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]"
+                                            viewBox="0 0 448 512"
+                                            className="text-white text-xs drop-shadow-sm"
                                             height="1em"
                                             width="1em"
                                             xmlns="http://www.w3.org/2000/svg"
                                         >
-                                            <path fill="none" d="M0 0h24v24H0z" />
-                                            <path d="m23 12-2.44-2.79.34-3.69-3.61-.82-1.89-3.2L12 2.96 8.6 1.5 6.71 4.69 3.1 5.5l.34 3.7L1 12l2.44 2.79-.34 3.7 3.61.82L8.6 22.5l3.4-1.47 3.4 1.46 1.89-3.19 3.61-.82-.34-3.69L23 12zm-12.91 4.72-3.8-3.81 1.48-1.48 2.32 2.33 5.85-5.87 1.48 1.48-7.33 7.35z" />
+                                            <path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z" />
                                         </svg>
-                                        <p className="text-zinc-400 text-[11px] font-medium tracking-wide">
-                                            Inclusive of all taxes • Varies by size
-                                        </p>
                                     </div>
-                                </>
-                            ) : (
-                                <div className="pt-0.5 space-y-1">
-                                    <button
-                                        type="button"
-                                        onClick={openLogin}
-                                        className="inline-flex items-center gap-2 text-2xl md:text-3xl font-black text-orange-400 hover:text-orange-300 transition-colors py-0.5 cursor-pointer group/login text-left tracking-tight"
+                                </button>
+                            </div>
+
+                            {/* 7. Trust Assurance Cards: 3 Cards in a Row (Light Frosted Glass) */}
+                            <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 gap-2 md:grid-cols-3">
+                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
+                                    <svg
+                                        stroke="currentColor"
+                                        fill="none"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="shrink-0 text-2xl md:text-[28px] text-orange-500"
+                                        aria-hidden="true"
+                                        height="1em"
+                                        width="1em"
+                                        xmlns="http://www.w3.org/2000/svg"
                                     >
-                                        <FiLock className="text-xl md:text-2xl text-orange-500 group-hover/login:scale-110 transition-transform shrink-0" />
-                                        <span>Login for Trade Price</span>
-                                    </button>
-                                    <div className="mt-2 flex items-center gap-2 border-t border-white/10 pt-2">
-                                        <p className="text-zinc-400 text-[11px] font-medium tracking-wide">
-                                            Exclusive trade wholesale pricing for registered dealers
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
+                                        <path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06" />
+                                        <path d="M15 19l2 2l4 -4" />
+                                    </svg>
+                                    <span className="flex min-w-0 flex-col gap-0.5">
+                                        <span className="text-xs font-bold leading-tight text-white">Secure Payments</span>
+                                        <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Safe online checkout</span>
+                                    </span>
+                                </li>
+                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
+                                    <svg
+                                        stroke="currentColor"
+                                        fill="none"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="shrink-0 text-2xl md:text-[28px] text-orange-500"
+                                        aria-hidden="true"
+                                        height="1em"
+                                        width="1em"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M5 7.2a2.2 2.2 0 0 1 2.2 -2.2h1a2.2 2.2 0 0 0 1.55 -.64l.7 -.7a2.2 2.2 0 0 1 3.12 0l.7 .7c.412 .41 .97 .64 1.55 .64h1a2.2 2.2 0 0 1 2.2 2.2v1c0 .58 .23 1.138 .64 1.55l.7 .7a2.2 2.2 0 0 1 0 3.12l-.7 .7a2.2 2.2 0 0 0 -.64 1.55v1a2.2 2.2 0 0 1 -2.2 2.2h-1a2.2 2.2 0 0 0 -1.55 .64l-.7 .7a2.2 2.2 0 0 1 -3.12 0l-.7 -.7a2.2 2.2 0 0 0 -1.55 -.64h-1a2.2 2.2 0 0 1 -2.2 -2.2v-1a2.2 2.2 0 0 0 -.64 -1.55l-.7 -.7a2.2 2.2 0 0 1 0 -3.12l.7 -.7a2.2 2.2 0 0 0 .64 -1.55v-1" />
+                                        <path d="M9 12l2 2l4 -4" />
+                                    </svg>
+                                    <span className="flex min-w-0 flex-col gap-0.5">
+                                        <span className="text-xs font-bold leading-tight text-white">100% Genuine Products</span>
+                                        <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Authentic branded tyres</span>
+                                    </span>
+                                </li>
+                                <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
+                                    <svg
+                                        stroke="currentColor"
+                                        fill="none"
+                                        strokeWidth="2"
+                                        viewBox="0 0 24 24"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        className="shrink-0 text-2xl md:text-[28px] text-orange-500"
+                                        aria-hidden="true"
+                                        height="1em"
+                                        width="1em"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M4 14v-3a8 8 0 0 1 16 0v3" />
+                                        <path d="M18 19c0 1.657 -1.343 3 -3 3l-1 0c-1.657 0 -3 -1.343 -3 -3l0 -2c0 -1.657 1.343 -3 3 -3l1 0c1.657 0 3 1.343 3 3l0 2z" />
+                                        <path d="M4 19c0 1.657 1.343 3 3 3l1 0c1.657 0 3 -1.343 3 -3l0 -2c0 -1.657 -1.343 -3 -3 -3l-1 0c-1.657 0 -3 1.343 -3 3l0 2z" />
+                                    </svg>
+                                    <span className="flex min-w-0 flex-col gap-0.5">
+                                        <span className="text-xs font-bold leading-tight text-white">Expert Guidance</span>
+                                        <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Tyre advice when needed</span>
+                                    </span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-
-                    {/* 6. Primary Action Button: VIEW ALL [N] SIZES ⌵ */}
-                    <div className="w-full">
-                        <button
-                            type="button"
-                            onClick={scrollToSizes}
-                            className="group relative w-full flex items-center justify-center gap-3 overflow-hidden rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg shadow-orange-500/20"
-                        >
-                            <span className="relative z-10 text-xs md:text-sm font-black uppercase tracking-[0.25em] text-white drop-shadow-md">
-                                View All {product.sizes?.length || 1} Sizes
-                            </span>
-                            <div className="relative z-10 flex h-6 w-6 items-center justify-center rounded-full bg-white/20 transition-transform duration-300 group-hover:translate-y-1">
-                                <svg
-                                    stroke="currentColor"
-                                    fill="currentColor"
-                                    strokeWidth="0"
-                                    viewBox="0 0 448 512"
-                                    className="text-white text-xs drop-shadow-sm"
-                                    height="1em"
-                                    width="1em"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z" />
-                                </svg>
-                            </div>
-                        </button>
-                    </div>
-
-                    {/* 7. Trust Assurance Cards: 3 Cards in a Row (Light Frosted Glass) */}
-                    <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 gap-2 md:grid-cols-3">
-                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
-                            <svg
-                                stroke="currentColor"
-                                fill="none"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="shrink-0 text-2xl md:text-[28px] text-orange-500"
-                                aria-hidden="true"
-                                height="1em"
-                                width="1em"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06" />
-                                <path d="M15 19l2 2l4 -4" />
-                            </svg>
-                            <span className="flex min-w-0 flex-col gap-0.5">
-                                <span className="text-xs font-bold leading-tight text-white">Secure Payments</span>
-                                <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Safe online checkout</span>
-                            </span>
-                        </li>
-                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
-                            <svg
-                                stroke="currentColor"
-                                fill="none"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="shrink-0 text-2xl md:text-[28px] text-orange-500"
-                                aria-hidden="true"
-                                height="1em"
-                                width="1em"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M5 7.2a2.2 2.2 0 0 1 2.2 -2.2h1a2.2 2.2 0 0 0 1.55 -.64l.7 -.7a2.2 2.2 0 0 1 3.12 0l.7 .7c.412 .41 .97 .64 1.55 .64h1a2.2 2.2 0 0 1 2.2 2.2v1c0 .58 .23 1.138 .64 1.55l.7 .7a2.2 2.2 0 0 1 0 3.12l-.7 .7a2.2 2.2 0 0 0 -.64 1.55v1a2.2 2.2 0 0 1 -2.2 2.2h-1a2.2 2.2 0 0 0 -1.55 .64l-.7 .7a2.2 2.2 0 0 1 -3.12 0l-.7 -.7a2.2 2.2 0 0 0 -1.55 -.64h-1a2.2 2.2 0 0 1 -2.2 -2.2v-1a2.2 2.2 0 0 0 -.64 -1.55l-.7 -.7a2.2 2.2 0 0 1 0 -3.12l.7 -.7a2.2 2.2 0 0 0 .64 -1.55v-1" />
-                                <path d="M9 12l2 2l4 -4" />
-                            </svg>
-                            <span className="flex min-w-0 flex-col gap-0.5">
-                                <span className="text-xs font-bold leading-tight text-white">100% Genuine Products</span>
-                                <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Authentic branded tyres</span>
-                            </span>
-                        </li>
-                        <li className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
-                            <svg
-                                stroke="currentColor"
-                                fill="none"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                className="shrink-0 text-2xl md:text-[28px] text-orange-500"
-                                aria-hidden="true"
-                                height="1em"
-                                width="1em"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path d="M4 14v-3a8 8 0 0 1 16 0v3" />
-                                <path d="M18 19c0 1.657 -1.343 3 -3 3l-1 0c-1.657 0 -3 -1.343 -3 -3l0 -2c0 -1.657 1.343 -3 3 -3l1 0c1.657 0 3 1.343 3 3l0 2z" />
-                                <path d="M4 19c0 1.657 1.343 3 3 3l1 0c1.657 0 3 -1.343 3 -3l0 -2c0 -1.657 -1.343 -3 -3 -3l-1 0c-1.657 0 -3 1.343 -3 3l0 2z" />
-                            </svg>
-                            <span className="flex min-w-0 flex-col gap-0.5">
-                                <span className="text-xs font-bold leading-tight text-white">Expert Guidance</span>
-                                <span className="text-[10px] md:text-[11px] leading-tight text-zinc-400">Tyre advice when needed</span>
-                            </span>
-                        </li>
-                    </ul>
-                </div>
+                </section>
             </div>
-        </section>
-    </div>
 
             {/* DESCRIPTION SECTION (Light Frosted Blur matching torqueblock.com) */}
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-5 sm:p-6 backdrop-blur-xl shadow-xl space-y-3.5">
@@ -649,7 +638,7 @@ export default function ProductDetail({ product, size = null }) {
                         </div>
                     </div>
 
-                    {paragraphs.length > 1 && (
+                    {(paragraphs.length > 1 || (familyData?.description && familyData.description.length > 200) || (paragraphs[0] && paragraphs[0].length > 200)) && (
                         <button
                             type="button"
                             onClick={() => setIsDescriptionExpanded((prev) => !prev)}
@@ -664,16 +653,22 @@ export default function ProductDetail({ product, size = null }) {
                 {/* Description Content */}
                 <div className="relative text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
                     {isDescriptionExpanded ? (
-                        <div className="max-h-[260px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
-                            {paragraphs.map((para, idx) => (
-                                <p key={idx} className="text-zinc-300">
-                                    {para}
+                        <div className="max-h-[360px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
+                            {paragraphs.length > 0 ? (
+                                paragraphs.map((para, idx) => (
+                                    <p key={idx} className="text-zinc-300">
+                                        {para}
+                                    </p>
+                                ))
+                            ) : (
+                                <p className="text-zinc-300">
+                                    {familyData?.description || product?.description || heroDescription}
                                 </p>
-                            ))}
+                            )}
                         </div>
                     ) : (
-                        <p className="text-zinc-300 font-normal leading-relaxed">
-                            {familyData?.description || familyData?.hero?.subtitle || product?.description || paragraphs[0] || ""}
+                        <p className="text-zinc-300 font-normal leading-relaxed line-clamp-3 sm:line-clamp-4">
+                            {familyData?.description || paragraphs[0] || product?.description || heroDescription}
                         </p>
                     )}
                 </div>
