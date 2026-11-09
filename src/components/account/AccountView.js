@@ -7,9 +7,6 @@ import { useAuthStore } from "@/store/authStore";
 import BusinessAccount from "./BusinessAccount";
 import useIsMounted from "@/hooks/useIsMounted";
 
-
-const CARD = "rounded-3xl border border-white/10 bg-[#141824] p-5 md:p-7 shadow-xl";
-
 // /account — login gate around the business account.
 export default function AccountView() {
     const isMounted = useIsMounted();
@@ -20,7 +17,7 @@ export default function AccountView() {
 
     if (!isMounted) {
         return (
-            <div className={CARD}>
+            <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-8 sm:p-12 text-center shadow-lg">
                 <LoadingState message="Loading your business account…" />
             </div>
         );
@@ -28,13 +25,21 @@ export default function AccountView() {
 
     if (!token) {
         return (
-            <div className={`${CARD} text-center`}>
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-orange-500/20 bg-orange-500/10 text-orange-500">
+            <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-8 sm:p-12 text-center shadow-lg space-y-4">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 shadow-sm">
                     <FiUser className="text-2xl" />
                 </div>
-                <h2 className="mt-5 text-2xl font-black text-white">Your Business Account</h2>
-                <p className="mx-auto mt-2 max-w-md text-sm text-zinc-400">Log in with your trade mobile number to manage your profile, credit, branches and team.</p>
-                <Button className="mt-6" onClick={openLogin}>Trade Login</Button>
+                <div>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white">Your Business Account</h2>
+                    <p className="mx-auto mt-2 max-w-md text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                        Log in with your trade mobile number to manage your profile, credit, branches and team.
+                    </p>
+                </div>
+                <div className="pt-2">
+                    <Button size="lg" className="justify-center py-3 px-8 bg-orange-500 hover:bg-orange-600 text-xs font-bold uppercase tracking-wider text-white rounded-xl shadow-lg shadow-orange-500/25" onClick={openLogin}>
+                        Trade Login
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -42,7 +47,7 @@ export default function AccountView() {
     if (!profile) {
         if (authStatus === "error") {
             return (
-                <div className={CARD}>
+                <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-8 text-center shadow-lg">
                     <ErrorState
                         title="Failed to Load Account"
                         message="We couldn't retrieve your business account. Please verify your connection or try again."
@@ -53,15 +58,11 @@ export default function AccountView() {
             );
         }
         return (
-            <div className={CARD}>
+            <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-8 sm:p-12 text-center shadow-lg">
                 <LoadingState message="Loading your business account…" />
             </div>
         );
     }
 
-    return (
-        <div className={CARD}>
-            <BusinessAccount />
-        </div>
-    );
+    return <BusinessAccount />;
 }

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import clsx from "clsx";
 import { FiBriefcase, FiCreditCard, FiMapPin, FiUsers } from "react-icons/fi";
+import { formatINR } from "@/lib/format";
 import { useAuthStore } from "@/store/authStore";
 import { useAccountStore, selectIsOwner } from "@/store/accountStore";
 import TradeProfilePanel from "./TradeProfilePanel";
@@ -17,7 +17,6 @@ const TABS = [
     { id: "team", label: "Team", Icon: FiUsers, ownerOnly: true },
     { id: "branches", label: "Branches", Icon: FiMapPin, needsAccount: true },
 ];
-
 
 export default function BusinessAccount() {
     const profile = useAuthStore((s) => s.profile);
@@ -41,55 +40,147 @@ export default function BusinessAccount() {
     const businessName = account?.businessName || profile?.address?.businessName || "Business Account";
 
     return (
-        <div className="space-y-5">
-            <header className="flex flex-wrap items-start justify-between gap-3 border-b border-white/10 pb-4">
-                <div>
-                    <span className="mb-1.5 inline-flex items-center gap-1.5 rounded-full border border-orange-500/30 bg-orange-500/10 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-orange-400">
-                        <FiUsers size={12} />Trade Business Account
-                    </span>
-                    <h2 className="text-xl font-black text-white">{businessName}</h2>
-                    <p className="mt-0.5 text-xs text-zinc-400">
-                        {[account?.myRole && `You: ${account.myRole}`, account?.myBranch && account.myBranch !== "ALL" && `Branch ${account.myBranch}`, account?.gstin && `GSTIN ${account.gstin}`].filter(Boolean).join(" · ") ||
-                            "Business profile, credit terms, branches and team in one place."}
-                    </p>
+        <div className="space-y-4 sm:space-y-5">
+            {/* Top 4 Stat Cards - Matching Reference Screenshot */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                {/* 1. BUSINESS PROFILE */}
+                <div
+                    onClick={() => setTab("profile")}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        active === "profile"
+                            ? "bg-[#181E2C] border-orange-500/40 shadow-lg shadow-orange-500/5 ring-1 ring-orange-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
+                >
+                    <div>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">BUSINESS PROFILE</p>
+                        <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
+                            {profile?.isApproved ? "VERIFIED" : "PENDING"}
+                        </p>
+                    </div>
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#2D2115] border border-orange-500/20 text-[#FF8A3D] shrink-0">
+                        <FiBriefcase className="text-lg sm:text-xl" />
+                    </div>
                 </div>
-            </header>
 
-            <nav className="custom-scroll -mx-1 flex gap-2 overflow-x-auto px-1 pb-1" aria-label="Account sections">
-                {tabs.map(({ id, label, Icon }) => (
-                    <button
-                        key={id}
-                        type="button"
-                        onClick={() => setTab(id)}
-                        aria-current={active === id ? "page" : undefined}
-                        className={clsx(
-                            "flex shrink-0 items-center gap-1.5 rounded-full border px-4 py-2 text-xs font-black uppercase tracking-wider transition",
-                            active === id ? "border-orange-500/50 bg-orange-500/10 text-orange-400" : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-white"
-                        )}
-                    >
-                        <Icon /> {label}
-                    </button>
-                ))}
-            </nav>
+                {/* 2. CREDIT LINE */}
+                <div
+                    onClick={() => {
+                        if (tabs.some((t) => t.id === "credit")) setTab("credit");
+                    }}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        active === "credit"
+                            ? "bg-[#181E2C] border-sky-500/40 shadow-lg shadow-sky-500/5 ring-1 ring-sky-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
+                >
+                    <div>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">CREDIT LINE</p>
+                        <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
+                            {account?.creditLimit ? formatINR(account.creditLimit) : "PAY ONLINE"}
+                        </p>
+                    </div>
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#14233D] border border-sky-500/20 text-[#38BDF8] shrink-0">
+                        <FiCreditCard className="text-lg sm:text-xl" />
+                    </div>
+                </div>
 
-            {active === "profile" ? (
-                <TradeProfilePanel />
-            ) : accountStatus === "loading" && !account ? (
-                <SkeletonRows count={3} />
-            ) : accountStatus === "error" && !account ? (
-                <ErrorState
-                    compact
-                    title="Failed to Load Account Details"
-                    message="Could not load your business account information."
-                    onRetry={() => loadAccount({ force: true })}
-                />
-            ) : active === "credit" ? (
-                <CreditPanel />
-            ) : active === "team" ? (
-                <TeamPanel />
-            ) : (
-                <BranchesPanel />
-            )}
+                {/* 3. BRANCHES */}
+                <div
+                    onClick={() => {
+                        if (tabs.some((t) => t.id === "branches")) setTab("branches");
+                    }}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        active === "branches"
+                            ? "bg-[#181E2C] border-emerald-500/40 shadow-lg shadow-emerald-500/5 ring-1 ring-emerald-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
+                >
+                    <div>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">BRANCHES</p>
+                        <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
+                            {account?.branches?.length || 1}
+                        </p>
+                    </div>
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#132E27] border border-emerald-500/20 text-[#34D399] shrink-0">
+                        <FiMapPin className="text-lg sm:text-xl" />
+                    </div>
+                </div>
+
+                {/* 4. TEAM MEMBERS */}
+                <div
+                    onClick={() => {
+                        if (tabs.some((t) => t.id === "team")) setTab("team");
+                    }}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        active === "team"
+                            ? "bg-[#181E2C] border-rose-500/40 shadow-lg shadow-rose-500/5 ring-1 ring-rose-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
+                >
+                    <div>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">TEAM MEMBERS</p>
+                        <p className="mt-1 text-xl sm:text-2xl font-black text-white leading-none">
+                            {account?.team?.length || 1}
+                        </p>
+                    </div>
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#331824] border border-rose-500/20 text-[#F43F5E] shrink-0">
+                        <FiUsers className="text-lg sm:text-xl" />
+                    </div>
+                </div>
+            </div>
+
+            {/* Navigation / Tabs Strip - Matching Reference Screenshot */}
+            <div className="rounded-2xl bg-[#131722] border border-white/5 p-2 sm:p-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
+                <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
+                    {tabs.map(({ id, label, Icon }) => {
+                        const isActive = active === id;
+                        return (
+                            <button
+                                key={id}
+                                type="button"
+                                onClick={() => setTab(id)}
+                                className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider transition ${
+                                    isActive
+                                        ? "bg-white/10 text-white border border-white/15 shadow-sm"
+                                        : "text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent"
+                                }`}
+                            >
+                                <Icon className="text-xs shrink-0" />
+                                <span>{label.toUpperCase()}</span>
+                            </button>
+                        );
+                    })}
+                </div>
+
+                <div className="flex items-center gap-2 px-2 text-xs text-zinc-400">
+                    <span className="font-mono text-[11px] text-zinc-400">
+                        {account?.gstin ? `GSTIN: ${account.gstin}` : businessName}
+                    </span>
+                </div>
+            </div>
+
+            {/* Active Panel Content Card */}
+            <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-4 sm:p-5 md:p-6 space-y-4 shadow-sm">
+                {active === "profile" ? (
+                    <TradeProfilePanel />
+                ) : accountStatus === "loading" && !account ? (
+                    <SkeletonRows count={3} />
+                ) : accountStatus === "error" && !account ? (
+                    <ErrorState
+                        compact
+                        title="Failed to Load Account Details"
+                        message="Could not load your business account information."
+                        onRetry={() => loadAccount({ force: true })}
+                    />
+                ) : active === "credit" ? (
+                    <CreditPanel />
+                ) : active === "team" ? (
+                    <TeamPanel />
+                ) : (
+                    <BranchesPanel />
+                )}
+            </div>
         </div>
     );
 }

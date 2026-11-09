@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
 import Link from "next/link";
-import { FiSearch, FiCalendar, FiChevronDown, FiChevronRight, FiXCircle, FiCheckCircle, FiActivity, FiFileText, FiPackage, FiTruck, FiCreditCard, FiMapPin } from "react-icons/fi";
+import {
+    FiSearch,
+    FiCalendar,
+    FiChevronDown,
+    FiXCircle,
+    FiCheckCircle,
+    FiActivity,
+    FiFileText,
+    FiTruck,
+    FiCreditCard,
+    FiMapPin
+} from "react-icons/fi";
 import { Button, ErrorState, EmptyState, SkeletonCard, CustomImage } from "@/ui";
 import { formatDate, formatINR } from "@/lib/format";
 import { useUiStore } from "@/store/ui.store";
@@ -15,8 +25,7 @@ import useIsMounted from "@/hooks/useIsMounted";
 const normalizeStatus = (order) => {
     const raw = (order.delivery?.status || order.orderStatus || "pending").toLowerCase();
     if (["cancelled", "failed", "returned"].includes(raw)) return "cancelled";
-    if (["confirmed", "processing", "rtd", "shipped", "dispatched", "in transit", "out for delivery", "out_for_delivery", "partial"].includes(raw)) return "confirmed";
-    if (["delivered"].includes(raw)) return "confirmed";
+    if (["confirmed", "processing", "rtd", "shipped", "dispatched", "in transit", "out for delivery", "out_for_delivery", "partial", "delivered"].includes(raw)) return "confirmed";
     return "pending";
 };
 
@@ -40,7 +49,6 @@ export default function OrderHistory() {
 
     const reloadOrders = () => setRefreshKey((k) => k + 1);
 
-    // Trade orders carry their branch id; names come from the business account.
     const branches = useAccountStore((s) => s.account?.branches);
     const loadAccount = useAccountStore((s) => s.loadAccount);
     const branchOf = (order) => branches?.find((b) => String(b.id) === String(order.tradeBranch));
@@ -60,7 +68,7 @@ export default function OrderHistory() {
         if (!token) return;
         let cancelled = false;
 
-        // eslint-disable-next-line react-hooks/set-state-in-effect -- start of a fetch for current page / filter
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setState((s) => ({ ...s, status: "loading" }));
 
         const timer = setTimeout(() => {
@@ -71,7 +79,6 @@ export default function OrderHistory() {
             })
                 .then((res) => {
                     if (cancelled) return;
-                    // statusStats counts all my orders (not just this page / tab); each count matches its tab's filter.
                     const { pending = 0, confirmed = 0, delivered = 0, cancelled: cancelledCount = 0 } = res.statusStats?.[0] || {};
 
                     setState((s) => ({
@@ -105,8 +112,8 @@ export default function OrderHistory() {
 
     if (!token) {
         return (
-            <div className="py-8 sm:py-12 text-center space-y-4">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 shadow-md">
+            <div className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-8 sm:p-12 text-center shadow-lg space-y-4">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 shadow-sm">
                     <FiFileText className="text-2xl" />
                 </div>
                 <div>
@@ -116,7 +123,7 @@ export default function OrderHistory() {
                     </p>
                 </div>
                 <div className="pt-2">
-                    <Button size="lg" className="justify-center py-3.5 px-8 bg-orange-500 hover:bg-orange-600 text-xs font-bold uppercase tracking-wider text-white rounded-xl shadow-lg shadow-orange-500/25" onClick={openLogin}>
+                    <Button size="lg" className="justify-center py-3 px-8 bg-orange-500 hover:bg-orange-600 text-xs font-bold uppercase tracking-wider text-white rounded-xl shadow-lg shadow-orange-500/25" onClick={openLogin}>
                         Trade Login
                     </Button>
                 </div>
@@ -127,93 +134,86 @@ export default function OrderHistory() {
     const { stats, orders, totalPages, page } = state;
 
     return (
-        <div className="space-y-6 sm:space-y-7">
-            {/* Breadcrumb Navigation */}
-            <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-white/10">
-                <nav className="flex items-center gap-2 text-xs md:text-sm font-semibold text-zinc-400">
-                    <Link href="/" className="hover:text-white transition">
-                        Home
-                    </Link>
-                    <FiChevronRight className="text-zinc-600 text-xs" />
-                    <span className="text-white font-bold">My Orders</span>
-                </nav>
-            </div>
-
-            {/* Status Statistics Cards */}
+        <div className="space-y-4 sm:space-y-5">
+            {/* Top 4 Statistics Cards - Matching Reference Screenshot */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                {/* ALL ORDERS */}
+                {/* 1. ALL ORDERS */}
                 <div
                     onClick={() => setActiveTab("all")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "all"
-                        ? "bg-[#2D323B] border-orange-500/50 shadow-lg shadow-orange-500/10 ring-1 ring-orange-500/30"
-                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
-                        }`}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        activeTab === "all"
+                            ? "bg-[#181E2C] border-orange-500/40 shadow-lg shadow-orange-500/5 ring-1 ring-orange-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
                 >
                     <div>
-                        <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">ALL ORDERS</p>
-                        <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.all}</p>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">ALL ORDERS</p>
+                        <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.all}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-400 shadow-sm">
-                        <FiFileText className="text-lg md:text-xl" />
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#2D2115] border border-orange-500/20 text-[#FF8A3D] shrink-0">
+                        <FiFileText className="text-lg sm:text-xl" />
                     </div>
                 </div>
 
-                {/* PENDING */}
+                {/* 2. PENDING */}
                 <div
                     onClick={() => setActiveTab("pending")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "pending"
-                        ? "bg-[#2D323B] border-sky-500/50 shadow-lg shadow-sky-500/10 ring-1 ring-sky-500/30"
-                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
-                        }`}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        activeTab === "pending"
+                            ? "bg-[#181E2C] border-sky-500/40 shadow-lg shadow-sky-500/5 ring-1 ring-sky-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
                 >
                     <div>
-                        <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">PENDING</p>
-                        <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.pending}</p>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">PENDING</p>
+                        <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.pending}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-400 shadow-sm">
-                        <FiActivity className="text-lg md:text-xl" />
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#14233D] border border-sky-500/20 text-[#38BDF8] shrink-0">
+                        <FiActivity className="text-lg sm:text-xl" />
                     </div>
                 </div>
 
-                {/* CONFIRMED */}
+                {/* 3. CONFIRMED */}
                 <div
                     onClick={() => setActiveTab("confirmed")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "confirmed"
-                        ? "bg-[#2D323B] border-emerald-500/50 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30"
-                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
-                        }`}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        activeTab === "confirmed"
+                            ? "bg-[#181E2C] border-emerald-500/40 shadow-lg shadow-emerald-500/5 ring-1 ring-emerald-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
                 >
                     <div>
-                        <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">CONFIRMED</p>
-                        <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.confirmed}</p>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">CONFIRMED</p>
+                        <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.confirmed}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shadow-sm">
-                        <FiCheckCircle className="text-lg md:text-xl" />
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#132E27] border border-emerald-500/20 text-[#34D399] shrink-0">
+                        <FiCheckCircle className="text-lg sm:text-xl" />
                     </div>
                 </div>
 
-                {/* CANCELLED */}
+                {/* 4. CANCELLED */}
                 <div
                     onClick={() => setActiveTab("cancelled")}
-                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "cancelled"
-                        ? "bg-[#2D323B] border-rose-500/50 shadow-lg shadow-rose-500/10 ring-1 ring-rose-500/30"
-                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
-                        }`}
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between shadow-sm select-none ${
+                        activeTab === "cancelled"
+                            ? "bg-[#181E2C] border-rose-500/40 shadow-lg shadow-rose-500/5 ring-1 ring-rose-500/20"
+                            : "bg-[#131722] border-white/5 hover:border-white/15 hover:bg-[#161B26]"
+                    }`}
                 >
                     <div>
-                        <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">CANCELLED</p>
-                        <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.cancelled}</p>
+                        <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">CANCELLED</p>
+                        <p className="mt-1 text-2xl sm:text-3xl font-black text-white leading-none">{stats.cancelled}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 shadow-sm">
-                        <FiXCircle className="text-lg md:text-xl" />
+                    <div className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl bg-[#331824] border border-rose-500/20 text-[#F43F5E] shrink-0">
+                        <FiXCircle className="text-lg sm:text-xl" />
                     </div>
                 </div>
             </div>
 
-            {/* Filter Tabs & Search Bar */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-1">
-                {/* Filter Tabs */}
-                <div className="inline-flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-[#2D323B]/80 border border-white/10">
+            {/* Filter Tabs & Search Bar Strip - Matching Reference Screenshot */}
+            <div className="rounded-2xl bg-[#131722] border border-white/5 p-2 sm:p-2.5 flex flex-col md:flex-row md:items-center justify-between gap-3 shadow-sm">
+                {/* Filter Tabs on Left */}
+                <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
                     {[
                         { id: "all", label: "ALL ORDERS", count: stats.all },
                         { id: "pending", label: "PENDING", count: stats.pending },
@@ -224,19 +224,22 @@ export default function OrderHistory() {
                         return (
                             <button
                                 key={tab.id}
+                                type="button"
                                 onClick={() => {
                                     setActiveTab(tab.id);
                                     setState((s) => ({ ...s, page: 1 }));
                                 }}
-                                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-black tracking-wider transition ${active
-                                    ? "bg-orange-500 text-white shadow-md shadow-orange-500/20"
-                                    : "text-zinc-400 hover:text-white hover:bg-white/5"
-                                    }`}
+                                className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider transition ${
+                                    active
+                                        ? "bg-white/10 text-white border border-white/15 shadow-sm"
+                                        : "text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent"
+                                }`}
                             >
                                 <span>{tab.label}</span>
                                 <span
-                                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${active ? "bg-black/20 text-white" : "bg-white/10 text-zinc-400"
-                                        }`}
+                                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-semibold ${
+                                        active ? "bg-white/10 text-zinc-300" : "bg-white/5 text-zinc-500"
+                                    }`}
                                 >
                                     {tab.count}
                                 </span>
@@ -245,9 +248,9 @@ export default function OrderHistory() {
                     })}
                 </div>
 
-                {/* Search Bar */}
+                {/* Search Bar on Right */}
                 <div className="relative w-full md:w-80">
-                    <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-sm" />
+                    <FiSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-500 text-xs pointer-events-none" />
                     <input
                         type="text"
                         value={searchQuery}
@@ -256,7 +259,7 @@ export default function OrderHistory() {
                             setState((s) => ({ ...s, page: 1 }));
                         }}
                         placeholder="Search order, tyre, tracking #..."
-                        className="w-full rounded-2xl bg-[#2D323B]/80 border border-white/10 pl-10 pr-4 py-2 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-orange-500/50 transition"
+                        className="w-full rounded-full bg-black/30 border border-white/10 pl-8 pr-4 py-1.5 text-xs text-white placeholder:text-zinc-600 focus:outline-none focus:border-orange-500/40 transition"
                     />
                 </div>
             </div>
@@ -296,8 +299,8 @@ export default function OrderHistory() {
                 />
             )}
 
-            {/* Orders List */}
-            <div className="space-y-4">
+            {/* Orders List Cards - Matching Reference Screenshot */}
+            <div className="space-y-3.5 sm:space-y-4">
                 {orders.map((order) => {
                     const normStatus = normalizeStatus(order);
                     const isExpanded = !!expandedOrderIds[order._id];
@@ -308,23 +311,23 @@ export default function OrderHistory() {
                     return (
                         <article
                             key={order._id}
-                            className="rounded-2xl sm:rounded-3xl border border-white/10 bg-[#2D323B]/60 hover:bg-[#2D323B]/90 p-4 md:p-6 transition hover:border-white/20 shadow-xl shadow-black/40 backdrop-blur-sm"
+                            className="rounded-2xl sm:rounded-3xl border border-white/5 bg-[#131722] p-4 sm:p-5 md:p-6 space-y-3.5 shadow-sm transition hover:border-white/10"
                         >
                             {/* Order Card Header */}
-                            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 pb-4">
+                            <div className="flex flex-wrap items-center justify-between gap-3">
                                 <div>
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">ORDER REFERENCE</p>
-                                    <div className="flex items-center gap-2 mt-1 text-xs md:text-sm font-black text-white">
+                                    <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-500">ORDER REFERENCE</p>
+                                    <div className="flex items-center gap-2 mt-0.5 text-xs sm:text-sm font-black font-mono text-white">
                                         <span>{orderRef}</span>
-                                        <span className="text-zinc-600">|</span>
-                                        <span className="flex items-center gap-1.5 text-zinc-400 font-semibold text-xs">
-                                            <FiCalendar className="text-orange-500 text-xs" />
+                                        <span className="text-zinc-600 font-normal">|</span>
+                                        <span className="flex items-center gap-1.5 text-zinc-400 font-medium text-xs font-sans">
+                                            <FiCalendar className="text-orange-500 text-xs shrink-0" />
                                             {formatDate(order.createdAt)}
                                         </span>
                                     </div>
-                                    {/* Branch the trade order was billed to */}
+                                    {/* Branch Name if present */}
                                     {branch && (
-                                        <div className="flex flex-wrap items-center gap-1.5 mt-2 text-[11px]">
+                                        <div className="flex flex-wrap items-center gap-1.5 mt-1.5 text-[11px]">
                                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/5 border border-white/10 text-zinc-400">
                                                 <FiMapPin className="text-orange-400" />
                                                 Branch: <strong className="text-zinc-300">{branch.branchName} ({branch.branchCode})</strong>
@@ -333,45 +336,45 @@ export default function OrderHistory() {
                                     )}
                                 </div>
 
-                                <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 justify-between sm:justify-end w-full sm:w-auto">
+                                <div className="flex items-center gap-3 sm:gap-4">
                                     {/* Credit Terms Badge */}
                                     {order.paymentMethod?.toLowerCase().includes("credit") && (
-                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/30">
-                                            <FiCreditCard size={12} /> Pay on Credit
+                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/30">
+                                            <FiCreditCard size={11} /> Pay on Credit
                                         </span>
                                     )}
 
                                     {/* Status Badge */}
                                     {normStatus === "cancelled" ? (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider text-[#F43F5E] bg-[#F43F5E]/10 border border-[#F43F5E]/30">
-                                            <FiXCircle className="text-sm" /> CANCELLED
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-[#F43F5E] bg-[#F43F5E]/10 border border-[#F43F5E]/30">
+                                            <FiXCircle className="text-xs" /> CANCELLED
                                         </span>
                                     ) : normStatus === "confirmed" ? (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider text-[#34D399] bg-[#34D399]/10 border border-[#34D399]/30">
-                                            <FiCheckCircle className="text-sm" /> CONFIRMED
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-[#34D399] bg-[#34D399]/10 border border-[#34D399]/30">
+                                            <FiCheckCircle className="text-xs" /> CONFIRMED
                                         </span>
                                     ) : (
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider text-[#38BDF8] bg-[#38BDF8]/10 border border-[#38BDF8]/30">
-                                            <FiActivity className="text-sm" /> PENDING
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 border border-amber-500/30">
+                                            <FiActivity className="text-xs" /> PENDING
                                         </span>
                                     )}
 
                                     {/* Total Paid */}
-                                    <div className="text-right">
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-zinc-400">TOTAL</p>
-                                        <p className="text-base md:text-lg font-black text-[#EAB308]">{formatINR(paidTotal)}</p>
+                                    <div className="text-right pl-1">
+                                        <p className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">TOTAL PAID</p>
+                                        <p className="text-base sm:text-lg font-black text-amber-400 font-mono leading-tight">{formatINR(paidTotal)}</p>
                                     </div>
                                 </div>
                             </div>
 
-                            {/* Order Items List */}
-                            <div className="mt-4 space-y-3">
+                            {/* Inner Order Items Box - Matching Reference Screenshot */}
+                            <div className="space-y-2.5">
                                 {order.items?.map((item, idx) => {
                                     const itemPrice = item.totalPrice ?? ((item.unitPrice || 0) * (item.quantity || 1));
                                     const productName = item.productName || item.productId?.availableTyres?.productName || item.productId?.hero?.title || "Motorcycle Tyre";
                                     const sizeLabel = item.size || item.productId?.size || "";
+                                    const brandName = item.productId?.brand?.name || item.brand || "EUROGRIP";
 
-                                    // Resolve image from item, size, family product images, or hero image
                                     const cleanImg = (img) => {
                                         if (!img) return null;
                                         if (typeof img === "string" && img.trim()) return img.trim();
@@ -380,7 +383,6 @@ export default function OrderHistory() {
                                             if (img.imageUrl && typeof img.imageUrl === "string" && img.imageUrl.trim()) return img.imageUrl.trim();
                                             if (img.src && typeof img.src === "string" && img.src.trim()) return img.src.trim();
 
-                                            // Reconstruct string if Mongoose decomposed a URL into character index properties ({ '0': 'h', '1': 't', ... })
                                             const numericKeys = Object.keys(img)
                                                 .filter((k) => k !== "_id" && !isNaN(k))
                                                 .sort((a, b) => Number(a) - Number(b));
@@ -404,16 +406,14 @@ export default function OrderHistory() {
                                         cleanImg(item.tubeId?.images?.[0]) ||
                                         "/newlogo.webp";
 
-                                    const sku = item.sku || item.productId?.identifier || item.productId?.sku;
-
                                     return (
                                         <div
                                             key={item._id || idx}
-                                            className="rounded-xl sm:rounded-2xl bg-[#22262E] p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 border border-white/5"
+                                            className="rounded-xl sm:rounded-2xl bg-[#1A1F2C] border border-white/5 p-3.5 sm:p-4 flex items-center justify-between gap-4"
                                         >
-                                            <div className="flex items-center gap-3 md:gap-4">
-                                                {/* Product Image Container with crisp white background for black tyres */}
-                                                <div className="relative h-14 w-14 shrink-0 rounded-xl bg-white border border-white/10 flex items-center justify-center p-1 overflow-hidden shadow-sm">
+                                            <div className="flex items-center gap-3.5 min-w-0">
+                                                {/* Tyre Image Box */}
+                                                <div className="relative h-14 w-14 shrink-0 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center p-1 overflow-hidden shadow-sm">
                                                     <CustomImage
                                                         src={itemImage}
                                                         alt={productName}
@@ -424,55 +424,55 @@ export default function OrderHistory() {
                                                     />
                                                 </div>
 
-                                                {/* Item Details */}
-                                                <div className="space-y-1">
-                                                    {sku && (
-                                                        <div className="flex items-center gap-1.5">
-                                                            <span className="text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded bg-white/10 text-zinc-300 tracking-wider">
-                                                                {sku}
-                                                            </span>
-                                                            {item.deliveryMode && (
-                                                                <span className="text-[9px] font-bold uppercase px-2 py-0.5 rounded bg-orange-500/10 text-orange-400 border border-orange-500/20 tracking-wider">
-                                                                    {item.deliveryMode}
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                    <p className="text-sm font-black text-white">{productName}</p>
+                                                {/* Item Metadata */}
+                                                <div className="space-y-0.5 min-w-0">
+                                                    {/* Brand tag + TYRE badge matching reference */}
+                                                    <div className="flex items-center gap-1.5">
+                                                        <span className="text-[10px] font-black uppercase text-orange-500 tracking-wider">
+                                                            {brandName}
+                                                        </span>
+                                                        <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-orange-500/20 text-orange-400 border border-orange-500/30 tracking-wider">
+                                                            TYRE
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-xs sm:text-sm font-bold text-white truncate max-w-[280px] sm:max-w-md lg:max-w-xl">
+                                                        {productName}
+                                                    </p>
                                                     {sizeLabel && (
-                                                        <p className="text-xs font-bold text-zinc-400 uppercase">
+                                                        <p className="text-[11px] font-bold text-zinc-400 uppercase">
                                                             SIZE: {sizeLabel}
                                                         </p>
                                                     )}
-                                                    <p className="text-xs font-semibold text-zinc-400">
-                                                        Qty: {item.quantity || 1} {item.unitPrice ? `× ${formatINR(item.unitPrice)}` : ""}
+                                                    <p className="text-[11px] font-medium text-zinc-400">
+                                                        Qty: {item.quantity || 1}
                                                     </p>
                                                 </div>
                                             </div>
 
+                                            {/* Price on Right */}
                                             <div className="text-right shrink-0">
-                                                <p className="text-base md:text-lg font-black text-white">{formatINR(itemPrice)}</p>
+                                                <p className="text-sm sm:text-base font-black text-white font-mono">{formatINR(itemPrice)}</p>
                                             </div>
                                         </div>
                                     );
                                 })}
                             </div>
 
-                            {/* View Details Footer */}
-                            <div className="mt-4 pt-3 border-t border-white/5">
+                            {/* View Details Toggle */}
+                            <div className="pt-1">
                                 <button
                                     type="button"
                                     onClick={() => toggleDetails(order._id)}
-                                    className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-white transition"
+                                    className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-zinc-400 hover:text-white transition cursor-pointer select-none"
                                 >
                                     <span>VIEW DETAILS</span>
                                     <FiChevronDown
-                                        className={`text-sm transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                                        className={`text-xs transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
                                     />
                                 </button>
 
                                 {isExpanded && (
-                                    <div className="mt-4 rounded-xl sm:rounded-2xl bg-[#22262E] border border-white/10 p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                    <div className="mt-3 rounded-xl sm:rounded-2xl bg-[#1A1F2C] border border-white/5 p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                                         {/* Shipping / Delivery */}
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">DELIVERY DETAILS</p>
@@ -497,7 +497,7 @@ export default function OrderHistory() {
                                             )}
                                         </div>
 
-                                        {/* Billing Address */}
+                                        {/* Delivery Address */}
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">DELIVERY ADDRESS</p>
                                             {order.items?.[0]?.address ? (
