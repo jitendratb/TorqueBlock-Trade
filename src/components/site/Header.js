@@ -84,15 +84,16 @@ export default function Header() {
         <div>
             <header
                 data-scrolled={scrolled}
-                className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ease-in-out ${scrolled
+                className={`fixed top-0 left-0 right-0 w-full z-50 pointer-events-none transition-all duration-300 ${scrolled
                     ? "pt-2 min-[360px]:pt-2.5 sm:pt-3 md:pt-3.5 px-2.5 min-[360px]:px-3 sm:px-6 lg:px-8 bg-transparent"
-                    : "pt-0 px-0 bg-white/20 backdrop-blur-sm border-b border-white/10"
+                    : "pt-0 px-0 bg-white/[0.08] backdrop-blur-2xl border-b border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.2)]"
                     }`}
                 style={
                     !scrolled ? {
-                        backgroundColor: "rgba(255, 255, 255, 0.20)",
-                        backdropFilter: "blur(12px)",
-                        WebkitBackdropFilter: "blur(12px)",
+                        background: "rgba(255, 255, 255, 0.08)",
+                        backgroundImage: "linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%)",
+                        backdropFilter: "blur(24px)",
+                        WebkitBackdropFilter: "blur(24px)",
                         borderBottom: "1px solid rgba(255, 255, 255, 0.15)",
                     } : undefined
                 }

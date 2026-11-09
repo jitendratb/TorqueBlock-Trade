@@ -18,15 +18,15 @@ function PaymentOption({ selected, disabled, onSelect, Icon, title, tag, tagClas
             className={clsx(
                 "relative rounded-2xl border-2 p-4 transition-all",
                 selected
-                    ? "cursor-pointer border-orange-500 bg-orange-500/10 shadow-md shadow-orange-500/10"
+                    ? "cursor-pointer border-[#A35229] bg-[#A35229]/15 shadow-md shadow-[#A35229]/10"
                     : disabled
                         ? "cursor-not-allowed border-white/10 bg-white/[0.02] opacity-75"
-                        : "cursor-pointer border-white/10 bg-white/[0.04] hover:bg-white/[0.07] backdrop-blur-sm hover:border-white/20"
+                        : "cursor-pointer border-white/10 bg-[#2D323B] hover:border-white/20"
             )}
         >
             <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                    <div className={clsx("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border", selected ? "border-orange-500/40 bg-orange-500/20 text-orange-400" : "border-white/10 bg-black/20 text-zinc-400")}>
+                    <div className={clsx("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border", selected ? "border-[#A35229]/40 bg-[#A35229]/25 text-[#F59E0B]" : "border-white/10 bg-black/20 text-zinc-400")}>
                         <Icon className="text-xl" />
                     </div>
                     <div>
@@ -37,7 +37,7 @@ function PaymentOption({ selected, disabled, onSelect, Icon, title, tag, tagClas
                         <p className="mt-0.5 text-[11px] text-zinc-400">{description}</p>
                     </div>
                 </div>
-                <div className={clsx("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2", selected ? "border-orange-500 bg-orange-500 text-white" : "border-white/30")}>
+                <div className={clsx("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2", selected ? "border-[#A35229] bg-[#A35229] text-white" : "border-white/30")}>
                     {selected && <FiCheck className="stroke-[3] text-xs" />}
                 </div>
             </div>
@@ -111,12 +111,12 @@ export default function PaymentStep({
     return (
         <>
             <div className="custom-scroll flex-1 space-y-4 overflow-y-auto px-4 sm:px-5 py-4">
-                <div className="rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-3.5 text-xs">
+                <div className="rounded-2xl border border-white/10 bg-[#2D323B] p-3.5 text-xs">
                     <div className="mb-2 flex items-center justify-between">
                         <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
-                            <FiMapPin className="text-orange-400" /> Invoicing &amp; Delivery Destination
+                            <FiMapPin className="text-[#F59E0B]" /> Invoicing &amp; Delivery Destination
                         </p>
-                        <button type="button" onClick={onBack} className="text-[11px] font-bold text-orange-400 transition-colors hover:text-orange-300">
+                        <button type="button" onClick={onBack} className="text-[11px] font-bold text-[#F59E0B] transition-colors hover:text-amber-300">
                             Edit
                         </button>
                     </div>
@@ -164,7 +164,7 @@ export default function PaymentStep({
                     )}
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-4 text-xs">
+                <div className="space-y-2 rounded-2xl border border-white/10 bg-[#2D323B] p-4 text-xs">
                     <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Order Summary</p>
                     <dl className="space-y-1.5">
                         <div className="flex justify-between text-zinc-300">
@@ -177,7 +177,7 @@ export default function PaymentStep({
                         </div>
                         <div className="flex justify-between border-t border-white/10 pt-2 text-sm font-black text-white">
                             <dt>Total Amount</dt>
-                            <dd className="text-base text-orange-400">{formatINR(total)}</dd>
+                            <dd className="text-base text-[#F59E0B]">{formatINR(total)}</dd>
                         </div>
                         {isCredit && (
                             <div className="flex justify-between pt-1 text-[11px] font-semibold text-amber-400">
@@ -189,12 +189,12 @@ export default function PaymentStep({
                 </div>
             </div>
 
-            <footer className="space-y-3.5 border-t border-white/10 bg-black/40 backdrop-blur-xl px-4 sm:px-5 py-4">
+            <footer className="space-y-3.5 border-t border-white/10 bg-[#1B1E25] px-4 sm:px-5 py-4">
                 <button
                     type="button"
                     onClick={onPay}
                     disabled={sending}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 active:scale-[0.99] py-3.5 px-4 text-xs sm:text-[13px] font-black uppercase tracking-[0.08em] text-white transition-all shadow-lg shadow-orange-500/25 disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#A35229] hover:bg-[#8F4420] active:scale-[0.99] py-3.5 px-4 text-xs sm:text-[13px] font-bold uppercase tracking-[0.08em] text-white transition-all shadow-lg shadow-[#A35229]/25 disabled:opacity-50"
                 >
                     {sending ? (
                         <span>{isCredit ? "Confirming Credit Order…" : "Opening Gateway…"}</span>
