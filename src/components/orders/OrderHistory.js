@@ -105,17 +105,21 @@ export default function OrderHistory() {
 
     if (!token) {
         return (
-            <div className="rounded-3xl border border-white/10 bg-[#161B26] p-12 text-center shadow-xl">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500">
+            <div className="py-8 sm:py-12 text-center space-y-4">
+                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 shadow-md">
                     <FiFileText className="text-2xl" />
                 </div>
-                <h2 className="mt-5 text-2xl font-black text-white">Trade Order Portal</h2>
-                <p className="mx-auto mt-2 max-w-md text-sm text-zinc-400">
-                    Log in with your registered trade phone number to view live order tracking, proforma invoices, and dispatch status.
-                </p>
-                <Button className="mt-6" size="lg" onClick={openLogin}>
-                    Trade Login
-                </Button>
+                <div>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase tracking-wide text-white">Trade Order Portal</h2>
+                    <p className="mx-auto mt-2 max-w-md text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                        Log in with your registered trade phone number to view live order tracking, proforma invoices, and dispatch status.
+                    </p>
+                </div>
+                <div className="pt-2">
+                    <Button size="lg" className="justify-center py-3.5 px-8 bg-orange-500 hover:bg-orange-600 text-xs font-bold uppercase tracking-wider text-white rounded-xl shadow-lg shadow-orange-500/25" onClick={openLogin}>
+                        Trade Login
+                    </Button>
+                </div>
             </div>
         );
     }
@@ -123,9 +127,9 @@ export default function OrderHistory() {
     const { stats, orders, totalPages, page } = state;
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 sm:space-y-7">
             {/* Breadcrumb Navigation */}
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-2 border-b border-white/10">
                 <nav className="flex items-center gap-2 text-xs md:text-sm font-semibold text-zinc-400">
                     <Link href="/" className="hover:text-white transition">
                         Home
@@ -136,20 +140,20 @@ export default function OrderHistory() {
             </div>
 
             {/* Status Statistics Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 lg:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
                 {/* ALL ORDERS */}
                 <div
                     onClick={() => setActiveTab("all")}
-                    className={`cursor-pointer rounded-2xl md:rounded-3xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "all"
-                        ? "bg-[#181E2C] border-orange-500/40 shadow-lg shadow-orange-500/5"
-                        : "bg-[#141824] border-white/10 hover:border-white/20"
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "all"
+                        ? "bg-[#2D323B] border-orange-500/50 shadow-lg shadow-orange-500/10 ring-1 ring-orange-500/30"
+                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
                         }`}
                 >
                     <div>
                         <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">ALL ORDERS</p>
                         <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.all}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl md:rounded-2xl bg-[#2D2115] border border-orange-500/20 text-[#FF8A3D]">
+                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-400 shadow-sm">
                         <FiFileText className="text-lg md:text-xl" />
                     </div>
                 </div>
@@ -157,16 +161,16 @@ export default function OrderHistory() {
                 {/* PENDING */}
                 <div
                     onClick={() => setActiveTab("pending")}
-                    className={`cursor-pointer rounded-2xl md:rounded-3xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "pending"
-                        ? "bg-[#181E2C] border-sky-500/40 shadow-lg shadow-sky-500/5"
-                        : "bg-[#141824] border-white/10 hover:border-white/20"
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "pending"
+                        ? "bg-[#2D323B] border-sky-500/50 shadow-lg shadow-sky-500/10 ring-1 ring-sky-500/30"
+                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
                         }`}
                 >
                     <div>
                         <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">PENDING</p>
                         <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.pending}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl md:rounded-2xl bg-[#14233D] border border-sky-500/20 text-[#38BDF8]">
+                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-sky-500/15 border border-sky-500/30 text-sky-400 shadow-sm">
                         <FiActivity className="text-lg md:text-xl" />
                     </div>
                 </div>
@@ -174,16 +178,16 @@ export default function OrderHistory() {
                 {/* CONFIRMED */}
                 <div
                     onClick={() => setActiveTab("confirmed")}
-                    className={`cursor-pointer rounded-2xl md:rounded-3xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "confirmed"
-                        ? "bg-[#181E2C] border-emerald-500/40 shadow-lg shadow-emerald-500/5"
-                        : "bg-[#141824] border-white/10 hover:border-white/20"
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "confirmed"
+                        ? "bg-[#2D323B] border-emerald-500/50 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30"
+                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
                         }`}
                 >
                     <div>
                         <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">CONFIRMED</p>
                         <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.confirmed}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl md:rounded-2xl bg-[#132E27] border border-emerald-500/20 text-[#34D399]">
+                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 shadow-sm">
                         <FiCheckCircle className="text-lg md:text-xl" />
                     </div>
                 </div>
@@ -191,25 +195,25 @@ export default function OrderHistory() {
                 {/* CANCELLED */}
                 <div
                     onClick={() => setActiveTab("cancelled")}
-                    className={`cursor-pointer rounded-2xl md:rounded-3xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "cancelled"
-                        ? "bg-[#181E2C] border-rose-500/40 shadow-lg shadow-rose-500/5"
-                        : "bg-[#141824] border-white/10 hover:border-white/20"
+                    className={`cursor-pointer rounded-2xl border transition-all p-4 md:p-5 flex items-center justify-between ${activeTab === "cancelled"
+                        ? "bg-[#2D323B] border-rose-500/50 shadow-lg shadow-rose-500/10 ring-1 ring-rose-500/30"
+                        : "bg-[#2D323B]/60 border-white/10 hover:border-white/20 hover:bg-[#2D323B]"
                         }`}
                 >
                     <div>
                         <p className="text-[10px] md:text-xs font-black uppercase tracking-wider text-zinc-400">CANCELLED</p>
                         <p className="mt-1 text-2xl md:text-3xl font-black text-white">{stats.cancelled}</p>
                     </div>
-                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl md:rounded-2xl bg-[#331824] border border-rose-500/20 text-[#F43F5E]">
+                    <div className="flex h-11 w-11 md:h-12 md:w-12 items-center justify-center rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-400 shadow-sm">
                         <FiXCircle className="text-lg md:text-xl" />
                     </div>
                 </div>
             </div>
 
             {/* Filter Tabs & Search Bar */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-2">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-1">
                 {/* Filter Tabs */}
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="inline-flex flex-wrap items-center gap-1.5 p-1 rounded-2xl bg-[#2D323B]/80 border border-white/10">
                     {[
                         { id: "all", label: "ALL ORDERS", count: stats.all },
                         { id: "pending", label: "PENDING", count: stats.pending },
@@ -224,14 +228,14 @@ export default function OrderHistory() {
                                     setActiveTab(tab.id);
                                     setState((s) => ({ ...s, page: 1 }));
                                 }}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-black tracking-wider transition ${active
-                                    ? "bg-white/15 text-white border border-white/20 shadow-sm"
-                                    : "text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent"
+                                className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-black tracking-wider transition ${active
+                                    ? "bg-orange-500 text-white shadow-md shadow-orange-500/20"
+                                    : "text-zinc-400 hover:text-white hover:bg-white/5"
                                     }`}
                             >
                                 <span>{tab.label}</span>
                                 <span
-                                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${active ? "bg-white/20 text-white" : "bg-white/10 text-zinc-400"
+                                    className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${active ? "bg-black/20 text-white" : "bg-white/10 text-zinc-400"
                                         }`}
                                 >
                                     {tab.count}
@@ -252,7 +256,7 @@ export default function OrderHistory() {
                             setState((s) => ({ ...s, page: 1 }));
                         }}
                         placeholder="Search order, tyre, tracking #..."
-                        className="w-full rounded-full bg-[#141824] border border-white/10 pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-orange-500/50 transition"
+                        className="w-full rounded-2xl bg-[#2D323B]/80 border border-white/10 pl-10 pr-4 py-2 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-orange-500/50 transition"
                     />
                 </div>
             </div>
@@ -304,7 +308,7 @@ export default function OrderHistory() {
                     return (
                         <article
                             key={order._id}
-                            className="rounded-3xl border border-white/10 bg-[#141824] p-4 md:p-6 transition hover:border-white/20 shadow-lg shadow-black/20"
+                            className="rounded-2xl sm:rounded-3xl border border-white/10 bg-[#2D323B]/60 hover:bg-[#2D323B]/90 p-4 md:p-6 transition hover:border-white/20 shadow-xl shadow-black/40 backdrop-blur-sm"
                         >
                             {/* Order Card Header */}
                             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 pb-4">
@@ -405,7 +409,7 @@ export default function OrderHistory() {
                                     return (
                                         <div
                                             key={item._id || idx}
-                                            className="rounded-2xl bg-[#1C212E] p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 border border-white/5"
+                                            className="rounded-xl sm:rounded-2xl bg-[#22262E] p-3.5 sm:p-4 flex items-center justify-between gap-3 sm:gap-4 border border-white/5"
                                         >
                                             <div className="flex items-center gap-3 md:gap-4">
                                                 {/* Product Image Container with crisp white background for black tyres */}
@@ -468,7 +472,7 @@ export default function OrderHistory() {
                                 </button>
 
                                 {isExpanded && (
-                                    <div className="mt-4 rounded-2xl bg-white/[0.03] border border-white/5 p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                    <div className="mt-4 rounded-xl sm:rounded-2xl bg-[#22262E] border border-white/10 p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                                         {/* Shipping / Delivery */}
                                         <div className="space-y-1">
                                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">DELIVERY DETAILS</p>
