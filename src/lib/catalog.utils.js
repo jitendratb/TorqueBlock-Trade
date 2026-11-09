@@ -223,44 +223,17 @@ export function getProductDescription(product, familyData = null) {
 export function buildProductParagraphs(product, familyData) {
     const paragraphs = [];
 
-    // 1. Primary description: check familyData.description or product.description
+    // Pure description only (from familyData.description or product.description)
     const rawDesc = familyData?.description || product?.description || "";
     if (typeof rawDesc === "string" && rawDesc.trim()) {
         const parts = rawDesc
             .split(/\n{2,}|\r\n\r\n|\n/)
             .map((p) => p.trim())
-            .filter((p) => p.length > 20);
+            .filter((p) => p.length > 0);
         if (parts.length > 0) {
             paragraphs.push(...parts);
-        }
-    }
-
-    // 2. Hero subtitle from backend (if not already included in paragraphs)
-    const heroSub = familyData?.hero?.subtitle?.trim();
-    if (heroSub && !paragraphs.some((p) => p.includes(heroSub.slice(0, 25)))) {
-        paragraphs.push(heroSub);
-    }
-
-    // 3. AI Search Summary from backend
-    const aiSummary = familyData?.aiSearch?.summary?.trim();
-    if (aiSummary && !paragraphs.some((p) => p.includes(aiSummary.slice(0, 25)))) {
-        paragraphs.push(aiSummary);
-    }
-
-    // 4. Best Suited For / Operational Use Cases from backend
-    const bestSuited = Array.isArray(familyData?.bestSuitedFor) ? familyData.bestSuitedFor.filter(Boolean) : [];
-    const useCases = Array.isArray(familyData?.useCases) ? familyData.useCases.filter(Boolean) : [];
-    if (bestSuited.length > 0 || useCases.length > 0) {
-        const suitParts = [];
-        if (bestSuited.length > 0) {
-            suitParts.push(`Best Suited For: ${bestSuited.join(", ")}.`);
-        }
-        if (useCases.length > 0) {
-            suitParts.push(`Recommended Application: ${useCases.join(", ")}.`);
-        }
-        const suitText = suitParts.join(" ");
-        if (suitText && !paragraphs.some((p) => p.includes("Best Suited For"))) {
-            paragraphs.push(suitText);
+        } else {
+            paragraphs.push(rawDesc.trim());
         }
     }
 

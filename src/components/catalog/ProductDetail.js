@@ -302,7 +302,7 @@ export default function ProductDetail({ product, size = null }) {
                         {/* LEFT COLUMN: Large Showcase Photo Box + Horizontal Thumbnails */}
                         <div className="flex flex-col gap-4">
                             <div className="space-y-4">
-                                <div className="relative w-full rounded-lg overflow-hidden h-[300px] lg:h-[540px]">
+                                <div className="relative w-full rounded-2xl overflow-hidden h-[360px] sm:h-[440px] md:h-[480px] lg:h-[520px] flex items-center justify-center">
                                     <div
                                         role="button"
                                         tabIndex={0}
@@ -325,7 +325,7 @@ export default function ProductDetail({ product, size = null }) {
                                         {/* Zoom / Expand Icon in Bottom-Right Corner */}
                                         <span
                                             aria-hidden="true"
-                                            className="pointer-events-none absolute right-2 bottom-2 flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/20 text-white/80 backdrop-blur-xl transition-colors group-hover:border-orange-500/40 group-hover:text-orange-400"
+                                            className="pointer-events-none absolute right-3 bottom-3 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full border border-white/10 bg-white/20 text-white/80 backdrop-blur-xl transition-colors group-hover:border-orange-500/40 group-hover:text-orange-400"
                                         >
                                             <svg
                                                 stroke="currentColor"
@@ -355,7 +355,7 @@ export default function ProductDetail({ product, size = null }) {
                                             ref={thumbScrollRef}
                                             role="tablist"
                                             aria-label="Product images"
-                                            className="relative flex gap-3 overflow-x-auto pb-1 scrollbar-none"
+                                            className="relative flex gap-2.5 sm:gap-3 overflow-x-auto pb-1 scrollbar-none px-0.5"
                                         >
                                             {allImages.map((img, idx) => (
                                                 <button
@@ -365,17 +365,17 @@ export default function ProductDetail({ product, size = null }) {
                                                     aria-selected={idx === safeActiveIdx}
                                                     onClick={() => setActiveIdx(idx)}
                                                     aria-label={`View photo ${idx + 1}`}
-                                                    className={`relative cursor-pointer h-15 w-15 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 ${idx === safeActiveIdx
-                                                        ? "border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)]"
-                                                        : "border-zinc-800 hover:border-zinc-600"
+                                                    className={`relative cursor-pointer h-16 w-16 sm:h-20 sm:w-20 shrink-0 overflow-hidden rounded-xl border transition-all duration-300 ${idx === safeActiveIdx
+                                                        ? "border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)] ring-1 ring-orange-500/40"
+                                                        : "border-white/10 bg-white/[0.03] hover:border-white/20"
                                                         }`}
                                                 >
                                                     <CustomImage
                                                         src={img}
                                                         alt={`Thumbnail ${idx + 1}`}
                                                         fill
-                                                        sizes="60px"
-                                                        imageClassName="transition-opacity duration-300 object-cover transition-transform duration-300 hover:scale-105"
+                                                        sizes="80px"
+                                                        imageClassName="transition-opacity duration-300 object-contain p-1 transition-transform duration-300 hover:scale-105"
                                                     />
                                                 </button>
                                             ))}
@@ -411,12 +411,15 @@ export default function ProductDetail({ product, size = null }) {
 
                             {/* 2. Main Headline: Is Brand Model right for your motorcycle? */}
                             <div>
-                                <h1 className="text-3xl md:text-5xl lg:text-3xl font-black leading-[1.05] tracking-tighter text-white">
+                                <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-black leading-[1.1] tracking-tight text-white">
                                     <span className="sr-only"> {product.name} Motorcycle Tyre </span>
                                     <span aria-hidden="true">
-                                        <span className="lg:text-[3rem] drop-shadow-lg">
-                                            <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
+                                        <span className="drop-shadow-lg">
+                                            Is <span className="text-white">{headlineParts ? headlineParts.brand : product.name}</span>{" "}
                                             <span className="text-orange-500">{headlineParts ? headlineParts.model : ""}</span>
+                                        </span>
+                                        <span className="block text-zinc-400 text-xl sm:text-2xl lg:text-3xl font-medium tracking-tight mt-1">
+                                            right for your motorcycle?
                                         </span>
                                     </span>
                                 </h1>
@@ -650,7 +653,7 @@ export default function ProductDetail({ product, size = null }) {
                     )}
                 </div>
 
-                {/* Description Content */}
+                {/* Description Content - Only Pure Description */}
                 <div className="relative text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
                     {isDescriptionExpanded ? (
                         <div className="max-h-[360px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
@@ -662,13 +665,13 @@ export default function ProductDetail({ product, size = null }) {
                                 ))
                             ) : (
                                 <p className="text-zinc-300">
-                                    {familyData?.description || product?.description || heroDescription}
+                                    {familyData?.description || product?.description || ""}
                                 </p>
                             )}
                         </div>
                     ) : (
                         <p className="text-zinc-300 font-normal leading-relaxed line-clamp-3 sm:line-clamp-4">
-                            {familyData?.description || paragraphs[0] || product?.description || heroDescription}
+                            {paragraphs[0] || familyData?.description || product?.description || ""}
                         </p>
                     )}
                 </div>
