@@ -311,7 +311,7 @@ export default function ProductDetail({ product, size = null }) {
                                         fill
                                         priority
                                         sizes="(max-width: 768px) 100vw, 50vw"
-                                        imageClassName="transition-opacity duration-300 opacity-100 object-contain transition-transform duration-500 group-hover:scale-105"
+                                        imageClassName="transition-opacity duration-300 opacity-100 object-contain p-3 sm:p-4 md:p-5 transition-transform duration-300 group-hover:scale-[1.02]"
                                     />
 
                                     {/* Zoom / Expand Icon in Bottom-Right Corner */}
@@ -340,11 +340,12 @@ export default function ProductDetail({ product, size = null }) {
                                                 role="tab"
                                                 aria-selected={idx === safeActiveIdx}
                                                 onClick={() => setActiveIdx(idx)}
+                                                onMouseEnter={() => setActiveIdx(idx)}
                                                 aria-label={`View photo ${idx + 1}`}
-                                                className={`relative cursor-pointer h-12 w-12 sm:h-14 sm:w-14 lg:h-[54px] lg:w-[54px] shrink-0 overflow-hidden rounded-xl border transition-all duration-300 bg-transparent ${
+                                                className={`relative cursor-pointer h-12 w-12 sm:h-14 sm:w-14 lg:h-[54px] lg:w-[54px] shrink-0 overflow-hidden rounded-xl border transition-all duration-200 bg-transparent ${
                                                     idx === safeActiveIdx
-                                                        ? "border-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.35)] opacity-100"
-                                                        : "border-transparent opacity-60 hover:opacity-100 hover:border-white/20"
+                                                        ? "border-orange-500 shadow-[0_0_12px_rgba(249,115,22,0.35)] opacity-100 scale-105"
+                                                        : "border-transparent opacity-60 hover:opacity-100 hover:border-white/20 hover:scale-105"
                                                 }`}
                                             >
                                                 <CustomImage
@@ -352,7 +353,7 @@ export default function ProductDetail({ product, size = null }) {
                                                     alt={`Thumbnail ${idx + 1}`}
                                                     fill
                                                     sizes="64px"
-                                                    imageClassName="transition-opacity duration-300 object-contain p-0.5 transition-transform duration-300 hover:scale-105"
+                                                    imageClassName="transition-opacity duration-300 object-contain p-0.5 transition-transform duration-200"
                                                 />
                                             </button>
                                         ))}

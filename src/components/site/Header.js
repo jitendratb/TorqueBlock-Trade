@@ -135,7 +135,7 @@ export default function Header() {
                                     type="button"
                                     onClick={() => openLogin()}
                                     aria-label="Business Login"
-                                    className="hidden md:inline-flex h-9 sm:h-9.5 lg:h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-3 lg:px-4 text-xs lg:text-[13px] font-semibold text-white transition-all hover:border-white/30 active:scale-95 shadow-sm whitespace-nowrap"
+                                    className="hidden md:inline-flex h-9 sm:h-9.5 lg:h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-[#161B26]/85 hover:bg-[#1F2636] hover:border-white/25 backdrop-blur-sm px-3 lg:px-4 text-xs lg:text-[13px] font-semibold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
                                 >
                                     <FiUser className="text-sm text-zinc-300 shrink-0" />
                                     <span>Business Login</span>
@@ -159,9 +159,9 @@ export default function Header() {
                             type="button"
                             aria-label="Open order list"
                             onClick={() => setOrderListOpen(true)}
-                            className="relative inline-flex h-9 min-[360px]:h-9.5 lg:h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm px-2.5 min-[360px]:px-3 sm:px-3.5 text-xs lg:text-[13px] font-bold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
+                            className="relative inline-flex h-9 min-[360px]:h-9.5 lg:h-10 shrink-0 items-center justify-center gap-1.5 rounded-xl border border-white/10 bg-[#161B26]/85 hover:bg-[#1F2636] hover:border-white/25 backdrop-blur-sm px-2.5 min-[360px]:px-3 sm:px-3.5 text-xs lg:text-[13px] font-bold text-white transition-all active:scale-95 shadow-sm whitespace-nowrap"
                         >
-                            <IoCartOutline className="text-base shrink-0" />
+                            <IoCartOutline className="text-base sm:text-lg shrink-0 text-white" />
                             <span className="hidden sm:inline">Cart</span>
                             {units > 0 && (
                                 <span className="flex items-center justify-center min-w-4.5 h-4.5 px-1 bg-orange-500 text-white text-[9px] font-bold rounded-full shadow-lg"> {units} </span>
@@ -174,9 +174,9 @@ export default function Header() {
                             aria-label="Open navigation menu"
                             aria-expanded={menuOpen}
                             onClick={() => setMenuOpen(true)}
-                            className="inline-flex h-9 w-9 min-[360px]:h-9.5 min-[360px]:w-9.5 lg:h-10 lg:w-10 shrink-0 items-center justify-center rounded-xl border border-white/20 bg-white/[0.08] hover:bg-white/[0.16] backdrop-blur-sm text-white transition-all active:scale-95 shadow-sm"
+                            className="inline-flex h-9 w-9 min-[360px]:h-9.5 min-[360px]:w-9.5 lg:h-10 lg:w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-[#161B26]/85 hover:bg-[#1F2636] hover:border-white/25 backdrop-blur-sm text-white transition-all active:scale-95 shadow-sm"
                         >
-                            <IoMdMenu className="text-lg sm:text-xl" />
+                            <IoMdMenu className="text-lg sm:text-xl text-white" />
                         </button>
                     </div>
                 </nav>
