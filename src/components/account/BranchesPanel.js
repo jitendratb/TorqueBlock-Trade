@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { FiEdit2, FiMapPin, FiPlus, FiTrash2 } from "react-icons/fi";
 import { Badge, Button, FormFields, FormError, EmptyState, ErrorState, SkeletonRows } from "@/ui";
-import { formatDate, formatINR } from "@/lib/format";
+import { formatDate, formatINR, toTitleCase } from "@/lib/format";
 import { useUiStore } from "@/store/ui.store";
 import { addBranch, updateBranch, removeBranch } from "@/services/AccountService";
 import { ADDRESS_FIELDS, ADDRESS_KEYS, formatAddress, validateFields } from "@/forms/AccountForms";
@@ -23,13 +23,17 @@ const DETAIL_FIELDS = [
 ];
 
 const toForm = (branch) => ({
-    branchCode: branch?.branchCode || "",
-    branchName: branch?.branchName || "",
-    contactPerson: branch?.contactPerson || "",
+    branchCode: String(branch?.branchCode || "").toUpperCase(),
+    branchName: toTitleCase(branch?.branchName || "", { trim: true }),
+    contactPerson: toTitleCase(branch?.contactPerson || "", { trim: true }),
     phone: branch?.phone || "",
-    email: branch?.email || "",
-    gstin: branch?.gstin || "",
-    ...Object.fromEntries(ADDRESS_KEYS.map((key) => [key, branch?.address?.[key] || ""])),
+    email: String(branch?.email || "").toLowerCase(),
+    gstin: String(branch?.gstin || "").toUpperCase(),
+    addressLine1: toTitleCase(branch?.address?.addressLine1 || "", { trim: true }),
+    addressLine2: toTitleCase(branch?.address?.addressLine2 || "", { trim: true }),
+    city: toTitleCase(branch?.address?.city || "", { trim: true }),
+    state: toTitleCase(branch?.address?.state || "", { trim: true }),
+    pincode: branch?.address?.pincode || "",
 });
 
 // The backend stores a new address every time one is sent, so an edit only sends it when it changed.
@@ -62,13 +66,21 @@ function BranchForm({ branch, onDone }) {
         if (Object.keys(found).length) return;
 
         const payload = {
-            branchName: form.branchName.trim(),
-            contactPerson: form.contactPerson.trim(),
+            branchName: toTitleCase(form.branchName, { trim: true }),
+            contactPerson: toTitleCase(form.contactPerson, { trim: true }),
             phone: form.phone,
-            email: form.email.trim(),
-            gstin: form.gstin.trim(),
+            email: form.email.trim().toLowerCase(),
+            gstin: form.gstin.trim().toUpperCase(),
             ...(!isEdit || addressChanged(form, branch)
-                ? { address: Object.fromEntries(ADDRESS_KEYS.map((key) => [key, form[key].trim()])) }
+                ? {
+                      address: {
+                          addressLine1: toTitleCase(form.addressLine1, { trim: true }),
+                          addressLine2: toTitleCase(form.addressLine2, { trim: true }),
+                          city: toTitleCase(form.city, { trim: true }),
+                          state: toTitleCase(form.state, { trim: true }),
+                          pincode: form.pincode.trim(),
+                      },
+                  }
                 : {}),
         };
 

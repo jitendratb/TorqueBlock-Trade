@@ -6,7 +6,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FiCheckCircle } from "react-icons/fi";
 import { Button, FormError, FormFields } from "@/ui";
 import { digitsOnly, validate } from "@/lib/validation";
-import { whatsappLink } from "@/lib/format";
+import { toTitleCase, whatsappLink } from "@/lib/format";
 import { useSettings } from "@/components/site/SettingsProvider";
 import { useUiStore } from "@/store/ui.store";
 import { useAuthStore } from "@/store/authStore";
@@ -33,7 +33,7 @@ export default function RegistrationForm() {
     const initialPhone = queryPhone || loginPhone;
 
     const [form, setForm] = useState(() => ({
-        primaryOwnerName: profile?.name || "",
+        primaryOwnerName: profile?.name ? toTitleCase(profile.name, { trim: true }) : "",
         primaryOwnerNumber: initialPhone,
     }));
     const [errors, setErrors] = useState({});

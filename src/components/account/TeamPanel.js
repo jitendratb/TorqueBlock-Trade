@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
 import { Button, Badge, FormFields, FormError, ErrorState, EmptyState, Select, SkeletonRows } from "@/ui";
 import { useUiStore } from "@/store/ui.store";
+import { toTitleCase } from "@/lib/format";
 import { addSalesman, updateSalesman } from "@/services/AccountService";
 import { validateFields } from "@/forms/AccountForms";
 import { useAccountStore, selectIsOwner } from "@/store/accountStore";
@@ -50,8 +51,9 @@ function AddMemberForm({ onDone }) {
         setError("");
         setSaving(true);
         try {
-            const res = await addSalesman({ ...form, name: form.name.trim(), email: form.email.trim() });
-            notify("success", res.message || `${form.name.trim()} added. Once approved by admin, they can log in and order.`);
+            const formattedName = toTitleCase(form.name, { trim: true });
+            const res = await addSalesman({ ...form, name: formattedName, email: form.email.trim().toLowerCase() });
+            notify("success", res.message || `${formattedName} added. Once approved by admin, they can log in and order.`);
             await Promise.all([loadTeam({ force: true }), refresh()]);
             onDone();
         } catch (err) {
