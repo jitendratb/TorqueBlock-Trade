@@ -1,6 +1,5 @@
 import axios from "axios";
 import { baseURL } from "@/api/http";
-import { toTitleCase } from "@/lib/format";
 
 // Trade business account management (business details, ledger, team, branches).
 // Follows the enterprise Service layer pattern used in TorqueBlock-Dashboard.
@@ -12,19 +11,18 @@ class AccountService {
     // Registration form values -> POST /trade/register body. The shipping address is optional.
     static toRegistrationBody(values, shipping = null) {
         const clean = (source, key) => String(source?.[key] ?? "").trim();
-        const title = (source, key) => toTitleCase(source?.[key], { trim: true });
         const toAddress = (source) => ({
-            addressLine1: title(source, "addressLine1"),
-            addressLine2: title(source, "addressLine2"),
-            city: title(source, "city"),
-            state: title(source, "state"),
+            addressLine1: clean(source, "addressLine1"),
+            addressLine2: clean(source, "addressLine2"),
+            city: clean(source, "city"),
+            state: clean(source, "state"),
             pincode: clean(source, "pincode"),
             country: "India",
         });
         return {
-            primaryOwnerName: title(values, "primaryOwnerName"),
+            primaryOwnerName: clean(values, "primaryOwnerName"),
             primaryOwnerNumber: clean(values, "primaryOwnerNumber"),
-            businessName: title(values, "businessName"),
+            businessName: clean(values, "businessName"),
             businessType: clean(values, "businessType"),
             contactNumber: clean(values, "contactNumber"),
             gstin: clean(values, "gstin").toUpperCase(),

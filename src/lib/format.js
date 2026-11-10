@@ -14,17 +14,6 @@ export const splitGst = (total, rate = 0) => {
 
 export const whatsappLink = (number, message = "") => number ? `https://wa.me/${number}${message ? `?text=${encodeURIComponent(message)}` : ""}` : "";
 
-/**
- * Formats text into Title Case (1st letter of each word capital, rest small).
- * Pass `{ trim: true }` on submit/save; leave false while typing to preserve spaces.
- */
-export const toTitleCase = (value, { trim = false } = {}) => {
-    if (value == null) return "";
-    let str = String(value);
-    if (trim) {
-        str = str.replace(/\s+/g, " ").trim();
-    }
-    return str
-        .toLowerCase()
-        .replace(/(^|[\s.,/()-])(\p{L})/gu, (_, sep, ch) => sep + ch.toUpperCase());
-};
+// Title Case formatter for text inputs (1st letter of each word capital, rest small; preserves spaces while typing).
+export const toTitleCase = (value) =>
+    String(value ?? "").toLowerCase().replace(/(^|[\s.,/()-])(\p{L})/gu, (_, sep, ch) => sep + ch.toUpperCase());

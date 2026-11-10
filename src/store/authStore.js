@@ -3,7 +3,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { clearAuthCookies, configureSession } from "@/api/http";
-import { toTitleCase } from "@/lib/format";
 import AuthService from "@/services/AuthService";
 import AddressService from "@/services/AddressService";
 
@@ -64,9 +63,9 @@ export const useAuthStore = create(
                 const { profile } = get();
                 await Promise.all([
                     AuthService.updateUser(profile.id, {
-                        name: toTitleCase(form.businessName || form.contactName, { trim: true }),
-                        email: String(form.email || "").trim().toLowerCase(),
-                        gstin: String(form.gstin || "").trim().toUpperCase(),
+                        name: (form.businessName || form.contactName).trim(),
+                        email: form.email.trim(),
+                        gstin: form.gstin.trim().toUpperCase(),
                     }),
                     AddressService.ensureTradeAddress({ ...form, phone: form.phone || profile.phone }, profile.address),
                 ]);

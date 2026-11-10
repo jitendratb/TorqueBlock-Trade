@@ -1,6 +1,5 @@
 import axios from "axios";
 import { baseURL } from "@/api/http";
-import { toTitleCase } from "@/lib/format";
 
 // The logged-in user's address book (backend routes/address.route.js, mounted at /address).
 // Handles parsing, picking trade address, and saving billing/shipping details.
@@ -32,20 +31,19 @@ class AddressService {
 
     static toBody(values) {
         const clean = (key) => String(values[key] || "").trim();
-        const title = (key) => toTitleCase(values[key], { trim: true });
         const gstin = clean("gstin").toUpperCase();
         return {
-            fullName: title("contactName"),
+            fullName: clean("contactName"),
             phone: clean("phone"),
-            email: clean("email").toLowerCase(),
+            email: clean("email"),
             gst: gstin,
-            billingName: title("businessName"),
+            billingName: clean("businessName"),
             billingGst: gstin,
             addressType: "work",
-            addressLine1: title("addressLine1"),
-            addressLine2: title("addressLine2"),
-            city: title("city"),
-            state: title("state"),
+            addressLine1: clean("addressLine1"),
+            addressLine2: clean("addressLine2"),
+            city: clean("city"),
+            state: clean("state"),
             pincode: clean("pincode"),
             country: "India",
         };

@@ -1,4 +1,3 @@
-import { toTitleCase } from "@/lib/format";
 import { validate } from "@/lib/validation";
 
 // Field definitions shared by registration, the profile editor, branches and the checkout billing step (rendered by ui/FormFields).
@@ -44,25 +43,19 @@ export const BILLING_FIELDS = [
     ...ADDRESS_FIELDS,
 ];
 
-const pickAddress = (source = {}) => ({
-    addressLine1: toTitleCase(source?.addressLine1 || "", { trim: true }),
-    addressLine2: toTitleCase(source?.addressLine2 || "", { trim: true }),
-    city: toTitleCase(source?.city || "", { trim: true }),
-    state: toTitleCase(source?.state || "", { trim: true }),
-    pincode: String(source?.pincode || "").replace(/\D/g, "").slice(0, 6),
-});
+const pick = (source = {}, keys) => Object.fromEntries(keys.map((key) => [key, source?.[key] || ""]));
 export const ADDRESS_KEYS = ADDRESS_FIELDS.map((f) => f.name);
 
 // Saved trade address first (what the user typed last), then the business account, then the login.
 export const profileToBilling = (profile, account) => {
     const address = profile?.address || {};
     return {
-        businessName: toTitleCase(address.businessName || account?.businessName || "", { trim: true }),
-        contactName: toTitleCase(address.contactName || profile?.name || "", { trim: true }),
+        businessName: address.businessName || account?.businessName || "",
+        contactName: address.contactName || profile?.name || "",
         phone: String(address.phone || profile?.phone || "").replace(/\D/g, "").slice(-10),
-        email: String(address.email || profile?.email || "").trim().toLowerCase(),
-        gstin: String(address.gstin || account?.gstin || profile?.gstin || "").trim().toUpperCase(),
-        ...pickAddress(address),
+        email: address.email || profile?.email || "",
+        gstin: address.gstin || account?.gstin || profile?.gstin || "",
+        ...pick(address, ADDRESS_KEYS),
     };
 };
 
