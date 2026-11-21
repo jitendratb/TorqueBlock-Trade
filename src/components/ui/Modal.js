@@ -33,7 +33,7 @@ export default function Modal({
 
     return (
         <div
-            className="fixed inset-0 z-[70] flex items-center justify-center p-4"
+            className="fixed inset-0 z-[70] flex items-end justify-center sm:items-center sm:p-4"
             role="dialog"
             aria-modal="true"
             aria-label={label}
@@ -49,10 +49,12 @@ export default function Modal({
             {/* Modal Content Box */}
             <div
                 className={clsx(
-                    "animate-fade-in-up relative w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain border border-white/10 text-white shadow-2xl",
-                    className
+                    "animate-fade-in-up relative w-full max-h-[92dvh] sm:max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain border border-white/10 text-white shadow-2xl",
+                    className,
+                    "max-sm:max-w-none max-sm:rounded-b-none max-sm:border-x-0 max-sm:border-b-0 max-sm:pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
                 )}
             >
+                <span aria-hidden="true" className="mx-auto -mt-2 mb-4 block h-1 w-10 rounded-full bg-white/20 sm:hidden" />
                 <CloseButton
                     onClick={onClose}
                     className={closeButtonClassName}

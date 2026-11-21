@@ -3,17 +3,18 @@
 import { useState } from "react";
 import clsx from "clsx";
 import { FiCheck, FiLink, FiShare2 } from "react-icons/fi";
-import { useUiStore } from "@/store/ui.store";
+import { useUiStore } from "@/store/uiStore";
+import Button from "./Button";
 
-const BUTTON = "inline-flex items-center justify-center gap-1.5 rounded-lg border border-white/15 bg-white/5 font-bold text-zinc-200 transition-all hover:border-orange-500/60 hover:bg-orange-500/10 hover:text-white";
-const SIZES = { sm: "h-7 px-2 text-[11px]", md: "h-9 px-3 text-xs", icon: "h-7 w-7 text-base" };
+// ShareButtons size -> Button size.
+const BUTTON_SIZE = { xs: "xs", sm: "xs", md: "sm" };
+const COMPACT_ICON = "!h-6 !w-6 !rounded-md !text-[11px]";
 
 const copyText = async (text) => {
     try {
         await navigator.clipboard.writeText(text);
         return true;
     } catch {
-        // Clipboard API is blocked outside secure contexts (http, some in-app browsers).
         const area = document.createElement("textarea");
         area.value = text;
         area.setAttribute("readonly", "");
@@ -27,9 +28,15 @@ const copyText = async (text) => {
     }
 };
 
-// Share and Copy link for a portal page; the link uses the domain the page is open on.
-// copyOnly: just the Copy link button (the per-size link in the stock table).
-export default function ShareButtons({ path, title, text, size = "md", iconOnly = false, copyOnly = false, className }) {
+export default function ShareButtons({
+    path,
+    title,
+    text,
+    size = "md",
+    iconOnly = false,
+    copyOnly = false,
+    className,
+}) {
     const notify = useUiStore((s) => s.notify);
     const [copied, setCopied] = useState(false);
 
@@ -55,21 +62,47 @@ export default function ShareButtons({ path, title, text, size = "md", iconOnly 
             }
             return;
         }
-        window.open(`https://wa.me/?text=${encodeURIComponent([text || title, url].filter(Boolean).join(" "))}`, "_blank", "noopener,noreferrer");
+        window.open(
+            `https://wa.me/?text=${encodeURIComponent([text || title, url].filter(Boolean).join(" "))}`,
+            "_blank",
+            "noopener,noreferrer"
+        );
     };
+
+    const buttonSize = BUTTON_SIZE[size] || BUTTON_SIZE.md;
+    const buttonClassName = size === "xs" && iconOnly ? COMPACT_ICON : undefined;
+    const label = (caption) => (iconOnly ? null : <span className="hidden min-[480px]:inline">{caption}</span>);
 
     return (
         <div className={clsx("inline-flex items-center gap-1.5", className)}>
             {!copyOnly && (
-                <button type="button" onClick={share} aria-label={`Share ${title}`} title="Share" className={clsx(BUTTON, SIZES[size])}>
-                    <FiShare2 className="text-orange-400 shrink-0" />
-                    {!iconOnly && <span className="hidden min-[480px]:inline">Share</span>}
-                </button>
+                <Button
+                    variant="muted"
+                    size={buttonSize}
+                    iconOnly={iconOnly}
+                    uppercase={false}
+                    onClick={share}
+                    className={buttonClassName}
+                    aria-label={`Share ${title}`}
+                    title="Share"
+                    icon={<FiShare2 className="text-orange-400" />}
+                >
+                    {label("Share")}
+                </Button>
             )}
-            <button type="button" onClick={copy} aria-label={`Copy link to ${title}`} title="Copy link" className={clsx(BUTTON, SIZES[size])}>
-                {copied ? <FiCheck className="text-emerald-400 shrink-0" /> : <FiLink className="text-orange-400 shrink-0" />}
-                {!iconOnly && <span className="hidden min-[480px]:inline">{copied ? "Copied" : "Copy link"}</span>}
-            </button>
+            <Button
+                variant="muted"
+                size={buttonSize}
+                iconOnly={iconOnly}
+                uppercase={false}
+                onClick={copy}
+                className={buttonClassName}
+                aria-label={`Copy link to ${title}`}
+                title="Copy link"
+                icon={copied ? <FiCheck className="text-emerald-400" /> : <FiLink className="text-orange-400" />}
+            >
+                {label(copied ? "Copied" : "Copy link")}
+            </Button>
         </div>
     );
 }

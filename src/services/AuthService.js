@@ -1,23 +1,14 @@
-import axios from "axios";
-import { baseURL } from "@/api/http";
+import { api } from "@/api";
 import AddressService from "./AddressService";
 
-// Authentication & Profile Service (WhatsApp OTP login, session, profile updates).
+// Authentication & profile (WhatsApp OTP login, profile read / update).
 class AuthService {
-    // Trade Portal login (POST /trade/login): an OTP only goes to a number whose business profile Torque Block has
-    // approved. Otherwise it fails with err.code NOT_REGISTERED or ACCOUNT_PENDING_APPROVAL, which the login form
-    // shows, so the requests are `silent` (no Next dev error overlay).
-    static async sendOtp(phone) {
-        const { data } = await axios.post(`${baseURL}/trade/login`, { phone }, { silent: true });
-        return data;
-    }
+    static sendOtp = (phone) => api.post("/trade/login", { phone }, { silent: true });
 
-    // -> { token, user }; also sets the refresh-token cookie.
-    static async verifyOtp(otp, otpVerifyToken) {
-        const { data } = await axios.post(`${baseURL}/trade/login/verify-otp`, { otp, otpVerifyToken }, { silent: true });
-        return data;
-    }
+    static verifyOtp = (otp, otpVerifyToken) =>
+        api.post("/trade/login/verify-otp", { otp, otpVerifyToken }, { silent: true });
 
+    // Backend user → app profile.
     static toProfile(user) {
         if (!user) return null;
         const roles = user.roles || [];
@@ -28,25 +19,17 @@ class AuthService {
             email: user.email || "",
             gstin: user.gstin || "",
             isApproved: roles.includes("dealer"),
-            // Set once the user owns or belongs to a trade business account (portal registration or added by Torque Block).
-            businessAccountId: user.tradeBusinessAccount ? String(user.tradeBusinessAccount._id ?? user.tradeBusinessAccount) : null,
+            businessAccountId: user.tradeBusinessAccount
+                ? String(user.tradeBusinessAccount._id ?? user.tradeBusinessAccount)
+                : null,
             address: AddressService.pickTradeAddress(user.address),
         };
     }
 
-    static async fetchProfile(userId) {
-        const { data } = await axios.get(`${baseURL}/auth/${userId}`);
-        return AuthService.toProfile(data.data);
-    }
+    static fetchProfile = async (userId) => AuthService.toProfile((await api.get(`/auth/${userId}`)).data);
 
-    static async updateUser(userId, fields) {
-        const { data } = await axios.put(`${baseURL}/auth/${userId}`, fields);
-        return data;
-    }
+    static updateUser = (userId, fields) => api.put(`/auth/${userId}`, fields);
 }
 
 export default AuthService;
-export const sendOtp = AuthService.sendOtp;
-export const verifyOtp = AuthService.verifyOtp;
-export const fetchProfile = AuthService.fetchProfile;
-export const updateUser = AuthService.updateUser;
+export const { sendOtp, verifyOtp, fetchProfile, updateUser } = AuthService;

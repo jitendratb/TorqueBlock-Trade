@@ -40,7 +40,7 @@ export const tyreHref = (product, size) => {
 
 export const findProduct = (products = [], identifier) => products.find((p) => p.identifier === identifier) || null;
 
-export const findSize = (product, slug) => product?.sizes.find((s) => sizeSlug(s.size) === slug) || null;
+export const findSize = (product, slug) => product?.sizes?.find((s) => sizeSlug(s.size) === slug) || null;
 
 // Sizes typed with or without spaces/dashes match: "110/70r17", "110/70 R17", "90/90-21".
 const compact = (text) => text.replace(/[\s-]/g, "");
@@ -105,6 +105,15 @@ export function localSuggestions(index, query, limit = 8) {
     return [...products, ...sizes].slice(0, limit);
 }
 
+// Construction from the letters in a size ("120/70 ZR 17" → ZR radial). `fallback` when no letter matches.
+function constructionFrom(text, fallback) {
+    const upper = String(text || "").toUpperCase();
+    if (upper.includes("ZR")) return "Radial (ZR High Speed)";
+    if (upper.includes("R")) return "Radial (R)";
+    if (upper.includes("B")) return "Bias-Belted (B)";
+    return fallback;
+}
+
 /**
  * Parses a tyre size string into structured technical specifications.
  * Supports metric formats (e.g. "120/70 ZR 17", "140/70-17", "90/90-21")
@@ -126,11 +135,7 @@ export function parseTyreSize(rawSize = "", spec = "", sizeObj = null) {
         const bLoadSpeed = [sizeObj.loadIndex, sizeObj.speedIndex].filter(Boolean).join("");
 
         if (bWidth || bAspect || bRim) {
-            let bConstr = "Radial";
-            if (str.toUpperCase().includes("ZR")) bConstr = "Radial (ZR High Speed)";
-            else if (str.toUpperCase().includes("R")) bConstr = "Radial (R)";
-            else if (str.toUpperCase().includes("B")) bConstr = "Bias-Belted (B)";
-            else if (sizeObj.compoundTechnology) bConstr = sizeObj.compoundTechnology;
+            const bConstr = constructionFrom(str, sizeObj.compoundTechnology || "Radial");
 
             return {
                 width: bWidth || "Standard",
@@ -154,11 +159,7 @@ export function parseTyreSize(rawSize = "", spec = "", sizeObj = null) {
         width = `${metricMatch[1]} mm`;
         aspect = `${metricMatch[2]}%`;
         rim = `${metricMatch[4]}"`;
-        const constrRaw = (metricMatch[3] || "").toUpperCase().trim();
-        if (constrRaw.includes("ZR")) construction = "Radial (ZR High Speed)";
-        else if (constrRaw.includes("R")) construction = "Radial (R)";
-        else if (constrRaw.includes("B")) construction = "Bias-Belted (B)";
-        else construction = "Bias-Ply / Cross-Ply";
+        construction = constructionFrom(metricMatch[3], "Bias-Ply / Cross-Ply");
     } else {
         // Imperial/inch sizing e.g. 3.00-18 or 2.75-17
         const inchMatch = str.match(/^(\d(?:\.\d{1,2})?)\s*[-xX]\s*(\d{1,2})/);
@@ -196,26 +197,6 @@ export function parseTyreSize(rawSize = "", spec = "", sizeObj = null) {
 }
 
 /**
- * Resolves product description or hero subtitle directly from backend data (familyData or product).
- * Contains zero hardcoded descriptions.
- */
-export function getProductDescription(product, familyData = null) {
-    if (familyData?.hero?.subtitle && familyData.hero.subtitle.trim().length > 5) {
-        return familyData.hero.subtitle.trim();
-    }
-    if (familyData?.description && familyData.description.trim().length > 10) {
-        return familyData.description.trim();
-    }
-    if (product?.description && product.description.trim().length > 10) {
-        return product.description.trim();
-    }
-    if (familyData?.aiSearch?.summary && familyData.aiSearch.summary.trim().length > 10) {
-        return familyData.aiSearch.summary.trim();
-    }
-    return "";
-}
-
-/**
  * Extracts and formats multi-paragraph product overview, highlights, and technical details.
  * Prioritizes backend intent data (familyData) from MongoDB /intent/:identifier API.
  * Contains zero hardcoded paragraphs.
@@ -238,30 +219,4 @@ export function buildProductParagraphs(product, familyData) {
     }
 
     return paragraphs;
-}
-
-/**
- * Extracts bullet highlights from backend family data (hero.highlights, aiSearch.keyTakeaways, pros).
- */
-export function getProductHighlights(product, familyData) {
-    const highlights = [];
-    if (Array.isArray(familyData?.hero?.highlights)) {
-        familyData.hero.highlights.forEach((h) => {
-            const trimmed = String(h || "").trim();
-            if (trimmed && !highlights.includes(trimmed)) highlights.push(trimmed);
-        });
-    }
-    if (Array.isArray(familyData?.aiSearch?.keyTakeaways)) {
-        familyData.aiSearch.keyTakeaways.forEach((k) => {
-            const trimmed = String(k || "").trim();
-            if (trimmed && !highlights.includes(trimmed)) highlights.push(trimmed);
-        });
-    }
-    if (Array.isArray(familyData?.pros)) {
-        familyData.pros.forEach((p) => {
-            const trimmed = String(p || "").trim();
-            if (trimmed && !highlights.includes(trimmed)) highlights.push(trimmed);
-        });
-    }
-    return highlights;
 }

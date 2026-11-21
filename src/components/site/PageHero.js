@@ -3,10 +3,7 @@ import { BsSpeedometer2 } from "react-icons/bs";
 // Compact dark hero for inner pages; sits under the fixed header.
 export default function PageHero({ eyebrow, title, accent, description, children, titleClassName = "text-xl sm:text-2xl md:text-3xl lg:text-4xl" }) {
     return (
-        <section className="relative overflow-hidden bg-[#0B0F19] pt-20 pb-5 sm:pt-24 sm:pb-6 md:pt-28 md:pb-6">
-            {/* <span aria-hidden="true" className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[60rem] -translate-x-1/2 rounded-full bg-orange-500/15 blur-3xl" /> */}
-            {/* <span aria-hidden="true" className="hero-apex-line pointer-events-none absolute inset-x-0 bottom-0 h-px" /> */}
-
+        <section className="relative overflow-hidden bg-[#0B0F19] pt-24 pb-5 sm:pt-28 sm:pb-6 md:pt-32 md:pb-6">
             <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-white">
                 {eyebrow && (
                     <div className="flex items-center gap-2">

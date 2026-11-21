@@ -2,11 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
-import { Button, EmptyState, ErrorState, SkeletonRows } from "@/ui";
+import { Button, EmptyState, ErrorState, Notice, PanelHeader, SkeletonRows, Stat } from "@/components/ui";
 import { formatDate, formatINR } from "@/lib/format";
 import { fetchLedger } from "@/services/AccountService";
 import { useAccountStore, selectCreditApproved, selectIsOwner } from "@/store/accountStore";
-import { Notice, PanelHeader, Stat } from "./AccountUi";
 
 const STATUS_NOTICE = {
     pending: "Your credit request is with our team. Pay on Credit unlocks once it is approved.",
@@ -38,27 +37,56 @@ function LedgerEntry({ entry }) {
             <div className="min-w-0 space-y-0.5">
                 <p className="font-bold text-white">
                     {label}
-                    {failed && <span className="ml-2 rounded bg-red-500/15 px-1.5 py-0.5 text-[10px] font-black uppercase text-red-400">Failed</span>}
+                    {failed && (
+                        <span className="ml-2 rounded bg-red-500/15 px-1.5 py-0.5 text-[10px] font-black uppercase text-red-400">
+                            Failed
+                        </span>
+                    )}
                 </p>
                 <p className="text-[11px] text-zinc-400">
-                    {[formatDate(entry.createdAt), entry.branch && `${entry.branch.branchName} (${entry.branch.branchCode})`, entry.user?.name, reference && `Ref ${reference}`].filter(Boolean).join(" · ")}
+                    {[
+                        formatDate(entry.createdAt),
+                        entry.branch && `${entry.branch.branchName} (${entry.branch.branchCode})`,
+                        entry.user?.name,
+                        reference && `Ref ${reference}`,
+                    ]
+                        .filter(Boolean)
+                        .join(" · ")}
                 </p>
-                {(failed ? entry.failureReason : entry.reason) && <p className="truncate text-[11px] text-zinc-500">{failed ? entry.failureReason : entry.reason}</p>}
+                {(failed ? entry.failureReason : entry.reason) && (
+                    <p className="truncate text-[11px] text-zinc-500">
+                        {failed ? entry.failureReason : entry.reason}
+                    </p>
+                )}
             </div>
             <div className="shrink-0 text-right">
                 {entry.amount > 0 && (
-                    <p className={clsx("text-sm font-black", failed ? "text-zinc-500 line-through" : isDebit ? "text-amber-400" : isDebit === false ? "text-emerald-400" : "text-white")}>
+                    <p
+                        className={clsx(
+                            "text-sm font-black",
+                            failed
+                                ? "text-zinc-500 line-through"
+                                : isDebit
+                                  ? "text-amber-400"
+                                  : isDebit === false
+                                    ? "text-emerald-400"
+                                    : "text-white"
+                        )}
+                    >
                         {isDebit ? "−" : isDebit === false ? "+" : ""}
                         {formatINR(entry.amount)}
                     </p>
                 )}
-                {!failed && entry.balance?.availableCredit != null && <p className="text-[10px] text-zinc-500">Available {formatINR(entry.balance.availableCredit)}</p>}
+                {!failed && entry.balance?.availableCredit != null && (
+                    <p className="text-[10px] text-zinc-500">
+                        Available {formatINR(entry.balance.availableCredit)}
+                    </p>
+                )}
             </div>
         </li>
     );
 }
 
-// Credit used by orders and repayments recorded by Torque Block (account owner only).
 function Ledger() {
     const [state, setState] = useState({ status: "loading", entries: [], page: 1, totalPages: 1 });
 
@@ -92,11 +120,20 @@ function Ledger() {
         <section className="space-y-3">
             <PanelHeader title="Credit Ledger" description="Every credit order and repayment on your account." />
             {status === "error" && !entries.length ? (
-                <ErrorState compact title="Failed to Load Ledger" message="Could not load your credit history." onRetry={() => load(1)} />
+                <ErrorState
+                    compact
+                    title="Failed to Load Ledger"
+                    message="Could not load your credit history."
+                    onRetry={() => load(1)}
+                />
             ) : status === "loading" && !entries.length ? (
                 <SkeletonRows count={3} />
             ) : !entries.length ? (
-                <EmptyState compact title="No Credit Activity Yet" description="Orders placed on credit and repayments will show up here." />
+                <EmptyState
+                    compact
+                    title="No Credit Activity Yet"
+                    description="Orders placed on credit and repayments will show up here."
+                />
             ) : (
                 <>
                     <ul className="custom-scroll max-h-[28rem] space-y-2 overflow-y-auto">
@@ -105,7 +142,14 @@ function Ledger() {
                         ))}
                     </ul>
                     {page < totalPages && (
-                        <Button variant="ghost" size="sm" full loading={status === "loading"} loadingText="Loading…" onClick={() => load(page + 1)}>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            full
+                            loading={status === "loading"}
+                            loadingText="Loading…"
+                            onClick={() => load(page + 1)}
+                        >
                             Load more
                         </Button>
                     )}
@@ -115,7 +159,6 @@ function Ledger() {
     );
 }
 
-// Credit line overview: limit / available / outstanding, granted and approved by admin.
 export default function CreditPanel() {
     const account = useAccountStore((s) => s.account);
     const approved = useAccountStore(selectCreditApproved);
@@ -129,13 +172,30 @@ export default function CreditPanel() {
                 {approved ? (
                     <>
                         <div className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-3">
-                            <Stat label="Credit status" value="Approved" tone="text-emerald-400" hint={`Terms: Net ${account.creditDays} days`} />
-                            <Stat label="Available credit" value={formatINR(account.availableCredit || 0)} tone="text-emerald-400" hint={`Limit: ${formatINR(account.creditLimit || 0)}`} />
-                            <Stat label="Outstanding" value={formatINR(account.outstandingAmount || 0)} tone="text-amber-400" hint="Unpaid credit invoices" />
+                            <Stat
+                                label="Credit status"
+                                value="Approved"
+                                tone="text-emerald-400"
+                                hint={`Terms: Net ${account.creditDays} days`}
+                            />
+                            <Stat
+                                label="Available credit"
+                                value={formatINR(account.availableCredit || 0)}
+                                tone="text-emerald-400"
+                                hint={`Limit: ${formatINR(account.creditLimit || 0)}`}
+                            />
+                            <Stat
+                                label="Outstanding"
+                                value={formatINR(account.outstandingAmount || 0)}
+                                tone="text-amber-400"
+                                hint="Unpaid credit invoices"
+                            />
                         </div>
 
                         {!account.canOrderOnCredit && (
-                            <Notice tone="amber">Add a branch to your business account to start ordering on credit.</Notice>
+                            <Notice tone="amber">
+                                Add a branch to your business account to start ordering on credit.
+                            </Notice>
                         )}
                     </>
                 ) : (

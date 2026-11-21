@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FiCheckCircle, FiCopy, FiCheck, FiArrowRight, FiPackage, FiShield } from "react-icons/fi";
-import { Logo, Modal, Button } from "@/ui";
+import { Button, Logo, Modal } from "@/components/ui";
 import { formatINR } from "@/lib/format";
 
 export default function OrderSuccessModal({ open, onClose, order }) {
@@ -32,10 +32,8 @@ export default function OrderSuccessModal({ open, onClose, order }) {
             className="max-w-lg border-white/10 bg-[#0B0F19] text-white"
         >
             <div className="flex flex-col items-center text-center">
-                {/* Brand Logo */}
                 <Logo href={null} className="w-[110px] mx-auto mb-3" />
 
-                {/* Glowing Success Badge */}
                 <div className="relative mb-3">
                     <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/30 text-white">
                         <FiCheckCircle size={32} />
@@ -61,34 +59,43 @@ export default function OrderSuccessModal({ open, onClose, order }) {
                         : "Your trade tyre order has been successfully placed. Our dispatch team is queuing your tyres from the hub."}
                 </p>
 
-                {/* Order ID & Payment Card */}
                 <div className="mt-5 w-full rounded-2xl border border-white/10 bg-[#10141D] p-4 text-left space-y-3">
                     <div className="flex items-center justify-between pb-3 border-b border-white/10">
                         <div>
-                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">Order Reference</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
+                                Order Reference
+                            </p>
                             <p className="font-mono text-sm font-bold text-white flex items-center gap-2">
                                 {displayId}
-                                <button
+                                <Button
+                                    variant="text"
+                                    size="xs"
+                                    iconOnly
                                     onClick={handleCopy}
                                     title="Copy Order ID"
-                                    className="text-zinc-400 hover:text-orange-400 transition-colors"
-                                >
-                                    {copied ? <FiCheck className="text-orange-400" /> : <FiCopy size={12} />}
-                                </button>
+                                    aria-label="Copy Order ID"
+                                    icon={copied ? <FiCheck className="text-orange-400" /> : <FiCopy size={12} />}
+                                />
                             </p>
                         </div>
                         <div className="text-right">
                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                                {order.paymentMethod?.toLowerCase().includes("credit") ? "Credit Invoiced" : "Amount Paid"}
+                                {order.paymentMethod?.toLowerCase().includes("credit")
+                                    ? "Credit Invoiced"
+                                    : "Amount Paid"}
                             </p>
-                            <p className="text-base font-black text-orange-400 font-display">{formatINR(totalAmount)}</p>
+                            <p className="text-base font-black text-orange-400 font-display">
+                                {formatINR(totalAmount)}
+                            </p>
                         </div>
                     </div>
 
                     <div className="flex items-center justify-between text-xs py-1 border-b border-white/5">
                         <span className="text-zinc-400 font-medium">Payment Method:</span>
                         <span className="font-bold text-orange-400">
-                            {order.paymentMethod?.toLowerCase().includes("credit") ? "Pay on Credit" : "Razorpay Online"}
+                            {order.paymentMethod?.toLowerCase().includes("credit")
+                                ? "Pay on Credit"
+                                : "Razorpay Online"}
                         </span>
                     </div>
 
@@ -106,11 +113,10 @@ export default function OrderSuccessModal({ open, onClose, order }) {
                         </div>
                     ) : null}
 
-                    {/* Delivery / Billing Details */}
                     {(address.businessName || address.fullName || address.city) && (
                         <div className="pt-2 border-t border-white/10 text-xs">
                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-1">
-                                Delivery & Invoicing To
+                                Delivery &amp; Invoicing To
                             </p>
                             <p className="font-bold text-white">
                                 {address.businessName || address.fullName}
@@ -124,19 +130,22 @@ export default function OrderSuccessModal({ open, onClose, order }) {
                         </div>
                     )}
 
-                    {/* Items Mini-Summary */}
                     {items.length > 0 && (
                         <div className="pt-2 border-t border-white/10">
                             <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-1.5 flex items-center gap-1.5">
-                                <FiPackage size={12} className="text-orange-400" /> Ordered Tyres ({items.reduce((s, i) => s + (i.quantity || 1), 0)} Units)
+                                <FiPackage size={12} className="text-orange-400" /> Ordered Tyres (
+                                {items.reduce((s, i) => s + (i.quantity || 1), 0)} Units)
                             </p>
                             <div className="max-h-24 overflow-y-auto custom-scroll space-y-1">
                                 {items.map((item, idx) => (
                                     <div key={idx} className="flex justify-between items-center text-xs text-zinc-300">
                                         <span className="truncate max-w-[240px] text-[11px]">
-                                            {item.productName || item.Name || "Tyre"} {item.size || item.Size ? `(${item.size || item.Size})` : ""}
+                                            {item.productName || item.Name || "Tyre"}{" "}
+                                            {item.size || item.Size ? `(${item.size || item.Size})` : ""}
                                         </span>
-                                        <span className="font-bold text-white text-[11px]">x{item.quantity || 1}</span>
+                                        <span className="font-bold text-white text-[11px]">
+                                            x{item.quantity || 1}
+                                        </span>
                                     </div>
                                 ))}
                             </div>
@@ -148,21 +157,16 @@ export default function OrderSuccessModal({ open, onClose, order }) {
                     A confirmation and tax invoice update will also be shared on WhatsApp.
                 </p>
 
-                {/* Actions */}
                 <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full">
                     <Button
                         href="/orders"
                         onClick={onClose}
                         variant="primary"
-                        className="w-full justify-center shadow-lg shadow-orange-500/20"
+                        full
                     >
                         View My Orders <FiArrowRight />
                     </Button>
-                    <Button
-                        variant="outline"
-                        onClick={onClose}
-                        className="w-full justify-center"
-                    >
+                    <Button variant="outline" onClick={onClose} full>
                         Continue Shopping
                     </Button>
                 </div>

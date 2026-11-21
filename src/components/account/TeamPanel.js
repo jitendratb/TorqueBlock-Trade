@@ -2,20 +2,52 @@
 
 import { useEffect, useState } from "react";
 import { FiEdit2, FiPlus, FiTrash2 } from "react-icons/fi";
-import { Button, Badge, FormFields, FormError, ErrorState, EmptyState, Select, SkeletonRows } from "@/ui";
-import { useUiStore } from "@/store/ui.store";
+import {
+    Badge,
+    Button,
+    Card,
+    ConfirmInline,
+    EmptyState,
+    ErrorState,
+    FormActions,
+    FormError,
+    FormFields,
+    Notice,
+    PanelHeader,
+    Select,
+    SkeletonRows,
+} from "@/components/ui";
+import useAsyncAction from "@/hooks/useAsyncAction";
+import useForm from "@/hooks/useForm";
+import { trimValues } from "@/lib/formHelpers";
 import { addSalesman, updateSalesman } from "@/services/AccountService";
-import { validateFields } from "@/forms/AccountForms";
 import { useAccountStore, selectIsOwner } from "@/store/accountStore";
-import { Notice, PanelHeader } from "./AccountUi";
+import { useUiStore } from "@/store/uiStore";
 
 const BLANK = { name: "", phone: "", email: "", branchCode: "ALL" };
+const MEMBER_KEYS = Object.keys(BLANK);
+
+const STATUS = {
+    active: { tone: "green", label: "Active" },
+    pending: { tone: "amber", label: "Pending Approval" },
+    inactive: { tone: "red", label: "Inactive" },
+};
+
+// Approved (or status "active") → Active; "pending" or no status yet → Pending; any other status → Inactive.
+const memberStatus = (member) => {
+    if (member.isApproved || member.status === "active") return STATUS.active;
+    if (!member.status || member.status === "pending") return STATUS.pending;
+    return STATUS.inactive;
+};
 
 const useBranchOptions = () => {
     const branches = useAccountStore((s) => s.account?.branches);
     return [
         { value: "ALL", label: "All branches" },
-        ...(branches || []).map((b) => ({ value: b.branchCode, label: `${b.branchName} (${b.branchCode})` })),
+        ...(branches || []).map((b) => ({
+            value: b.branchCode,
+            label: `${b.branchName} (${b.branchCode})`,
+        })),
     ];
 };
 
@@ -24,53 +56,51 @@ function AddMemberForm({ onDone }) {
     const loadTeam = useAccountStore((s) => s.loadTeam);
     const notify = useUiStore((s) => s.notify);
     const branchOptions = useBranchOptions();
-    const [form, setForm] = useState(BLANK);
-    const [errors, setErrors] = useState({});
-    const [error, setError] = useState("");
-    const [saving, setSaving] = useState(false);
+    const { values, errors, onChange, validate } = useForm(BLANK);
+    const { run, busy, error } = useAsyncAction();
 
     const fields = [
         { name: "name", label: "Full name", placeholder: "Salesman Name", required: true },
-        { name: "phone", label: "Mobile (login OTP)", placeholder: "10-digit mobile number", type: "tel", inputMode: "numeric", maxLength: 10, digits: true, required: true },
+        {
+            name: "phone",
+            label: "Mobile (login OTP)",
+            placeholder: "10-digit mobile number",
+            type: "tel",
+            inputMode: "numeric",
+            maxLength: 10,
+            digits: true,
+            required: true,
+        },
         { name: "branchCode", label: "Orders for", options: branchOptions, required: true },
         { name: "email", label: "Email", placeholder: "Optional", type: "email" },
     ];
 
-    const onChange = (name, value) => {
-        setForm((f) => ({ ...f, [name]: value }));
-        if (errors[name]) setErrors((e) => ({ ...e, [name]: "" }));
-    };
-
-    const submit = async (e) => {
+    const submit = (e) => {
         e.preventDefault();
-        const found = validateFields(fields, form);
-        setErrors(found);
-        if (Object.keys(found).length) return;
+        if (!validate(fields)) return;
 
-        setError("");
-        setSaving(true);
-        try {
-            const res = await addSalesman({ ...form, name: form.name.trim(), email: form.email.trim() });
-            notify("success", res.message || `${form.name.trim()} added. Once approved by admin, they can log in and order.`);
-            await Promise.all([loadTeam({ force: true }), refresh()]);
-            onDone();
-        } catch (err) {
-            setError(err.message || "Could not add this team member.");
-        } finally {
-            setSaving(false);
-        }
+        const payload = trimValues(values, MEMBER_KEYS);
+        run(() => addSalesman(payload), {
+            fallback: "Could not add this team member.",
+            onSuccess: async (res) => {
+                notify("success", res?.message || `${payload.name} added. Once approved by admin, they can log in and order.`);
+                await Promise.all([loadTeam({ force: true }), refresh()]);
+                onDone();
+            },
+        });
     };
 
     return (
-        <form onSubmit={submit} className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm p-4 shadow-sm">
-            <FormFields fields={fields} values={form} errors={errors} onChange={onChange} idPrefix="member-" />
-            <Notice>Once approved by admin, they can log in with this mobile number and order for your business at your trade prices.</Notice>
-            <FormError>{error}</FormError>
-            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                <Button variant="ghost" size="md" onClick={onDone} disabled={saving}>Cancel</Button>
-                <Button type="submit" size="md" loading={saving} loadingText="Adding…">Add Team Member</Button>
-            </div>
-        </form>
+        <Card variant="glass" className="shadow-sm">
+            <form onSubmit={submit} className="space-y-4">
+                <FormFields fields={fields} values={values} errors={errors} onChange={onChange} idPrefix="member-" />
+                <Notice>
+                    Once approved by admin, they can log in with this mobile number and order for your business at your trade prices.
+                </Notice>
+                <FormError>{error}</FormError>
+                <FormActions onCancel={onDone} busy={busy} submitLabel="Add Team Member" busyLabel="Adding…" />
+            </form>
+        </Card>
     );
 }
 
@@ -79,51 +109,53 @@ function MemberRow({ member }) {
     const removeSalesman = useAccountStore((s) => s.removeSalesman);
     const notify = useUiStore((s) => s.notify);
     const branchOptions = useBranchOptions();
-    const [mode, setMode] = useState(null); // null | "edit" | "remove"
+    const [mode, setMode] = useState(null);
     const [branchCode, setBranchCode] = useState(member.branchCode || "ALL");
-    const [busy, setBusy] = useState(false);
+    const { run, busy } = useAsyncAction();
 
     const memberId = member.id || member.userId;
     const isOwner = member.role === "owner";
-    const branchLabel = member.branchCode === "ALL" || !member.branchCode ? "All branches" : `${member.branchName || member.branchCode} (${member.branchCode})`;
+    const status = memberStatus(member);
+    const branchLabel =
+        member.branchCode === "ALL" || !member.branchCode
+            ? "All branches"
+            : `${member.branchName || member.branchCode} (${member.branchCode})`;
 
-    const run = async (task, success) => {
-        setBusy(true);
-        try {
-            await task();
-            notify("success", success);
-            setMode(null);
-        } catch (err) {
-            notify("error", err?.message || "Something went wrong. Please try again.");
-        } finally {
-            setBusy(false);
-        }
-    };
+    const act = (task, success) =>
+        run(task, {
+            onSuccess: () => {
+                notify("success", success);
+                setMode(null);
+            },
+            onError: (message) => notify("error", message),
+        });
 
     const saveBranch = () =>
-        run(async () => {
+        act(async () => {
             await updateSalesman(memberId, { branchCode });
             await refresh();
         }, `${member.name} now orders for ${branchCode === "ALL" ? "all branches" : branchCode}.`);
 
-    const remove = () => run(() => removeSalesman(memberId), `Removed ${member.name} from your business account.`);
+    const remove = () => act(() => removeSalesman(memberId), `Removed ${member.name} from your business account.`);
 
     return (
         <li className="flex flex-col justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:bg-white/[0.07] transition-colors p-3.5 text-xs sm:flex-row sm:items-center shadow-sm">
             <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-2">
                     <span className="text-sm font-black text-white">{member.name || member.phone}</span>
-                    <Badge tone={isOwner ? "orange" : "sky"} className="capitalize">{isOwner ? "Owner" : "Salesman"}</Badge>
-                    {isOwner ? null : (member.isApproved || member.status === "active") ? (
-                        <Badge tone="green">Active</Badge>
-                    ) : (member.status === "pending" || !member.isApproved) ? (
-                        <Badge tone="amber">Pending Approval</Badge>
-                    ) : (
-                        <Badge tone="red">Inactive</Badge>
-                    )}
+                    <Badge tone={isOwner ? "orange" : "sky"} className="capitalize">
+                        {isOwner ? "Owner" : "Salesman"}
+                    </Badge>
+                    {!isOwner && <Badge tone={status.tone}>{status.label}</Badge>}
                 </div>
                 <p className="text-[11px] text-zinc-400">
-                    {[member.phone, member.email, `Orders for: ${isOwner ? "All branches" : branchLabel}`].filter(Boolean).join(" · ")}
+                    {[
+                        member.phone,
+                        member.email,
+                        `Orders for: ${isOwner ? "All branches" : branchLabel}`,
+                    ]
+                        .filter(Boolean)
+                        .join(" · ")}
                 </p>
             </div>
 
@@ -136,54 +168,55 @@ function MemberRow({ member }) {
                         onChange={(e) => setBranchCode(e.target.value)}
                         options={branchOptions}
                     />
-                    <Button size="sm" loading={busy} loadingText="Saving…" disabled={branchCode === (member.branchCode || "ALL")} onClick={saveBranch}>
+                    <Button
+                        size="sm"
+                        loading={busy}
+                        loadingText="Saving…"
+                        disabled={branchCode === (member.branchCode || "ALL")}
+                        onClick={saveBranch}
+                    >
                         Save
                     </Button>
-                    <Button size="sm" variant="ghost" disabled={busy} onClick={() => setMode(null)}>Cancel</Button>
+                    <Button size="sm" variant="ghost" disabled={busy} onClick={() => setMode(null)}>
+                        Cancel
+                    </Button>
                 </div>
             ) : mode === "remove" ? (
-                <div className="flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/10 px-3 py-1.5 text-xs text-red-300">
-                    <span className="font-bold text-red-200">Remove {member.name}?</span>
-                    <button
-                        type="button"
-                        disabled={busy}
-                        onClick={remove}
-                        className="rounded-lg bg-red-600 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-red-500 transition disabled:opacity-50"
-                    >
-                        {busy ? "Removing…" : "Yes, Remove"}
-                    </button>
-                    <button type="button" disabled={busy} onClick={() => setMode(null)} className="rounded-lg px-2 py-1 text-[11px] text-zinc-400 hover:text-white transition">
-                        Cancel
-                    </button>
-                </div>
+                <ConfirmInline
+                    prompt={`Remove ${member.name}?`}
+                    busy={busy}
+                    onConfirm={remove}
+                    onCancel={() => setMode(null)}
+                />
             ) : (
                 <div className="flex items-center justify-end gap-2">
-                    <button
-                        type="button"
+                    <Button
+                        variant="muted"
+                        size="sm"
+                        iconOnly
                         onClick={() => {
                             setBranchCode(member.branchCode || "ALL");
                             setMode("edit");
                         }}
                         title={`Change branch for ${member.name}`}
-                        className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-zinc-400 hover:border-orange-500/30 hover:bg-orange-500/10 hover:text-orange-400 backdrop-blur-sm transition shrink-0"
-                    >
-                        <FiEdit2 size={14} />
-                    </button>
-                    <button
-                        type="button"
+                        aria-label={`Change branch for ${member.name}`}
+                        icon={<FiEdit2 size={14} />}
+                    />
+                    <Button
+                        variant="muted-danger"
+                        size="sm"
+                        iconOnly
                         onClick={() => setMode("remove")}
                         title={`Remove ${member.name}`}
-                        className="rounded-xl border border-white/10 bg-white/[0.04] p-2 text-zinc-400 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 backdrop-blur-sm transition shrink-0"
-                    >
-                        <FiTrash2 size={14} />
-                    </button>
+                        aria-label={`Remove ${member.name}`}
+                        icon={<FiTrash2 size={14} />}
+                    />
                 </div>
             )}
         </li>
     );
 }
 
-// Salesmen who order for the business with their own login (account owner only).
 export default function TeamPanel() {
     const isOwner = useAccountStore(selectIsOwner);
     const team = useAccountStore((s) => s.team);
@@ -202,7 +235,13 @@ export default function TeamPanel() {
             <PanelHeader
                 title={`Team & Salesmen (${team.length})`}
                 description="Each salesman logs in with their own mobile number and orders for your business."
-                action={!adding && <Button size="sm" onClick={() => setAdding(true)}><FiPlus /> Add Member</Button>}
+                action={
+                    !adding && (
+                        <Button size="sm" onClick={() => setAdding(true)}>
+                            <FiPlus /> Add Member
+                        </Button>
+                    )
+                }
             />
 
             {adding && <AddMemberForm onDone={() => setAdding(false)} />}

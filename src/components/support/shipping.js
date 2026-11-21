@@ -1,10 +1,3 @@
-"use client";
-
-export const shippingMetadata = {
-    title: "Shipping & Delivery Policy | Torque Block Trade",
-    description: "Wholesale motorcycle tyre delivery schedules, transport safety, and receiving guidelines for trade businesses across India.",
-};
-
 export default function ShippingPolicyContent() {
     return (
         <div className="space-y-8 text-sm sm:text-base leading-relaxed text-zinc-300">

@@ -1,9 +1,14 @@
-import axios from "axios";
-import { baseURL } from "@/api/http";
+import { api } from "@/api";
+import { ADDRESS_KEYS } from "@/constants/forms";
+import { toAddressBody, trimValues } from "@/lib/formHelpers";
 
-// The logged-in user's address book (backend routes/address.route.js, mounted at /address).
-// Handles parsing, picking trade address, and saving billing/shipping details.
+// Every field of a trade address as the app uses it (contact details + postal address).
+const CONTACT_KEYS = ["businessName", "contactName", "phone", "email", "gstin"];
+const TRADE_ADDRESS_KEYS = [...CONTACT_KEYS, ...ADDRESS_KEYS];
+
+// Logged-in user's address book: parsing, picking the trade address, saving billing details.
 class AddressService {
+    // Backend address document → app address.
     static toAddress(doc) {
         if (!doc) return null;
         return {
@@ -13,14 +18,11 @@ class AddressService {
             phone: doc.phone || "",
             email: doc.email || "",
             gstin: doc.billingGst || doc.gst || "",
-            addressLine1: doc.addressLine1 || "",
-            addressLine2: doc.addressLine2 || "",
-            city: doc.city || "",
-            state: doc.state || "",
-            pincode: doc.pincode || "",
+            ...Object.fromEntries(ADDRESS_KEYS.map((key) => [key, doc[key] || ""])),
         };
     }
 
+    // The saved trade address, else the retail default as a prefill (id null → saving creates a trade copy).
     static pickTradeAddress(docs = []) {
         const list = (Array.isArray(docs) ? docs : []).filter((doc) => doc?._id);
         const trade = list.find((doc) => doc.billingName);
@@ -29,58 +31,45 @@ class AddressService {
         return retail ? { ...AddressService.toAddress(retail), id: null } : null;
     }
 
+    // App address → backend address document.
     static toBody(values) {
-        const clean = (key) => String(values[key] || "").trim();
-        const gstin = clean("gstin").toUpperCase();
+        const contact = trimValues(values, CONTACT_KEYS);
+        const gstin = contact.gstin.toUpperCase();
         return {
-            fullName: clean("contactName"),
-            phone: clean("phone"),
-            email: clean("email"),
+            fullName: contact.contactName,
+            phone: contact.phone,
+            email: contact.email,
             gst: gstin,
-            billingName: clean("businessName"),
+            billingName: contact.businessName,
             billingGst: gstin,
             addressType: "work",
-            addressLine1: clean("addressLine1"),
-            addressLine2: clean("addressLine2"),
-            city: clean("city"),
-            state: clean("state"),
-            pincode: clean("pincode"),
-            country: "India",
+            ...toAddressBody(values),
         };
     }
 
+    // Updates the address when it has an id (falls back to creating one if the update returns nothing).
     static async saveAddress(values, addressId) {
+        const body = AddressService.toBody(values);
         if (addressId) {
-            const { data } = await axios.put(`${baseURL}/address`, { ...AddressService.toBody(values), addressId });
-            if (data.data) return AddressService.toAddress(data.data);
+            const res = await api.put("/address", { ...body, addressId });
+            if (res?.data) return AddressService.toAddress(res.data);
         }
-        const { data } = await axios.post(`${baseURL}/address`, AddressService.toBody(values));
-        return AddressService.toAddress(data.data);
-    }
-
-    static async loadTradeAddress() {
-        const { data } = await axios.get(`${baseURL}/address`);
-        return AddressService.pickTradeAddress(data.data || []);
-    }
-
-    static async saveTradeAddress(values, currentAddressId = null) {
-        return await AddressService.saveAddress(values, currentAddressId);
+        const res = await api.post("/address", body);
+        return AddressService.toAddress(res?.data);
     }
 
     static isSame(values, saved) {
-        const fields = ["businessName", "contactName", "phone", "email", "gstin", "addressLine1", "addressLine2", "city", "state", "pincode"];
-        return fields.every((key) => String(values[key] || "").trim() === String(saved?.[key] || "").trim());
+        const a = trimValues(values, TRADE_ADDRESS_KEYS);
+        const b = trimValues(saved, TRADE_ADDRESS_KEYS);
+        return TRADE_ADDRESS_KEYS.every((key) => a[key] === b[key]);
     }
 
+    // Reuses the saved address when nothing changed, otherwise saves the new details.
     static async ensureTradeAddress(values, saved) {
-        return saved?.id && AddressService.isSame(values, saved)
-            ? Promise.resolve(saved)
-            : AddressService.saveAddress(values, saved?.id);
+        if (saved?.id && AddressService.isSame(values, saved)) return saved;
+        return AddressService.saveAddress(values, saved?.id);
     }
 }
 
 export default AddressService;
-export const pickTradeAddress = AddressService.pickTradeAddress;
-export const loadTradeAddress = AddressService.loadTradeAddress;
-export const saveTradeAddress = AddressService.saveTradeAddress;
 export const ensureTradeAddress = AddressService.ensureTradeAddress;

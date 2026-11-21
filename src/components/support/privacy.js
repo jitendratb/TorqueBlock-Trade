@@ -1,10 +1,3 @@
-"use client";
-
-export const privacyMetadata = {
-    title: "Privacy & Data Protection Policy | Torque Block Trade",
-    description: "Clear data privacy practices, shop record confidentiality, and secure transaction handling for trade business accounts.",
-};
-
 export default function PrivacyPolicyContent() {
     return (
         <div className="space-y-8 text-sm sm:text-base leading-relaxed text-zinc-300">

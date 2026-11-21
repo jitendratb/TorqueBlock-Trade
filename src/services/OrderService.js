@@ -1,10 +1,12 @@
-import axios from "axios";
-import { baseURL } from "@/api/http";
+import { api } from "@/api";
 
-// Trade order placement, verification and order history service.
+// Logged-in user's orders live on /user-orders; /orders is a separate router without these endpoints.
+const ORDERS_BASE = "/user-orders";
+
+// Trade order placement, payment verification and order history.
 class OrderService {
-    static async createOrder({ paymentMethod = "Razorpay", addressId, branchId, lines }) {
-        const { data } = await axios.post(`${baseURL}/user-orders/create`, {
+    static createOrder = ({ paymentMethod = "Razorpay", addressId, branchId, lines = [] }) =>
+        api.post(`${ORDERS_BASE}/create`, {
             paymentMethod,
             orderType: "trade order",
             tradeBranch: branchId || undefined,
@@ -17,28 +19,19 @@ class OrderService {
                 deliveryMode: "standard",
             })),
         });
-        return data;
-    }
 
-    static async verifyOrderPayment(payload) {
-        const { data } = await axios.post(`${baseURL}/user-orders/verify-payment`, payload);
-        return data;
-    }
+    static verifyOrderPayment = (payload) => api.post(`${ORDERS_BASE}/verify-payment`, payload);
 
-    static async fetchOrders({ page = 1, limit = 10, status, search } = {}) {
-        const { data } = await axios.get(`${baseURL}/user-orders/history`, {
+    static fetchOrders = ({ page = 1, limit = 10, status, search } = {}) =>
+        api.get(`${ORDERS_BASE}/history`, {
             params: {
                 page,
                 limit,
                 status: status && status !== "all" ? status : undefined,
-                search: search?.trim() ? search.trim() : undefined,
+                search: search?.trim() || undefined,
             },
         });
-        return data;
-    }
 }
 
 export default OrderService;
-export const createOrder = OrderService.createOrder;
-export const verifyOrderPayment = OrderService.verifyOrderPayment;
-export const fetchOrders = OrderService.fetchOrders;
+export const { createOrder, verifyOrderPayment, fetchOrders } = OrderService;

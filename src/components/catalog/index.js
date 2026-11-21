@@ -6,4 +6,7 @@ export { default as StockBadge, STOCK_BADGES, getAvailabilityLevel } from "./Sto
 export { default as StockHero } from "./StockHero";
 export { default as StockList } from "./StockList";
 export { default as StockRow } from "./StockRow";
+export { default as StockTable } from "./StockTable";
+export { default as TradePrice } from "./TradePrice";
 export { default as TradeHighlights } from "./TradeHighlights";
+export { TradeProofCard, TradeProofPill } from "./TradeProof";

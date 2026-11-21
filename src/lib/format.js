@@ -1,10 +1,15 @@
 const inr = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
 
-export const formatINR = (value) => (value == null ? "—" : inr.format(value));
+export const formatINR = (value) => (value == null || Number.isNaN(Number(value)) ? "—" : inr.format(Number(value)));
 
 export const formatPercent = (value) => `${Math.round((value || 0) * 100)}%`;
 
-export const formatDate = (value) => value ? new Date(value).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) : "";
+export const formatDate = (value) => {
+    const date = value ? new Date(value) : null;
+    return date && !Number.isNaN(date.getTime())
+        ? date.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })
+        : "";
+};
 
 // Prices are GST-inclusive; split for the invoice preview using the rate from trade settings.
 export const splitGst = (total, rate = 0) => {

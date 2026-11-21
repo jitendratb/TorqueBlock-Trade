@@ -1,19 +1,18 @@
-import { FiPackage, FiTag, FiTruck } from "react-icons/fi";
+import { TRADE_HIGHLIGHTS } from "@/constants/trust";
 
-const HIGHLIGHTS = [
-    { Icon: FiTag, label: "Business Pricing After Account Approval" },
-    { Icon: FiPackage, label: "Real-Time Product Availability" },
-    { Icon: FiTruck, label: "Pan-India Delivery" },
-];
-
-// Trust row under the hero search.
+// Trust bar under the hero search (same layout as the website's hero trust bar, trade content).
 export default function TradeHighlights() {
     return (
-        <ul aria-label="Why order on the trade portal" className="grid grid-cols-3 gap-2 sm:gap-4 lg:flex lg:flex-wrap lg:items-center lg:justify-center lg:gap-x-12">
-            {HIGHLIGHTS.map(({ Icon, label }) => (
-                <li key={label} className="flex flex-col items-center gap-1.5 text-center lg:flex-row lg:gap-2.5 lg:text-left">
-                    <Icon aria-hidden="true" className="shrink-0 text-lg sm:text-xl md:text-2xl text-orange-500" />
-                    <span className="text-xs sm:text-sm md:text-base font-bold leading-tight text-white">{label}</span>
+        <ul aria-label="Why order on the trade portal" className="flex items-stretch justify-evenly gap-1 text-white">
+            {TRADE_HIGHLIGHTS.map(({ Icon, label }) => (
+                <li
+                    key={label}
+                    className="flex flex-1 flex-col items-center justify-center gap-1.5 px-1 text-center xl:flex-row xl:gap-2.5"
+                >
+                    <Icon aria-hidden="true" className="shrink-0 text-xl text-orange-500 drop-shadow xl:text-2xl" />
+                    <span className="text-[11px] font-semibold leading-tight tracking-wide sm:text-xs md:text-sm xl:whitespace-nowrap">
+                        {label}
+                    </span>
                 </li>
             ))}
         </ul>

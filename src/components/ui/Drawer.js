@@ -3,20 +3,19 @@
 import { useEffect } from "react";
 import clsx from "clsx";
 import { FiX } from "react-icons/fi";
+import Button from "./Button";
 
 export function CloseButton({ onClick, className, ariaLabel = "Close" }) {
     return (
-        <button
-            type="button"
+        <Button
+            variant="secondary"
+            size="sm"
+            iconOnly
             onClick={onClick}
             aria-label={ariaLabel}
-            className={clsx(
-                "flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-white/10 text-zinc-400 hover:text-white transition-all hover:bg-white/15 active:scale-95",
-                className
-            )}
-        >
-            <FiX className="text-lg" />
-        </button>
+            icon={<FiX className="text-lg" />}
+            className={className}
+        />
     );
 }
 
@@ -33,7 +32,7 @@ export default function Drawer({
     label = "Navigation drawer",
     header,
     children,
-    className = "w-full max-w-full sm:max-w-md md:max-w-lg bg-[#10141D]"
+    className = "w-full sm:max-w-md"
 }) {
     useEffect(() => {
         if (!open) return;
@@ -60,21 +59,25 @@ export default function Drawer({
                 type="button"
                 aria-label="Close drawer"
                 onClick={onClose}
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm cursor-default"
+                className="absolute inset-0 bg-black/5 backdrop-blur-[1px] cursor-default"
             />
 
-            {/* Slide-out Panel */}
+            {/* Slide-out panel: light frosted glass (same as the website drawers) */}
             <aside
                 className={clsx(
-                    "animate-drawer-in absolute right-0 top-0 flex h-full max-h-dvh w-full flex-col border-l border-white/10 text-white shadow-2xl overflow-hidden",
+                    "animate-drawer-in absolute right-0 top-0 flex h-full max-h-dvh w-full max-w-[95vw] flex-col overflow-hidden rounded-l-xl border-l border-white/[0.08] bg-zinc-950/10 text-white backdrop-blur-3xl",
                     className
                 )}
             >
-                <div className="flex items-center justify-between border-b border-white/10 px-5 py-4 shrink-0">
+                <span aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-br from-purple-500/[0.03] via-cyan-500/[0.02] to-yellow-500/[0.03] opacity-80 mix-blend-screen" />
+                <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+                <span aria-hidden="true" className="pointer-events-none absolute -right-40 -top-40 h-96 w-96 rounded-full bg-[radial-gradient(closest-side,rgba(249,115,22,0.05),transparent)]" />
+
+                <div className="relative z-10 flex shrink-0 items-center justify-between border-b border-white/[0.06] px-4 py-4">
                     {header}
-                    <CloseButton onClick={onClose} />
+                    <CloseButton onClick={onClose} className="hover:rotate-90 duration-300" />
                 </div>
-                {children}
+                <div className="relative z-10 flex min-h-0 flex-1 flex-col pb-[env(safe-area-inset-bottom)]">{children}</div>
             </aside>
         </div>
     );

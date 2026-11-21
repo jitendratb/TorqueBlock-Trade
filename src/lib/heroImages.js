@@ -4,14 +4,19 @@ import path from "node:path";
 const HERO_DIR = path.join(process.cwd(), "public", "hero");
 const IMAGE_EXT = /\.(avif|webp|jpe?g|png)$/i;
 
-// Every image in public/hero, sorted by file name (name them 1-…, 2-… to set the order).
-// Falls back to the given image when the folder is empty or missing.
-export function getHeroImages(fallback) {
+// Reads all hero images from public/hero sorted by file name (e.g. 1-hero.webp, 2-hero.webp).
+export function getHeroImages(fallback = "/hero/1-hero.webp") {
     try {
-        const files = fs.readdirSync(HERO_DIR).filter((file) => IMAGE_EXT.test(file)).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-        if (files.length) return files.map((file) => `/hero/${encodeURIComponent(file)}`);
+        const files = fs
+            .readdirSync(HERO_DIR)
+            .filter((file) => IMAGE_EXT.test(file))
+            .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+        if (files.length > 0) {
+            return files.map((file) => `/hero/${encodeURIComponent(file)}`);
+        }
     } catch {
-        // No public/hero folder: use the fallback.
+        // Fallback when public/hero cannot be read
     }
     return fallback ? [fallback] : [];
 }
+

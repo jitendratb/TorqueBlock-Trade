@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Modal } from "@/ui";
-import { useUiStore } from "@/store/ui.store";
+import { Modal } from "@/components/ui";
+import { useUiStore } from "@/store/uiStore";
 import OtpForm from "./OtpForm";
 
 export default function LoginModal() {
@@ -14,9 +14,15 @@ export default function LoginModal() {
 
     const handleSuccess = (profile) => {
         close();
-        if (!profile) return notify("error", "You're logged in, but we couldn't load your trade account. Please refresh in a moment.");
-        if (profile.isApproved) return notify("success", `Welcome back${profile.name ? `, ${profile.name}` : ""}.`);
-        if (profile.address?.id) return notify("info", "Logged in. Your trade account is awaiting activation by our team.");
+        if (!profile) {
+            return notify("error", "You're logged in, but we couldn't load your trade account. Please refresh in a moment.");
+        }
+        if (profile.isApproved) {
+            return notify("success", `Welcome back${profile.name ? `, ${profile.name}` : ""}.`);
+        }
+        if (profile.address?.id) {
+            return notify("info", "Logged in. Your trade account is awaiting activation by our team.");
+        }
         notify("info", "Logged in. Complete your business details to start ordering.");
         router.push("/register");
     };
@@ -31,8 +37,8 @@ export default function LoginModal() {
             {open && (
                 <>
                     <OtpForm onSuccess={handleSuccess} onRegister={close} />
-                    <p className="mt-5 border-t border-white/10 pt-4 text-center text-xs text-zinc-400">
-                        New to Trade?{" "}
+                    
+                    <p className="mt-5 border-t border-white/10 pt-4 text-center text-xs text-zinc-400"> New to Trade?{" "}
                         <Link href="/register" onClick={close} className="font-bold text-[#F59E0B] hover:text-amber-400 transition-colors">
                             Register here
                         </Link>

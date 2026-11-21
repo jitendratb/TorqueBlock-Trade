@@ -18,14 +18,20 @@ export function getAvailabilityLevel(size) {
 /**
  * Reusable inventory availability badge for tyre products and sizes.
  */
-export default function StockBadge({ size = null, availability = null, className = "" }) {
+const BADGE_SIZES = {
+    sm: "gap-1.5 px-2 py-0.5 text-[10px]",
+    md: "h-6 gap-1.5 px-2.5 text-[11px] sm:text-xs",
+};
+
+export default function StockBadge({ size = null, availability = null, badgeSize = "sm", className = "" }) {
     const level = availability || getAvailabilityLevel(size);
     const badge = STOCK_BADGES[level] || STOCK_BADGES.out;
 
     return (
         <span
             className={clsx(
-                "inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wide",
+                "inline-flex shrink-0 items-center whitespace-nowrap rounded-full border font-bold tracking-wide",
+                BADGE_SIZES[badgeSize] || BADGE_SIZES.sm,
                 badge.className,
                 className
             )}

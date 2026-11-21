@@ -1,12 +1,22 @@
 "use client";
 
 import clsx from "clsx";
-import { FiCheck, FiCheckCircle, FiCreditCard, FiMapPin, FiShield } from "react-icons/fi";
+import { FiCheck, FiCheckCircle, FiCreditCard, FiMapPin } from "react-icons/fi";
 import { SiRazorpay } from "react-icons/si";
-import { Select } from "@/ui";
+import { Button, Select } from "@/components/ui";
 import { formatINR, formatPercent } from "@/lib/format";
 
-function PaymentOption({ selected, disabled, onSelect, Icon, title, tag, tagClass, description, children }) {
+function PaymentOption({
+    selected,
+    disabled,
+    onSelect,
+    Icon,
+    title,
+    tag,
+    tagClass,
+    description,
+    children,
+}) {
     return (
         <div
             role="radio"
@@ -14,30 +24,48 @@ function PaymentOption({ selected, disabled, onSelect, Icon, title, tag, tagClas
             aria-disabled={disabled}
             tabIndex={disabled ? -1 : 0}
             onClick={() => !disabled && onSelect()}
-            onKeyDown={(e) => !disabled && (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onSelect())}
+            onKeyDown={(e) =>
+                !disabled && (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onSelect())
+            }
             className={clsx(
                 "relative rounded-2xl border-2 p-4 transition-all",
                 selected
                     ? "cursor-pointer border-[#A35229] bg-[#A35229]/15 shadow-md shadow-[#A35229]/10"
                     : disabled
-                        ? "cursor-not-allowed border-white/10 bg-white/[0.02] opacity-75"
-                        : "cursor-pointer border-white/10 bg-[#2D323B] hover:border-white/20"
+                      ? "cursor-not-allowed border-white/10 bg-white/[0.02] opacity-75"
+                      : "cursor-pointer border-white/10 bg-white/5 hover:border-white/20"
             )}
         >
             <div className="flex items-start justify-between gap-3">
                 <div className="flex items-center gap-3">
-                    <div className={clsx("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border", selected ? "border-[#A35229]/40 bg-[#A35229]/25 text-[#F59E0B]" : "border-white/10 bg-black/20 text-zinc-400")}>
+                    <div
+                        className={clsx(
+                            "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border",
+                            selected
+                                ? "border-[#A35229]/40 bg-[#A35229]/25 text-[#F59E0B]"
+                                : "border-white/10 bg-black/20 text-zinc-400"
+                        )}
+                    >
                         <Icon className="text-xl" />
                     </div>
                     <div>
                         <div className="flex flex-wrap items-center gap-2">
                             <h3 className="text-sm font-bold text-white">{title}</h3>
-                            {tag && <span className={clsx("rounded border px-1.5 py-0.5 text-[10px] font-bold", tagClass)}>{tag}</span>}
+                            {tag && (
+                                <span className={clsx("rounded border px-1.5 py-0.5 text-[10px] font-bold", tagClass)}>
+                                    {tag}
+                                </span>
+                            )}
                         </div>
                         <p className="mt-0.5 text-[11px] text-zinc-400">{description}</p>
                     </div>
                 </div>
-                <div className={clsx("mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2", selected ? "border-[#A35229] bg-[#A35229] text-white" : "border-white/30")}>
+                <div
+                    className={clsx(
+                        "mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2",
+                        selected ? "border-[#A35229] bg-[#A35229] text-white" : "border-white/30"
+                    )}
+                >
                     {selected && <FiCheck className="stroke-[3] text-xs" />}
                 </div>
             </div>
@@ -46,42 +74,63 @@ function PaymentOption({ selected, disabled, onSelect, Icon, title, tag, tagClas
     );
 }
 
-// Credit option body (only rendered for an approved credit line this login may use).
 function CreditDetails({ account, total, branchId, onBranch, lockedBranch }) {
     const branches = account.branches || [];
     return (
         <>
             <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3 text-xs">
                 <div className="rounded-xl border border-white/5 bg-black/30 p-2">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500">Available Credit</span>
-                    <span className={clsx("text-sm font-black", account.availableCredit >= total ? "text-emerald-400" : "text-rose-400")}>{formatINR(account.availableCredit || 0)}</span>
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                        Available Credit
+                    </span>
+                    <span
+                        className={clsx(
+                            "text-sm font-black",
+                            account.availableCredit >= total ? "text-emerald-400" : "text-rose-400"
+                        )}
+                    >
+                        {formatINR(account.availableCredit || 0)}
+                    </span>
                 </div>
                 <div className="rounded-xl border border-white/5 bg-black/30 p-2">
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500">Credit Limit</span>
-                    <span className="text-sm font-black text-zinc-200">{formatINR(account.creditLimit || 0)}</span>
+                    <span className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                        Credit Limit
+                    </span>
+                    <span className="text-sm font-black text-zinc-200">
+                        {formatINR(account.creditLimit || 0)}
+                    </span>
                 </div>
             </div>
 
             {lockedBranch ? (
                 <p className="mt-3 border-t border-white/5 pt-2 text-[11px] text-zinc-400">
-                    Billed to your branch: <strong className="text-white">{lockedBranch.branchName} ({lockedBranch.branchCode})</strong>
+                    Billed to your branch:{" "}
+                    <strong className="text-white">
+                        {lockedBranch.branchName} ({lockedBranch.branchCode})
+                    </strong>
                 </p>
             ) : branches.length > 1 ? (
                 <div className="mt-3 border-t border-white/5 pt-2 text-xs" onClick={(e) => e.stopPropagation()}>
-                    <label htmlFor="checkout-branch" className="mb-1 block text-[10px] font-bold text-zinc-400">Dispatch &amp; bill to branch</label>
+                    <label htmlFor="checkout-branch" className="mb-1 block text-[10px] font-bold text-zinc-400">
+                        Dispatch &amp; bill to branch
+                    </label>
                     <Select
                         id="checkout-branch"
                         className="!py-2 !text-xs"
                         value={branchId || ""}
                         onChange={(e) => onBranch(e.target.value)}
-                        options={branches.map((b) => ({ value: b.id, label: `${b.branchName} (${b.branchCode})` }))}
+                        options={branches.map((b) => ({
+                            value: b.id,
+                            label: `${b.branchName} (${b.branchCode})`,
+                        }))}
                     />
                 </div>
             ) : null}
 
             {account.availableCredit < total && (
                 <p className="mt-2 rounded-lg border border-rose-500/20 bg-rose-500/10 p-2 text-[11px] font-medium text-rose-400">
-                    Available credit ({formatINR(account.availableCredit || 0)}) is less than the order total ({formatINR(total)}). Pay online or settle pending invoices.
+                    Available credit ({formatINR(account.availableCredit || 0)}) is less than the order total (
+                    {formatINR(total)}). Pay online or settle pending invoices.
                 </p>
             )}
         </>
@@ -111,26 +160,38 @@ export default function PaymentStep({
     return (
         <>
             <div className="custom-scroll flex-1 space-y-4 overflow-y-auto px-4 sm:px-5 py-4">
-                <div className="rounded-2xl border border-white/10 bg-[#2D323B] p-3.5 text-xs">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-3.5 text-xs">
                     <div className="mb-2 flex items-center justify-between">
                         <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-400">
                             <FiMapPin className="text-[#F59E0B]" /> Invoicing &amp; Delivery Destination
                         </p>
-                        <button type="button" onClick={onBack} className="text-[11px] font-bold text-[#F59E0B] transition-colors hover:text-amber-300">
+                        <Button variant="link" size="xs" uppercase={false} onClick={onBack}>
                             Edit
-                        </button>
+                        </Button>
                     </div>
-                    <p className="text-sm font-bold text-white">{billing.businessName || billing.contactName}</p>
+                    <p className="text-sm font-bold text-white">
+                        {billing.businessName || billing.contactName}
+                    </p>
                     <p className="mt-0.5 text-xs text-zinc-400">
-                        {[billing.contactName, billing.phone, billing.gstin && `GSTIN: ${billing.gstin}`].filter(Boolean).join(" · ")}
+                        {[billing.contactName, billing.phone, billing.gstin && `GSTIN: ${billing.gstin}`]
+                            .filter(Boolean)
+                            .join(" · ")}
                     </p>
                     <p className="mt-1 line-clamp-2 text-[11px] text-zinc-400">
-                        {[billing.addressLine1, billing.addressLine2, `${billing.city}, ${billing.state} - ${billing.pincode}`].filter(Boolean).join(", ")}
+                        {[
+                            billing.addressLine1,
+                            billing.addressLine2,
+                            `${billing.city}, ${billing.state} - ${billing.pincode}`,
+                        ]
+                            .filter(Boolean)
+                            .join(", ")}
                     </p>
                 </div>
 
                 <div className="space-y-3" role="radiogroup" aria-label="Payment method">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Select Payment Method</p>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                        Select Payment Method
+                    </p>
 
                     <PaymentOption
                         selected={!isCredit}
@@ -142,8 +203,17 @@ export default function PaymentStep({
                         description="UPI, Cards, NetBanking · Instant dispatch priority"
                     >
                         <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-white/10 pt-3 text-[10px] text-zinc-300">
-                            {["UPI / QR (GPay, PhonePe, Paytm)", "Cards (Visa, Master, RuPay)", "NetBanking (50+ Banks)"].map((label) => (
-                                <span key={label} className="rounded-md border border-white/10 bg-black/30 px-2 py-0.5 font-medium">{label}</span>
+                            {[
+                                "UPI / QR (GPay, PhonePe, Paytm)",
+                                "Cards (Visa, Master, RuPay)",
+                                "NetBanking (50+ Banks)",
+                            ].map((label) => (
+                                <span
+                                    key={label}
+                                    className="rounded-md border border-white/10 bg-black/30 px-2 py-0.5 font-medium"
+                                >
+                                    {label}
+                                </span>
                             ))}
                         </div>
                     </PaymentOption>
@@ -159,13 +229,21 @@ export default function PaymentStep({
                             tagClass="border-amber-500/30 bg-amber-500/20 text-amber-300"
                             description={`Invoiced to ${account?.businessName || "your business"} · Deducted from credit limit`}
                         >
-                            <CreditDetails account={account} total={total} branchId={branchId} onBranch={onBranch} lockedBranch={lockedBranch} />
+                            <CreditDetails
+                                account={account}
+                                total={total}
+                                branchId={branchId}
+                                onBranch={onBranch}
+                                lockedBranch={lockedBranch}
+                            />
                         </PaymentOption>
                     )}
                 </div>
 
-                <div className="space-y-2 rounded-2xl border border-white/10 bg-[#2D323B] p-4 text-xs">
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Order Summary</p>
+                <div className="space-y-2 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                        Order Summary
+                    </p>
                     <dl className="space-y-1.5">
                         <div className="flex justify-between text-zinc-300">
                             <dt>{units} tyres · Taxable Amount</dt>
@@ -189,29 +267,29 @@ export default function PaymentStep({
                 </div>
             </div>
 
-            <footer className="space-y-3.5 border-t border-white/10 bg-[#1B1E25] px-4 sm:px-5 py-4">
-                <button
-                    type="button"
+            <footer className="space-y-3.5 border-t border-white/10 px-4 sm:px-5 py-4">
+                <Button
+                    variant="brand"
+                    size="lg"
+                    full
+                    loading={sending}
+                    loadingText={isCredit ? "Confirming Credit Order…" : "Opening Gateway…"}
                     onClick={onPay}
-                    disabled={sending}
-                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#A35229] hover:bg-[#8F4420] active:scale-[0.99] py-3.5 px-4 text-xs sm:text-[13px] font-bold uppercase tracking-[0.08em] text-white transition-all shadow-lg shadow-[#A35229]/25 disabled:opacity-50"
+                    rightIcon={<span className="text-base leading-none">→</span>}
+                    className="text-xs sm:text-[13px] font-bold tracking-[0.08em]"
                 >
-                    {sending ? (
-                        <span>{isCredit ? "Confirming Credit Order…" : "Opening Gateway…"}</span>
-                    ) : (
-                        <>
-                            <span>{isCredit ? `CONFIRM & PAY ON CREDIT (${formatINR(total)})` : `PAY ${formatINR(total)} VIA RAZORPAY`}</span>
-                            <span className="text-base leading-none">→</span>
-                        </>
-                    )}
-                </button>
+                    {isCredit
+                        ? `CONFIRM & PAY ON CREDIT (${formatINR(total)})`
+                        : `PAY ${formatINR(total)} VIA RAZORPAY`}
+                </Button>
 
                 <div className="flex items-center justify-between pt-1 text-[11px] text-zinc-400">
-                    <button type="button" onClick={onBack} disabled={sending} className="transition-colors hover:text-white">
+                    <Button variant="text" size="xs" uppercase={false} onClick={onBack} disabled={sending}>
                         ← Back to Address
-                    </button>
+                    </Button>
                     <span className="flex items-center gap-1 text-emerald-400">
-                        <FiCheckCircle size={12} /> {isCredit ? "Verified Business Credit" : "256-bit Secure Gateway"}
+                        <FiCheckCircle size={12} />{" "}
+                        {isCredit ? "Verified Business Credit" : "256-bit Secure Gateway"}
                     </span>
                 </div>
             </footer>

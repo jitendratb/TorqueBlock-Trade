@@ -2,7 +2,7 @@
 
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { useUiStore } from "@/store/ui.store";
+import { useUiStore } from "@/store/uiStore";
 import { useAuthStore } from "@/store/authStore";
 import { ensureTradeAddress } from "@/services/AddressService";
 import { createOrder, verifyOrderPayment } from "@/services/OrderService";

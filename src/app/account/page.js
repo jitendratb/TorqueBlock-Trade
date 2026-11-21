@@ -1,5 +1,5 @@
-import Link from "next/link";
 import AccountView from "@/components/account/AccountView";
+import { Breadcrumbs } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -11,19 +11,9 @@ export const metadata = {
 
 export default function AccountPage() {
     return (
-        <main className="bg-[#0B0E17] min-h-[calc(100vh-120px)] pt-20 sm:pt-24 pb-20">
+        <main className="bg-[#0B0E17] min-h-[calc(100dvh-120px)] pt-24 sm:pt-28 pb-20">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-5">
-                {/* Breadcrumbs matching reference screenshot */}
-                <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs sm:text-sm font-semibold pt-1">
-                    <Link href="/" className="text-sky-400 hover:text-sky-300 transition-colors">
-                        Home
-                    </Link>
-                    <span className="text-zinc-600">›</span>
-                    <span className="text-white font-bold" aria-current="page">
-                        My Business Account
-                    </span>
-                </nav>
-
+                <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "My Business Account" }]} />
                 <AccountView />
             </div>
         </main>

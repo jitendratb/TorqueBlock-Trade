@@ -13,7 +13,7 @@ export default function GlobalError({ error, reset }) {
     return (
         <html lang="en">
             <body style={{ backgroundColor: "#0B0F19", color: "#ffffff", fontFamily: "sans-serif", margin: 0, padding: 0 }}>
-                <main style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", textAlign: "center" }}>
+                <main style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px", textAlign: "center" }}>
                     <h1 style={{ fontSize: "28px", fontWeight: "bold", color: "#f97316", marginBottom: "16px" }}>
                         Application Unavailable
                     </h1>

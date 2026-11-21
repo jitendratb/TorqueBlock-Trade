@@ -1,10 +1,3 @@
-"use client";
-
-export const termsMetadata = {
-    title: "Terms & Conditions of Business | Torque Block Trade",
-    description: "Wholesale terms of business, dealer account qualification, credit facility guidelines, and trading agreements for Torque Block trade business portal.",
-};
-
 export default function TermsPolicyContent() {
     return (
         <div className="space-y-8 text-sm sm:text-base leading-relaxed text-zinc-300">

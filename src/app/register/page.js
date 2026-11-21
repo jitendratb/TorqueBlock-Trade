@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function RegisterPage() {
     return (
-        <main className="relative min-h-[calc(100vh-120px)]">
+        <main className="relative min-h-[calc(100dvh-120px)]">
             <PageHero
                 eyebrow="Trade Registration"
                 title="Register your business"

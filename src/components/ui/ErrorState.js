@@ -80,15 +80,16 @@ export default function ErrorState({
                     <p className="leading-relaxed">{resolvedMessage}</p>
                 </div>
                 {onRetry && (
-                    <button
-                        type="button"
+                    <Button
+                        variant="text"
+                        size="sm"
                         onClick={handleRetry}
                         disabled={retrying}
-                        className="shrink-0 flex items-center gap-1 font-bold underline hover:text-white transition disabled:opacity-50"
+                        icon={<FiRefreshCw className={clsx("text-xs", retrying && "animate-spin")} />}
+                        className="underline"
                     >
-                        <FiRefreshCw className={clsx("text-xs", retrying && "animate-spin")} />
                         {retrying ? "Retrying..." : retryText}
-                    </button>
+                    </Button>
                 )}
             </div>
         );

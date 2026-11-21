@@ -1,4 +1,4 @@
-export const digitsOnly = (value = "") => value.replace(/\D/g, "");
+export const digitsOnly = (value) => String(value ?? "").replace(/\D/g, "");
 
 const RULES = {
     phone: { test: (v) => /^[6-9]\d{9}$/.test(v), message: "Enter a valid 10-digit mobile number." },

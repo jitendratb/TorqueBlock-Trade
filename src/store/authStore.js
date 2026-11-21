@@ -2,9 +2,10 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { clearAuthCookies, configureSession } from "@/api/http";
+import { AUTH_STORAGE_KEY, clearAuthCookies, configureSession, setAuthCookie } from "@/api";
 import AuthService from "@/services/AuthService";
 import AddressService from "@/services/AddressService";
+import { trimValues } from "@/lib/formHelpers";
 
 // The access token is a JWT whose payload carries the user id (backend utils/auth.helper.js).
 const userIdFromToken = (token) => {
@@ -25,17 +26,12 @@ export const useAuthStore = create(
             status: "idle", // idle | loading | ready | error
 
             setToken: (token) => {
-                if (typeof document !== "undefined" && token) {
-                    document.cookie = `TB_AUTH=${token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax;`;
-                }
+                setAuthCookie(token);
                 set({ token });
             },
 
             startSession: async (token) => {
-                if (typeof document !== "undefined" && token) {
-                    document.cookie = `TB_AUTH=${token}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax;`;
-                }
-                set({ token });
+                get().setToken(token);
                 return get().loadProfile();
             },
 
@@ -51,23 +47,25 @@ export const useAuthStore = create(
                     set({ profile, status: "ready" });
                     return profile;
                 } catch {
-                    // The account and registration pages show a retry for this state.
                     set({ profile: null, status: "error" });
                     return null;
                 }
             },
 
-            // Registration and the profile editor: contact details go on the login (PUT /auth/:id),
-            // the business name and shop address into the address book. Trade approval stays with an admin.
             saveDetails: async (form) => {
                 const { profile } = get();
+                if (!profile?.id) throw new Error("Your session has expired. Please log in again.");
+                const { businessName, contactName, email, gstin } = trimValues(form, ["businessName", "contactName", "email", "gstin"]);
                 await Promise.all([
                     AuthService.updateUser(profile.id, {
-                        name: (form.businessName || form.contactName).trim(),
-                        email: form.email.trim(),
-                        gstin: form.gstin.trim().toUpperCase(),
+                        name: businessName || contactName,
+                        email,
+                        gstin: gstin.toUpperCase(),
                     }),
-                    AddressService.ensureTradeAddress({ ...form, phone: form.phone || profile.phone }, profile.address),
+                    AddressService.ensureTradeAddress(
+                        { ...form, phone: form.phone || profile.phone },
+                        profile.address
+                    ),
                 ]);
                 return get().loadProfile();
             },
@@ -77,20 +75,19 @@ export const useAuthStore = create(
                 set({ token: null, profile: null, status: "ready" });
             },
         }),
-        // Rehydrated after mount (AppProviders) so server and client markup match.
-        { name: "trade-auth", partialize: (state) => ({ token: state.token }), skipHydration: true }
+        { name: AUTH_STORAGE_KEY, partialize: (state) => ({ token: state.token }), skipHydration: true }
     )
 );
 
 configureSession({
     getToken: () => useAuthStore.getState().token,
-    setToken: (token) => useAuthStore.getState().setToken(token),
+    // The API layer has already written the cookie; only the store needs the new token.
+    setToken: (token) => useAuthStore.setState({ token }),
     clear: () => useAuthStore.getState().logout(),
 });
 
-// Derived flags used across modules.
 export const selectIsApproved = (s) => Boolean(s.profile?.isApproved);
-// Registration done (a business account exists or business details were saved), whether or not an admin has approved it yet.
-export const selectHasDetails = (s) => Boolean(s.profile?.isApproved || s.profile?.businessAccountId || s.profile?.address?.id);
+export const selectHasDetails = (s) =>
+    Boolean(s.profile?.isApproved || s.profile?.businessAccountId || s.profile?.address?.id);
 
 export default useAuthStore;

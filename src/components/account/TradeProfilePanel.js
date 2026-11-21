@@ -2,66 +2,47 @@
 
 import { useState } from "react";
 import { FiEdit2, FiSave } from "react-icons/fi";
-import { Badge, Button, FormError, FormFields } from "@/ui";
+import { Badge, Button, DetailList, FormActions, FormError, FormFields, Notice, PanelHeader } from "@/components/ui";
+import { DETAILS_FIELDS } from "@/constants/forms";
+import { useSettings } from "@/context/SettingsContext";
+import useAsyncAction from "@/hooks/useAsyncAction";
+import useForm from "@/hooks/useForm";
 import { whatsappLink } from "@/lib/format";
-import { useUiStore } from "@/store/ui.store";
-import { useAuthStore, selectHasDetails } from "@/store/authStore";
-import { useSettings } from "@/components/site/SettingsProvider";
-import { DETAILS_FIELDS, formatAddress, profileToBilling, validateFields } from "@/forms/AccountForms";
+import { formatAddress, profileToBilling } from "@/lib/formHelpers";
 import { useAccountStore } from "@/store/accountStore";
-import { DetailList, Notice, PanelHeader } from "./AccountUi";
+import { useAuthStore, selectHasDetails } from "@/store/authStore";
+import { useUiStore } from "@/store/uiStore";
 
 function DetailsForm({ onDone }) {
     const profile = useAuthStore((s) => s.profile);
     const saveDetails = useAuthStore((s) => s.saveDetails);
     const account = useAccountStore((s) => s.account);
     const notify = useUiStore((s) => s.notify);
-    const [form, setForm] = useState(() => profileToBilling(profile, account));
-    const [errors, setErrors] = useState({});
-    const [error, setError] = useState("");
-    const [saving, setSaving] = useState(false);
+    const { values, errors, onChange, validate } = useForm(() => profileToBilling(profile, account));
+    const { run, busy, error, setError } = useAsyncAction();
 
-    const onChange = (name, value) => {
-        setForm((f) => ({ ...f, [name]: value }));
-        if (errors[name]) setErrors((e) => ({ ...e, [name]: "" }));
-    };
-
-    const submit = async (e) => {
+    const submit = (e) => {
         e.preventDefault();
-        const found = validateFields(DETAILS_FIELDS, form);
-        setErrors(found);
-        if (Object.keys(found).length) return setError("Please fix the highlighted fields.");
+        if (!validate(DETAILS_FIELDS)) return setError("Please fix the highlighted fields.");
 
-        setError("");
-        setSaving(true);
-        try {
-            await saveDetails(form);
-            notify("success", "Your details are updated.");
-            onDone();
-        } catch (err) {
-            setError(err.message || "Could not save your details. Please try again.");
-        } finally {
-            setSaving(false);
-        }
+        run(() => saveDetails(values), {
+            fallback: "Could not save your details. Please try again.",
+            onSuccess: () => {
+                notify("success", "Your details are updated.");
+                onDone();
+            },
+        });
     };
 
     return (
         <form onSubmit={submit} className="space-y-4">
-            <FormFields fields={DETAILS_FIELDS} values={form} errors={errors} onChange={onChange} idPrefix="profile-" />
+            <FormFields fields={DETAILS_FIELDS} values={values} errors={errors} onChange={onChange} idPrefix="profile-" />
             <Notice>This address is used as the default billing and delivery address at checkout.</Notice>
             <FormError>{error}</FormError>
-            <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-                <Button variant="ghost" size="md" onClick={onDone} disabled={saving}>
-                    Cancel
-                </Button>
-                <Button type="submit" size="md" loading={saving} loadingText="Saving…">
-                    <FiSave /> Save Details
-                </Button>
-            </div>
+            <FormActions onCancel={onDone} busy={busy} submitLabel="Save Details" icon={<FiSave />} />
         </form>
     );
 }
-
 
 export default function TradeProfilePanel() {
     const { contact } = useSettings();
@@ -81,18 +62,32 @@ export default function TradeProfilePanel() {
         );
     }
 
-    const changeLink = whatsappLink(contact?.whatsapp, `Hi Torque Block! Please update the business details of ${account?.businessName || "my trade account"}.`);
+    const changeLink = whatsappLink(
+        contact?.whatsapp,
+        `Hi Torque Block! Please update the business details of ${account?.businessName || "my trade account"}.`
+    );
 
     return (
         <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
-                {profile.isApproved ? <Badge tone="green">Verified trade account</Badge> : <Badge tone="sky">Awaiting activation</Badge>}
-                {!profile.isApproved && <span className="text-xs text-zinc-400">Our team activates trade prices and ordering after verifying your GSTIN.</span>}
+                {profile.isApproved ? (
+                    <Badge tone="green">Verified trade account</Badge>
+                ) : (
+                    <Badge tone="sky">Awaiting activation</Badge>
+                )}
+                {!profile.isApproved && (
+                    <span className="text-xs text-zinc-400">
+                        Our team activates trade prices and ordering after verifying your GSTIN.
+                    </span>
+                )}
             </div>
 
             {account && (
                 <section className="space-y-3">
-                    <PanelHeader title="Business Account" description="Set up by Torque Block and printed on every invoice." />
+                    <PanelHeader
+                        title="Business Account"
+                        description="Set up by Torque Block and printed on every invoice."
+                    />
                     <DetailList
                         items={[
                             ["Business", account.businessName],
@@ -107,7 +102,12 @@ export default function TradeProfilePanel() {
                     {changeLink && (
                         <p className="text-xs text-zinc-400">
                             Need a change here?{" "}
-                            <a href={changeLink} target="_blank" rel="noopener noreferrer" className="font-bold text-orange-400 hover:text-orange-300">
+                            <a
+                                href={changeLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-bold text-orange-400 hover:text-orange-300"
+                            >
                                 Message us on WhatsApp
                             </a>
                         </p>

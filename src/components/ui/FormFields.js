@@ -29,9 +29,9 @@ export default function FormFields({ fields, values, errors = {}, onChange, idPr
                 return (
                     <Field key={name} label={required ? `${label} *` : label} htmlFor={id} className={span ? "sm:col-span-2" : ""}>
                         {options ? (
-                            <Select id={id} required={required} placeholder={placeholder} options={options} value={values[name] || ""} onChange={handle(field)} />
+                            <Select id={id} required={required} placeholder={placeholder} options={options} error={Boolean(errors[name])} value={values[name] || ""} onChange={handle(field)} />
                         ) : (
-                            <Input id={id} placeholder={placeholder} value={values[name] || ""} onChange={handle(field)} aria-invalid={Boolean(errors[name])} {...input} />
+                            <Input id={id} placeholder={placeholder} error={Boolean(errors[name])} value={values[name] || ""} onChange={handle(field)} aria-invalid={Boolean(errors[name])} {...input} />
                         )}
                         <FormError>{errors[name]}</FormError>
                     </Field>
