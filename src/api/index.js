@@ -8,16 +8,16 @@ import axios from "axios";
 // ============================================================================
 
 // --- 1) PRODUCTION ---
-// const API_URL = "https://api.torqueblock.com/api/v1";
-// const SITE_URL = "https://trade.torqueblock.com";
+const API_URL = "https://api.torqueblock.com/api/v1";
+const SITE_URL = "https://trade.torqueblock.com";
 
 // --- 2) TESTING / STAGING ---
 // const API_URL = "https://test.torqueblock.com/api/v1";
 // const SITE_URL = "https://test-trade.torqueblock.com";
 
 // --- 3) LOCALHOST ---
-const API_URL = "http://localhost:4000/api/v1";
-const SITE_URL = "http://localhost:3000";
+// const API_URL = "http://localhost:4000/api/v1";
+// const SITE_URL = "http://localhost:3000";
 
 const trimUrl = (url = "") => url.trim().replace(/\/+$/, "");
 
