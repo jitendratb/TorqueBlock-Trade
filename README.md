@@ -10,7 +10,7 @@ The platform is built to simplify the tyre purchasing experience for business cu
 
 **GitHub Repository:** https://github.com/jitendratb/TorqueBlock-Trade
 
----
+--- 
 
 ## Key Features
 
