@@ -9,8 +9,7 @@ import AppProviders from "./AppProviders";
 import "./globals.css";
 
 const title = "Torque Block Trade | Motorcycle Tyres for Your Business";
-const description =
-    "Find the right motorcycle tyres, check stock availability and access business pricing. Order online with ease, with delivery across India.";
+const description = "Find the right motorcycle tyres, check stock availability and access business pricing. Order online with ease, with delivery across India.";
 
 export const viewport = {
     width: "device-width",
@@ -50,8 +49,9 @@ export default async function RootLayout({ children }) {
     const [settings, stock] = await Promise.all([getSettings(), getStock()]);
 
     return (
-        <html lang="en" className="h-full antialiased">
-            <body className="min-h-full flex flex-col bg-[#0B0F19]">
+        <html lang="en" className="h-full antialiased" suppressHydrationWarning>
+            {/* Browser extensions (e.g. ColorZilla's cz-shortcut-listen) inject attributes here before React hydrates */}
+            <body className="min-h-full flex flex-col bg-[#0B0F19]" suppressHydrationWarning>
                 <Script
                     id="razorpay-checkout-script"
                     src="https://checkout.razorpay.com/v1/checkout.js"

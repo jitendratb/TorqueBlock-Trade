@@ -44,10 +44,7 @@ export default function OrderDrawer() {
     const setOpen = useUiStore((s) => s.setOrderListOpen);
     const close = () => setOpen(false);
 
-    const checkout = useCheckout({
-        active: open,
-        onOrderComplete: close,
-    });
+    const checkout = useCheckout({ active: open, onOrderComplete: close });
 
     return (
         <>

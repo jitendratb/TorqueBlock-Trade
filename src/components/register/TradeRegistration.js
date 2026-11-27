@@ -111,7 +111,7 @@ export default function TradeRegistration() {
     }
 
     return (
-        <Card variant="surface" className="w-full p-6 sm:p-8 md:p-10 text-white">
+        <Card variant="surface" className="w-full p-4 min-[360px]:p-6 sm:p-8 md:p-10 text-white">
             {hasDetails ? (
                 <StatusPanel profile={profile} />
             ) : (

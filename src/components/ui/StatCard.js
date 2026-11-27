@@ -31,11 +31,11 @@ export default function StatCard({
     tone = "orange",
     active = false,
     onClick,
-    valueClassName = "text-xl sm:text-2xl",
+    valueClassName = "text-base sm:text-2xl",
 }) {
     const palette = TONES[tone] || TONES.orange;
     const classes = clsx(
-        "w-full text-left relative overflow-hidden rounded-2xl border transition-all p-4 sm:p-5 flex items-center justify-between select-none backdrop-blur-xl shadow-lg",
+        "w-full text-left relative overflow-hidden rounded-2xl border transition-all p-3 sm:p-5 flex items-center justify-between gap-2 select-none backdrop-blur-xl shadow-lg",
         onClick && "cursor-pointer",
         active ? palette.active : INACTIVE_CARD
     );
@@ -43,21 +43,21 @@ export default function StatCard({
     const content = (
         <>
             <div className="relative z-10 min-w-0">
-                <p className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">
+                <p className="truncate text-[9px] sm:text-[11px] font-bold uppercase tracking-wider text-zinc-400">
                     {label}
                 </p>
-                <p className={clsx("mt-1 font-black text-white leading-none", valueClassName)}>
+                <p className={clsx("mt-1 truncate font-black text-white leading-tight", valueClassName)}>
                     {value}
                 </p>
             </div>
             {Icon && (
                 <div
                     className={clsx(
-                        "relative z-10 flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl border shrink-0 shadow-sm",
+                        "relative z-10 flex h-9 w-9 sm:h-12 sm:w-12 items-center justify-center rounded-xl sm:rounded-2xl border shrink-0 shadow-sm",
                         palette.icon
                     )}
                 >
-                    <Icon className="text-lg sm:text-xl" />
+                    <Icon className="text-base sm:text-xl" />
                 </div>
             )}
         </>

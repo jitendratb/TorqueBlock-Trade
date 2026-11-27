@@ -6,7 +6,6 @@ import BillingStep from "./BillingStep";
 import ItemsStep from "./ItemsStep";
 import PaymentStep from "./PaymentStep";
 
-
 export default function CheckoutFlow({ checkout, onClose }) {
     const {
         items,
@@ -39,7 +38,7 @@ export default function CheckoutFlow({ checkout, onClose }) {
 
     if (items.length === 0) {
         return (
-            <div className="flex flex-1 flex-col items-center justify-center gap-6 px-6 py-12 text-center">
+            <div className="flex flex-1 flex-col items-center justify-center gap-6 px-4 sm:px-6 py-12 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/5 bg-zinc-900/40 text-zinc-500 shadow-[inset_0_0_15px_rgba(255,255,255,0.02)]">
                     <IoCartOutline className="text-2xl" />
                 </div>

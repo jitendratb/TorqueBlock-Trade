@@ -1,31 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-    FiActivity,
-    FiCalendar,
-    FiCheckCircle,
-    FiChevronDown,
-    FiCreditCard,
-    FiFileText,
-    FiMapPin,
-    FiSearch,
-    FiTruck,
-    FiXCircle,
-} from "react-icons/fi";
+import { FiActivity, FiCalendar, FiCheckCircle, FiChevronDown, FiCreditCard, FiFileText, FiMapPin, FiSearch, FiTruck, FiXCircle, } from "react-icons/fi";
 import { AuthGateCard } from "@/components/auth";
-import {
-    Badge,
-    Button,
-    CustomImage,
-    EmptyState,
-    ErrorState,
-    FilterTabs,
-    Input,
-    Pagination,
-    SkeletonCard,
-    StatCard,
-} from "@/components/ui";
+import { Badge, Button, CustomImage, EmptyState, ErrorState, FilterTabs, Input, Pagination, SkeletonCard, StatCard, } from "@/components/ui";
 import { useIsMounted } from "@/hooks/useIsMounted";
 import { formatDate, formatINR } from "@/lib/format";
 import { extractOrderItemImage } from "@/lib/image";
@@ -271,16 +249,8 @@ export default function OrderHistory() {
                     const statusBadge = STATUS_BADGE[normStatus] || STATUS_BADGE.pending;
                     const StatusIcon = statusBadge.Icon;
                     const isExpanded = !!expandedOrderIds[order._id];
-                    const orderRef = order._id
-                        ? `#${String(order._id).toUpperCase()}`
-                        : `#TB-${String(order.transactionId || "").slice(-8).toUpperCase()}`;
-                    const paidTotal =
-                        order.paidAmount ??
-                        order.totalAmount ??
-                        (order.items || []).reduce(
-                            (acc, i) => acc + (i.totalPrice || i.unitPrice * i.quantity || 0),
-                            0
-                        );
+                    const orderRef = order._id ? `#${String(order._id).toUpperCase()}` : `#TB-${String(order.transactionId || "").slice(-8).toUpperCase()}`;
+                    const paidTotal = order.paidAmount ?? order.totalAmount ?? (order.items || []).reduce((acc, i) => acc + (i.totalPrice || i.unitPrice * i.quantity || 0), 0);
                     const branch = branchOf(order);
 
                     return (
@@ -334,18 +304,14 @@ export default function OrderHistory() {
                                         pill
                                         bordered
                                         icon={<StatusIcon className="text-xs" />}
-                                        className="px-3 py-1 text-xs uppercase tracking-wider"
+                                        className="px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs uppercase tracking-wider"
                                     >
                                         {statusBadge.label}
                                     </Badge>
 
                                     <div className="text-right pl-1">
-                                        <p className="text-[9px] font-bold uppercase tracking-wider text-zinc-400">
-                                            TOTAL PAID
-                                        </p>
-                                        <p className="text-base sm:text-lg font-black text-amber-400 font-mono leading-tight">
-                                            {formatINR(paidTotal)}
-                                        </p>
+                                        <p className="text-[9px] font-bold uppercase tracking-wider text-zinc-400"> TOTAL PAID </p>
+                                        <p className="text-base sm:text-lg font-black text-amber-400 font-mono leading-tight">{formatINR(paidTotal)}</p>
                                     </div>
                                 </div>
                             </div>
@@ -353,13 +319,8 @@ export default function OrderHistory() {
                             {/* Inner Order Items Box */}
                             <div className="space-y-2.5">
                                 {order.items?.map((item, idx) => {
-                                    const itemPrice =
-                                        item.totalPrice ?? (item.unitPrice || 0) * (item.quantity || 1);
-                                    const productName =
-                                        item.productName ||
-                                        item.productId?.availableTyres?.productName ||
-                                        item.productId?.hero?.title ||
-                                        "Motorcycle Tyre";
+                                    const itemPrice = item.totalPrice ?? (item.unitPrice || 0) * (item.quantity || 1);
+                                    const productName = item.productName || item.productId?.availableTyres?.productName || item.productId?.hero?.title || "Motorcycle Tyre";
                                     const sizeLabel = item.size || item.productId?.size || "";
                                     const brandName = item.productId?.brand?.name || item.brand || "EUROGRIP";
                                     const itemImage = extractOrderItemImage(item);
@@ -367,10 +328,10 @@ export default function OrderHistory() {
                                     return (
                                         <div
                                             key={item._id || idx}
-                                            className="rounded-xl sm:rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 backdrop-blur-sm p-3.5 sm:p-4 flex items-center justify-between gap-4 transition-colors"
+                                            className="rounded-xl sm:rounded-2xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/10 backdrop-blur-sm p-3 sm:p-4 flex items-center justify-between gap-2.5 sm:gap-4 transition-colors"
                                         >
-                                            <div className="flex items-center gap-3.5 min-w-0">
-                                                <div className="relative h-14 w-14 shrink-0 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center p-1 overflow-hidden shadow-sm">
+                                            <div className="flex items-center gap-2.5 sm:gap-3.5 min-w-0">
+                                                <div className="relative h-12 w-12 sm:h-14 sm:w-14 shrink-0 rounded-xl bg-black/40 border border-white/10 flex items-center justify-center p-1 overflow-hidden shadow-sm">
                                                     <CustomImage
                                                         src={itemImage}
                                                         alt={productName}
@@ -382,9 +343,7 @@ export default function OrderHistory() {
 
                                                 <div className="space-y-0.5 min-w-0">
                                                     <div className="flex items-center gap-1.5">
-                                                        <span className="text-[10px] font-black uppercase text-orange-500 tracking-wider">
-                                                            {brandName}
-                                                        </span>
+                                                        <span className="text-[10px] font-black uppercase text-orange-500 tracking-wider">{brandName}</span>
                                                         <Badge
                                                             tone="orange"
                                                             bordered
@@ -393,24 +352,16 @@ export default function OrderHistory() {
                                                             TYRE
                                                         </Badge>
                                                     </div>
-                                                    <p className="text-xs sm:text-sm font-bold text-white truncate max-w-[280px] sm:max-w-md lg:max-w-xl">
-                                                        {productName}
-                                                    </p>
+                                                    <p className="text-xs sm:text-sm font-bold text-white truncate sm:max-w-md lg:max-w-xl">{productName}</p>
                                                     {sizeLabel && (
-                                                        <p className="text-[11px] font-bold text-zinc-400 uppercase">
-                                                            SIZE: {sizeLabel}
-                                                        </p>
+                                                        <p className="text-[11px] font-bold text-zinc-400 uppercase">SIZE: {sizeLabel}</p>
                                                     )}
-                                                    <p className="text-[11px] font-medium text-zinc-400">
-                                                        Qty: {item.quantity || 1}
-                                                    </p>
+                                                    <p className="text-[11px] font-medium text-zinc-400">Qty: {item.quantity || 1}</p>
                                                 </div>
                                             </div>
 
                                             <div className="text-right shrink-0">
-                                                <p className="text-sm sm:text-base font-black text-white font-mono">
-                                                    {formatINR(itemPrice)}
-                                                </p>
+                                                <p className="text-sm sm:text-base font-black text-white font-mono">{formatINR(itemPrice)}</p>
                                             </div>
                                         </div>
                                     );
@@ -426,9 +377,7 @@ export default function OrderHistory() {
                                     onClick={() => toggleDetails(order._id)}
                                     aria-expanded={isExpanded}
                                     rightIcon={
-                                        <FiChevronDown
-                                            className={`text-xs transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
-                                        />
+                                        <FiChevronDown className={`text-xs transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`} />
                                     }
                                 >
                                     View details
@@ -437,9 +386,7 @@ export default function OrderHistory() {
                                 {isExpanded && (
                                     <div className="mt-3 rounded-xl sm:rounded-2xl bg-white/[0.03] border border-white/10 backdrop-blur-md p-4 md:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 text-xs shadow-inner">
                                         <div className="space-y-1">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                                                DELIVERY DETAILS
-                                            </p>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500"> DELIVERY DETAILS </p>
                                             {(order.delivery?.trackingNumber || order.trackingNumber) && (
                                                 <p className="text-zinc-300 font-semibold flex items-center gap-1">
                                                     <FiTruck className="text-orange-500" /> Tracking #
@@ -447,43 +394,27 @@ export default function OrderHistory() {
                                                 </p>
                                             )}
                                             {(order.delivery?.courierName || order.courierName) && (
-                                                <p className="text-zinc-400 font-semibold">
-                                                    Courier: {order.delivery?.courierName || order.courierName}
-                                                </p>
+                                                <p className="text-zinc-400 font-semibold"> Courier: {order.delivery?.courierName || order.courierName} </p>
                                             )}
-                                            <p className="text-zinc-300 font-semibold capitalize">
-                                                Status: {order.delivery?.status || order.orderStatus || "Pending"}
-                                            </p>
+                                            <p className="text-zinc-300 font-semibold capitalize"> Status: {order.delivery?.status || order.orderStatus || "Pending"}</p>
                                         </div>
 
                                         <div className="space-y-1">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                                                PAYMENT
-                                            </p>
-                                            <p className="text-zinc-300 font-semibold capitalize">
-                                                Method: {order.paymentMethod || "Bank Transfer"}
-                                            </p>
-                                            <p className="text-zinc-300 font-semibold capitalize">
-                                                Payment Status: {order.paymentStatus || "Pending"}
-                                            </p>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">PAYMENT</p>
+                                            <p className="text-zinc-300 font-semibold capitalize">Method: {order.paymentMethod || "Bank Transfer"}</p>
+                                            <p className="text-zinc-300 font-semibold capitalize">Payment Status: {order.paymentStatus || "Pending"}</p>
                                             {(order.transactionId || order.paymentId) && (
-                                                <p className="text-zinc-400 font-mono text-[10px]">
-                                                    Txn: {order.transactionId || order.paymentId}
-                                                </p>
+                                                <p className="text-zinc-400 font-mono text-[10px]">Txn: {order.transactionId || order.paymentId}</p>
                                             )}
                                         </div>
 
                                         <div className="space-y-1">
-                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">
-                                                DELIVERY ADDRESS
-                                            </p>
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500">DELIVERY ADDRESS</p>
                                             {order.items?.[0]?.address ? (
                                                 typeof order.items[0].address === "object" ? (
                                                     <p className="text-zinc-300 font-medium">
                                                         {order.items[0].address.fullName && (
-                                                            <span className="block font-bold text-white">
-                                                                {order.items[0].address.fullName}
-                                                            </span>
+                                                            <span className="block font-bold text-white"> {order.items[0].address.fullName}</span>
                                                         )}
                                                         {order.items[0].address.addressLine1},{" "}
                                                         {order.items[0].address.city},{" "}

@@ -1,12 +1,6 @@
 
 import axios from "axios";
 
-// ============================================================================
-// 1. ENVIRONMENT LINKS
-// Switch environment by commenting/uncommenting the pair below.
-// Environment variables (NEXT_PUBLIC_API_URL / NEXT_PUBLIC_SITE_URL) override these.
-// ============================================================================
-
 // --- 1) PRODUCTION ---
 const API_URL = "https://api.torqueblock.com/api/v1";
 const SITE_URL = "https://trade.torqueblock.com";

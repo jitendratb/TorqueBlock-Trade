@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FiBriefcase, FiCreditCard, FiMapPin, FiUsers } from "react-icons/fi";
 import { Card, ErrorState, FilterTabs, SkeletonRows, StatCard } from "@/components/ui";
+import useIsTradeVerified from "@/hooks/useIsTradeVerified";
 import { formatINR } from "@/lib/format";
 import { useAccountStore, selectIsOwner } from "@/store/accountStore";
 import { useAuthStore } from "@/store/authStore";
@@ -24,6 +25,7 @@ export default function BusinessAccount() {
     const accountStatus = useAccountStore((s) => s.accountStatus);
     const loadAccount = useAccountStore((s) => s.loadAccount);
     const isOwner = useAccountStore(selectIsOwner);
+    const verified = useIsTradeVerified();
     const [tab, setTab] = useState("profile");
 
     useEffect(() => {
@@ -43,10 +45,10 @@ export default function BusinessAccount() {
     return (
         <div className="space-y-4 sm:space-y-5">
             {/* Top 4 Stat Cards */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
                 <StatCard
                     label="BUSINESS PROFILE"
-                    value={profile?.isApproved ? "VERIFIED" : "PENDING"}
+                    value={verified ? "VERIFIED" : "PENDING"}
                     Icon={FiBriefcase}
                     tone="orange"
                     active={active === "profile"}
@@ -83,9 +85,10 @@ export default function BusinessAccount() {
                 tabs={tabs}
                 activeTab={active}
                 onChange={setTab}
+                rightClassName="hidden md:block"
                 right={
                     <div className="flex items-center gap-2 px-2 text-xs text-zinc-400">
-                        <span className="font-mono text-[11px] text-zinc-400">
+                        <span className="truncate font-mono text-[11px] text-zinc-400">
                             {account?.gstin ? `GSTIN: ${account.gstin}` : businessName}
                         </span>
                     </div>
@@ -93,7 +96,7 @@ export default function BusinessAccount() {
             />
 
             {/* Active Panel Content Card */}
-            <Card variant="frosted" className="space-y-4">
+            <Card variant="frosted" className="space-y-4 p-4 sm:p-6">
                 {active === "profile" ? (
                     <TradeProfilePanel />
                 ) : accountStatus === "loading" && !account ? (

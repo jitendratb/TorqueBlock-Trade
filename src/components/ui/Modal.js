@@ -15,7 +15,7 @@ export default function Modal({
     onClose,
     label = "Dialog modal",
     children,
-    className = "max-w-[460px] w-full rounded-2xl sm:rounded-3xl p-6 sm:p-7 bg-[#22262E]/95 border border-white/10 backdrop-blur-xl shadow-2xl",
+    className = "max-w-[460px] w-full rounded-2xl sm:rounded-3xl p-4 min-[360px]:p-6 sm:p-7 bg-[#22262E]/95 border border-white/10 backdrop-blur-xl shadow-2xl",
     closeButtonClassName = "absolute right-4 top-4 sm:right-5 sm:top-5 h-8 w-8 rounded-lg bg-white/10 hover:bg-white/15 text-zinc-400 hover:text-white"
 }) {
     useEffect(() => {

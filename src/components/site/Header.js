@@ -19,7 +19,8 @@ import { useUiStore } from "@/store/uiStore";
 
 const PORTAL_NAV = [
     { label: "Home", path: "/", Icon: FiHome },
-    { label: "My Orders", path: "/orders", Icon: FiFileText },
+    { label: "My Orders", path: "/orders", requireAuth: true, Icon: FiFileText },
+    { label: "My Profile", path: "/account", requireAuth: true, Icon: FiUser },
 ];
 
 const TRADE_SERVICES = [
@@ -158,14 +159,14 @@ export default function Header() {
                 <div className="flex-1 space-y-6 overflow-y-auto overscroll-contain px-4 py-5">
                     <section>
                         <SectionLabel>Portal Navigation</SectionLabel>
-                        <div className="grid grid-cols-2 gap-3">
-                            {PORTAL_NAV.map(({ label, path, Icon }) => {
+                        <div className="grid grid-cols-3 gap-2.5">
+                            {PORTAL_NAV.map(({ label, path, requireAuth, Icon }) => {
                                 const active = pathname === path;
                                 return (
                                     <button
                                         key={path}
                                         type="button"
-                                        onClick={go(path)}
+                                        onClick={go(path, requireAuth)}
                                         aria-current={active ? "page" : undefined}
                                         className={clsx(
                                             "flex h-[4.5rem] flex-col justify-between rounded-xl border p-3 text-left transition-colors",
@@ -175,7 +176,7 @@ export default function Header() {
                                         )}
                                     >
                                         <Icon className="text-xl" />
-                                        <span className="text-[11px] font-black uppercase tracking-wider">{label}</span>
+                                        <span className="text-[10px] font-black uppercase leading-tight tracking-wider">{label}</span>
                                     </button>
                                 );
                             })}

@@ -32,7 +32,7 @@ export default function LoginModal() {
             open={open}
             onClose={close}
             label="Authentication"
-            className="max-w-[460px] w-full rounded-2xl sm:rounded-3xl p-6 sm:p-7 bg-[#22262E]/95 border border-white/10 backdrop-blur-xl shadow-2xl text-white"
+            className="max-w-[460px] w-full rounded-2xl sm:rounded-3xl p-4 min-[360px]:p-6 sm:p-7 bg-[#22262E]/95 border border-white/10 backdrop-blur-xl shadow-2xl text-white"
         >
             {open && (
                 <>

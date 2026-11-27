@@ -7,16 +7,7 @@ import { BILLING_FIELDS } from "@/constants/forms";
 import { formatINR } from "@/lib/format";
 
 // Step 2 — Billing & delivery details used for the GST invoice.
-export default function BillingStep({
-    values,
-    errors,
-    onChange,
-    units,
-    total,
-    onBack,
-    onNext,
-    onClose,
-}) {
+export default function BillingStep({ values, errors, onChange, units, total, onBack, onNext, onClose, }) {
     return (
         <>
             <div className="custom-scroll flex-1 space-y-4 overflow-y-auto px-4 sm:px-5 py-4">

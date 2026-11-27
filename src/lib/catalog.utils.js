@@ -95,6 +95,34 @@ export function findSearchTarget(index, query) {
     return product.sizes.length === 1 && /\d/.test(query) ? tyreHref(product, product.sizes[0]) : tyreHref(product);
 }
 
+// "100/90", "100/90-19", "120/70 ZR17", "2.75-18": a size search lists that size across every brand.
+const SIZE_QUERY = /\d{2,3}\s*\/\s*\d{1,3}|\d\.\d{2}\s*[-\s]\s*\d{2}/;
+export const isSizeQuery = (query) => SIZE_QUERY.test(String(query || ""));
+
+const sizeKey = (text) => String(text || "").toLowerCase().replace(/[\s\-zrb]/g, "");
+
+export function sizeMatches(index, query, limit = 60) {
+    if (!isSizeQuery(query)) return [];
+    const typed = sizeKey(query);
+    return index
+        .flatMap((p) => {
+            const brand = p.brand?.name || "";
+            const name = brand && !p.name.toLowerCase().startsWith(brand.toLowerCase()) ? `${brand} ${p.name}` : p.name;
+            return p.sizes
+                .filter((s) => sizeKey(s.size).includes(typed))
+                .map((s) => ({
+                    id: s.id,
+                    name,
+                    size: s.size,
+                    detail: [s.spec, s.position && `${s.position} Tyre`].filter(Boolean).join(" "),
+                    isTube: /tube/i.test(p.category?.name || ""),
+                    path: tyreHref(p, s),
+                }));
+        })
+        .sort((a, b) => a.size.localeCompare(b.size, undefined, { numeric: true }) || a.name.localeCompare(b.name))
+        .slice(0, limit);
+}
+
 // Suggestions from the trade stock itself, used when the smart search can't be reached.
 export function localSuggestions(index, query, limit = 8) {
     const matches = filterProducts(index, { ...EMPTY_FILTERS, query });

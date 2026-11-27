@@ -11,8 +11,8 @@ function CartLineItem({ line, onQuantity, onRemove }) {
     const lineTotal = line.price != null ? line.price * line.quantity : null;
 
     return (
-        <div className="group relative flex items-center gap-4 rounded-xl border border-white/15 bg-white/5 p-4 transition-all duration-300 hover:border-white/10 hover:bg-white/15">
-            <div className="relative flex h-15 w-15 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-zinc-800 bg-black/40 md:h-20 md:w-20">
+        <div className="group relative flex items-center gap-3 sm:gap-4 rounded-xl border border-white/15 bg-white/5 p-3 sm:p-4 transition-all duration-300 hover:border-white/10 hover:bg-white/15">
+            <div className="relative flex h-14 w-14 sm:h-15 sm:w-15 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-zinc-800 bg-black/40 md:h-20 md:w-20">
                 <CustomImage
                     src={line.image}
                     alt={line.productName}

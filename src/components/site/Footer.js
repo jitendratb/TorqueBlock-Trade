@@ -46,8 +46,8 @@ export default function Footer({ settings, brands = [] }) {
 
     return (
         <footer className="border-t border-white/5 bg-[#0D0D0D]">
-            <div className="mx-auto grid max-w-7xl gap-10 px-4 pt-12 sm:px-6 lg:grid-cols-[minmax(0,370px)_1fr] lg:gap-12 lg:px-8 lg:pt-16">
-                <div className="space-y-6">
+            <div className="mx-auto grid max-w-7xl gap-10 px-4 pt-12 sm:px-6 xl:grid-cols-[minmax(0,370px)_1fr] xl:gap-12 lg:px-8 lg:pt-16">
+                <div className="space-y-6 md:columns-2 md:gap-10 xl:columns-1 md:[&>*]:break-inside-avoid">
                     <div className="space-y-4">
                         <BrandLockup name={name} />
                         {settings.tagline && <p className="max-w-xs text-[15px] leading-relaxed text-zinc-400">{settings.tagline}</p>}
@@ -58,7 +58,7 @@ export default function Footer({ settings, brands = [] }) {
                 </div>
 
                 <div className="flex flex-col">
-                    <div className="grid flex-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+                    <div className="grid flex-1 gap-10 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
                         {brands.length > 0 && (
                             <LinkColumn
                                 icon={FaLayerGroup}

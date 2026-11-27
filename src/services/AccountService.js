@@ -3,7 +3,7 @@ import { toAddressBody, trimValues } from "@/lib/formHelpers";
 
 const REGISTRATION_KEYS = ["primaryOwnerName", "primaryOwnerNumber", "businessName", "businessType", "contactNumber", "gstin", "pan"];
 
-// Trade business account management (registration, business details, ledger, team, branches).
+// Trade business account management (registration, business details, team, branches).
 class AccountService {
     static toRegistrationBody(values, shipping = null) {
         const body = trimValues(values, REGISTRATION_KEYS);
@@ -22,16 +22,6 @@ class AccountService {
 
     static getBusinessAccount = () => api.get("/trade/credit/account");
 
-    // No ledger yet (404) is an empty ledger, not an error.
-    static getLedger = async ({ page = 1, limit = 20 } = {}) => {
-        try {
-            return await api.get("/trade/credit/ledger", { params: { page, limit }, silent: true });
-        } catch (err) {
-            if (err?.status === 404) return { success: true, ledger: [], meta: { page: 1, totalPages: 1 } };
-            throw err;
-        }
-    };
-
     static getSalesmen = async () => (await api.get("/trade/credit/salesmen")).data || [];
     static addSalesman = (payload) => api.post("/trade/credit/salesmen", payload);
     static updateSalesman = (id, payload) => api.put(`/trade/credit/salesmen/${id}`, payload);
@@ -44,4 +34,4 @@ class AccountService {
 
 export default AccountService;
 
-export const { registerBusinessAccount, verifyRegistrationOtp, getLedger: fetchLedger, addSalesman, updateSalesman, removeSalesman, addBranch, updateBranch, removeBranch, } = AccountService;
+export const { registerBusinessAccount, verifyRegistrationOtp, addSalesman, updateSalesman, removeSalesman, addBranch, updateBranch, removeBranch, } = AccountService;

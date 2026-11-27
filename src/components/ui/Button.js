@@ -9,6 +9,8 @@ const VARIANTS = {
     gradient: "bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 shadow-[0_4px_20px_rgba(249,115,22,0.15)] hover:shadow-[0_4px_30px_rgba(249,115,22,0.35)]",
     secondary: "bg-white/10 text-white hover:bg-white/20 border border-white/10",
     outline: "border border-orange-500 text-orange-400 hover:bg-orange-500 hover:text-white",
+    // Tinted orange action that fills on hover (panel header actions).
+    soft: "border border-orange-500/30 bg-orange-500/10 text-orange-400 hover:border-orange-500 hover:bg-orange-500 hover:text-white shadow-sm shadow-orange-500/10",
     ghost: "border border-white/15 text-zinc-300 hover:bg-white/5 hover:text-white",
     // Frosted glass — header / overlay controls.
     glass: "border border-white/20 bg-white/[0.08] text-white backdrop-blur-sm hover:bg-white/[0.16] hover:border-white/30 shadow-sm",
@@ -61,7 +63,7 @@ const TEXT_SIZES = {
  * (external http(s) links open in a new tab), otherwise a <button>.
  *
  * @param variant  primary | brand | gradient | secondary | outline | ghost | glass |
- *                 subtle | muted | muted-danger | danger | header | overlay | link | text
+ *                 soft | subtle | muted | muted-danger | danger | header | overlay | link | text
  * @param size     xs | sm | md | lg
  * @param iconOnly square button that shows only `icon` (pass an aria-label)
  * @param pill     fully rounded corners

@@ -3,20 +3,9 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { BsCheckCircleFill, BsHeadset, BsPatchCheck } from "react-icons/bs";
-import {
-    FiChevronDown,
-    FiChevronLeft,
-    FiChevronRight,
-    FiChevronUp,
-    FiFileText,
-    FiLock,
-    FiMaximize2,
-    FiShield,
-    FiSliders,
-    FiX,
-} from "react-icons/fi";
+import { FiChevronDown, FiChevronLeft, FiChevronRight, FiChevronUp, FiFileText, FiLock, FiMaximize2, FiShield, FiSliders, FiX, } from "react-icons/fi";
 import { HiSparkles } from "react-icons/hi2";
-import { Breadcrumbs, Button, CustomImage, ShareButtons } from "@/components/ui";
+import { Breadcrumbs, Button, Card, CustomImage, ShareButtons } from "@/components/ui";
 import useImageCarousel from "@/hooks/useImageCarousel";
 import { useProductFamily } from "@/hooks/useProductFamily";
 import { buildProductParagraphs, parseTyreSize, tyreHref } from "@/lib/catalog.utils";
@@ -160,12 +149,12 @@ export default function ProductDetail({ product, size = null }) {
                     />
 
                     <div className="flex shrink-0 items-center">
-                        <ShareButtons path={path} title={title} text={`${title} – Trade stock & wholesale pricing on Torque Block`} size="sm" />
+                        <ShareButtons path={path} title={title} text={`${title} – Trade stock & wholesale pricing on Torque Block`} size="sm" menu />
                     </div>
                 </div>
 
                 <section className="w-full relative">
-                    <div className="grid grid-cols-1 gap-5 md:gap-6 lg:grid-cols-2 lg:gap-8 items-start">
+                    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6 lg:gap-8 items-start">
                         <div className="flex flex-col gap-2.5 sm:gap-3">
                             <div className="relative w-full rounded-2xl overflow-hidden h-[300px] min-[400px]:h-[340px] sm:h-[380px] md:h-[400px] lg:h-[420px] xl:h-[440px] flex items-center justify-center">
                                 <div
@@ -352,7 +341,7 @@ export default function ProductDetail({ product, size = null }) {
                                 </Button>
                             </div>
 
-                            <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                            <ul aria-label="Why buy from Torque Block" className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 xl:grid-cols-3 gap-2">
                                 <li className="flex items-center gap-2.5 rounded-xl border border-white/10 bg-white/[0.04] hover:bg-white/[0.08] backdrop-blur-sm p-2.5 sm:p-3 transition-colors duration-300 hover:border-orange-500/40 shadow-sm">
                                     <FiShield className="shrink-0 text-xl sm:text-2xl text-orange-500" />
                                     <span className="flex min-w-0 flex-col gap-0.5">
@@ -381,78 +370,77 @@ export default function ProductDetail({ product, size = null }) {
             </div>
 
             {(paragraphs[0] || familyData?.description || product?.description) && (
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent p-5 sm:p-6 backdrop-blur-xl shadow-xl space-y-3.5">
-                <div className="absolute -top-12 -right-12 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
-                <div className="relative flex items-center justify-between pb-3 border-b border-white/10">
-                    <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-500 shrink-0 shadow-sm">
-                            <FiFileText size={18} />
+                <Card variant="section" glow className="space-y-3.5">
+                    <div className="relative flex items-center justify-between gap-3 pb-3 border-b border-white/10">
+                        <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+                            <div className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-500 shrink-0 shadow-sm">
+                                <FiFileText size={18} />
+                            </div>
+                            <div>
+                                <h3 className="text-sm font-black uppercase tracking-[0.12em] sm:tracking-[0.18em] text-white leading-tight">
+                                    DESCRIPTION
+                                </h3>
+                                <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
+                                    Tyre Details & Overview
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h3 className="text-sm font-black uppercase tracking-[0.18em] text-white leading-tight">
-                                DESCRIPTION
-                            </h3>
-                            <p className="text-[11px] text-zinc-400 leading-tight mt-0.5">
-                                Tyre Details & Overview
-                            </p>
-                        </div>
+
+                        {(paragraphs.length > 1 || (familyData?.description && familyData.description.length > 200) || (paragraphs[0] && paragraphs[0].length > 200)) && (
+                            <Button
+                                variant="link"
+                                size="sm"
+                                uppercase={false}
+                                className="shrink-0 whitespace-nowrap"
+                                onClick={() => setIsDescriptionExpanded((prev) => !prev)}
+                                aria-expanded={isDescriptionExpanded}
+                                rightIcon={isDescriptionExpanded ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
+                            >
+                                {isDescriptionExpanded ? "Show Less" : "Read More"}
+                            </Button>
+                        )}
                     </div>
 
-                    {(paragraphs.length > 1 || (familyData?.description && familyData.description.length > 200) || (paragraphs[0] && paragraphs[0].length > 200)) && (
-                        <Button
-                            variant="link"
-                            size="sm"
-                            uppercase={false}
-                            onClick={() => setIsDescriptionExpanded((prev) => !prev)}
-                            aria-expanded={isDescriptionExpanded}
-                            rightIcon={isDescriptionExpanded ? <FiChevronUp size={12} /> : <FiChevronDown size={12} />}
-                        >
-                            {isDescriptionExpanded ? "Show Less" : "Read More"}
-                        </Button>
-                    )}
-                </div>
-
-                <div className="relative text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
-                    {isDescriptionExpanded ? (
-                        <div className="max-h-[360px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
-                            {paragraphs.length > 0 ? (
-                                paragraphs.map((para, idx) => (
-                                    <p key={idx} className="text-zinc-300">
-                                        {para}
+                    <div className="relative text-xs sm:text-sm text-zinc-300 leading-relaxed space-y-2">
+                        {isDescriptionExpanded ? (
+                            <div className="max-h-[360px] overflow-y-auto custom-scroll pr-1.5 space-y-2">
+                                {paragraphs.length > 0 ? (
+                                    paragraphs.map((para, idx) => (
+                                        <p key={idx} className="text-zinc-300">
+                                            {para}
+                                        </p>
+                                    ))
+                                ) : (
+                                    <p className="text-zinc-300">
+                                        {familyData?.description || product?.description || ""}
                                     </p>
-                                ))
-                            ) : (
-                                <p className="text-zinc-300">
-                                    {familyData?.description || product?.description || ""}
-                                </p>
-                            )}
-                        </div>
-                    ) : (
-                        <p className="text-zinc-300 font-normal leading-relaxed line-clamp-3 sm:line-clamp-4">
-                            {paragraphs[0] || familyData?.description || product?.description || ""}
-                        </p>
-                    )}
-                </div>
-            </div>
+                                )}
+                            </div>
+                        ) : (
+                            <p className="text-zinc-300 font-normal leading-relaxed line-clamp-3 sm:line-clamp-4">
+                                {paragraphs[0] || familyData?.description || product?.description || ""}
+                            </p>
+                        )}
+                    </div>
+                </Card>
             )}
 
             <div id="available-sizes" className="scroll-mt-28 space-y-6 pt-2">
                 {size && parsedSpec && (
-                    <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-transparent p-4 sm:p-5 backdrop-blur-xl shadow-lg space-y-3">
-                        <div className="absolute -top-10 -right-10 w-32 h-32 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
-                        <div className="relative flex items-center justify-between pb-2 border-b border-white/10">
-                            <div className="flex items-center gap-2">
+                    <Card variant="section" glow className="space-y-3">
+                        <div className="relative flex items-center justify-between gap-3 pb-2 border-b border-white/10">
+                            <div className="flex min-w-0 items-center gap-2">
                                 <FiSliders className="text-orange-500 text-sm shrink-0" />
-                                <h3 className="text-sm font-bold uppercase tracking-wider text-white">
+                                <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white leading-tight">
                                     Selected Tyre Specifications
                                 </h3>
                             </div>
-                            <span className="rounded-lg border border-orange-500/40 bg-orange-500/10 px-2.5 py-1 text-xs font-black text-orange-400">
+                            <span className="shrink-0 whitespace-nowrap rounded-lg border border-orange-500/40 bg-orange-500/10 px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-black text-orange-400">
                                 {size.size}
                             </span>
                         </div>
 
-                        <dl className="relative grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                        <dl className="relative grid grid-cols-2 lg:grid-cols-4 gap-2 text-xs">
                             {[
                                 ["Width", parsedSpec.width],
                                 ["Aspect", parsedSpec.aspect],
@@ -463,23 +451,22 @@ export default function ProductDetail({ product, size = null }) {
                                 ["Type", parsedSpec.tubeType],
                                 ["Segment", product.category?.name || "Tyre"],
                             ].map(([label, value]) => (
-                                <div key={label} className="flex items-center justify-between gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 backdrop-blur-sm">
-                                    <dt className="text-zinc-400">{label}</dt>
-                                    <dd className="max-w-[100px] truncate font-bold text-white" title={String(value ?? "")}>{value}</dd>
+                                <div key={label} className="flex min-w-0 flex-col gap-0.5 rounded-xl border border-white/10 bg-white/[0.03] px-2.5 sm:px-3 py-2 backdrop-blur-sm min-[380px]:flex-row min-[380px]:items-center min-[380px]:justify-between min-[380px]:gap-2">
+                                    <dt className="shrink-0 text-[10px] uppercase tracking-wider text-zinc-400 min-[380px]:text-xs min-[380px]:normal-case min-[380px]:tracking-normal">{label}</dt>
+                                    <dd className="min-w-0 break-words font-bold leading-snug text-white min-[380px]:text-right" title={String(value ?? "")}>{value}</dd>
                                 </div>
                             ))}
                         </dl>
-                    </div>
+                    </Card>
                 )}
 
-                <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-white/[0.05] via-white/[0.02] to-transparent p-4 sm:p-5 backdrop-blur-xl shadow-lg space-y-3">
-                    <div className="absolute -top-12 -right-12 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl pointer-events-none" />
-                    <div className="relative flex items-center justify-between pb-2 border-b border-white/10">
-                        <h2 className="text-sm font-bold uppercase tracking-[0.08em] text-white"> AVAILABLE TYRE SIZES ({sizesToDisplay.length}) </h2>
+                <Card variant="section" glow className="space-y-3">
+                    <div className="relative flex items-center justify-between gap-3 pb-2 border-b border-white/10">
+                        <h2 className="min-w-0 text-xs sm:text-sm font-bold uppercase tracking-[0.08em] text-white leading-tight">AVAILABLE TYRE SIZES ({sizesToDisplay.length})</h2>
                         {size && product.sizes?.length > 1 && (
                             <Link
                                 href={modelHref}
-                                className="text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors"
+                                className="shrink-0 whitespace-nowrap text-xs font-bold text-orange-400 hover:text-orange-300 transition-colors"
                             >
                                 View all {product.sizes.length} sizes →
                             </Link>
@@ -487,7 +474,7 @@ export default function ProductDetail({ product, size = null }) {
                     </div>
 
                     <StockTable product={product} sizes={sizesToDisplay} isApproved={isApproved} tradePrices={tradePrices} className="relative" />
-                </div>
+                </Card>
             </div>
 
             {isPhotoOpen && (

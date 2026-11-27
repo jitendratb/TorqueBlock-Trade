@@ -63,7 +63,7 @@ export default function SupportAndPolicyClient({ activeSlug = DEFAULT_POLICY.slu
                     </div>
                 </div>
 
-                <Card className="rounded-2xl sm:rounded-3xl border-white/10 bg-[#0e121b]/95 p-6 sm:p-10 md:p-12 shadow-2xl backdrop-blur-sm">
+                <Card className="rounded-2xl sm:rounded-3xl border-white/10 bg-[#0e121b]/95 p-4 min-[360px]:p-6 sm:p-10 md:p-12 shadow-2xl backdrop-blur-sm">
                     <ActiveComponent />
                 </Card>
             </div>

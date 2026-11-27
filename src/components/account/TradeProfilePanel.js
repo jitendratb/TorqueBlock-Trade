@@ -7,6 +7,7 @@ import { DETAILS_FIELDS } from "@/constants/forms";
 import { useSettings } from "@/context/SettingsContext";
 import useAsyncAction from "@/hooks/useAsyncAction";
 import useForm from "@/hooks/useForm";
+import useIsTradeVerified from "@/hooks/useIsTradeVerified";
 import { whatsappLink } from "@/lib/format";
 import { formatAddress, profileToBilling } from "@/lib/formHelpers";
 import { useAccountStore } from "@/store/accountStore";
@@ -50,6 +51,7 @@ export default function TradeProfilePanel() {
     const hasDetails = useAuthStore(selectHasDetails);
     const account = useAccountStore((s) => s.account);
     const [editing, setEditing] = useState(false);
+    const verified = useIsTradeVerified();
 
     if (!hasDetails) {
         return (
@@ -70,12 +72,12 @@ export default function TradeProfilePanel() {
     return (
         <div className="space-y-6">
             <div className="flex flex-wrap items-center gap-2">
-                {profile.isApproved ? (
+                {verified ? (
                     <Badge tone="green">Verified trade account</Badge>
                 ) : (
                     <Badge tone="sky">Awaiting activation</Badge>
                 )}
-                {!profile.isApproved && (
+                {!verified && (
                     <span className="text-xs text-zinc-400">
                         Our team activates trade prices and ordering after verifying your GSTIN.
                     </span>
@@ -121,8 +123,8 @@ export default function TradeProfilePanel() {
                     description="Your login and the billing address used at checkout."
                     action={
                         !editing && (
-                            <Button variant="outline" size="sm" onClick={() => setEditing(true)}>
-                                <FiEdit2 /> Edit Details
+                            <Button variant="soft" size="sm" icon={<FiEdit2 size={13} />} onClick={() => setEditing(true)}>
+                                Edit Details
                             </Button>
                         )
                     }

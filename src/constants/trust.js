@@ -5,7 +5,7 @@ import { PiBuildingsFill } from "react-icons/pi";
 // Trade social proof shown in the home hero (desktop card + mobile pill).
 export const TRADE_PROOF = {
     dealers: "1,500+",
-    dealersLabel: "Dealers",
+    dealersLabel: "Accounts",
     headline: "Trusted by Businesses",
     subline: "Across India",
     audience: "Dealers, Workshops & Service Centres",

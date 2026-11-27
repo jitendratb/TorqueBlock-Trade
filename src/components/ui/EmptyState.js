@@ -24,7 +24,7 @@ export default function EmptyState({
         <div
             className={clsx(
                 "rounded-3xl border border-white/10 bg-[#141824] text-center shadow-lg shadow-black/20",
-                compact ? "p-6" : "px-6 py-14 md:py-16",
+                compact ? "p-4 sm:p-6" : "px-4 sm:px-6 py-14 md:py-16",
                 className
             )}
         >

@@ -139,47 +139,73 @@ function MemberRow({ member }) {
     const remove = () => act(() => removeSalesman(memberId), `Removed ${member.name} from your business account.`);
 
     return (
-        <li className="flex flex-col justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:bg-white/[0.07] transition-colors p-3.5 text-xs sm:flex-row sm:items-center shadow-sm">
-            <div className="space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-black text-white">{member.name || member.phone}</span>
-                    <Badge tone={isOwner ? "orange" : "sky"} className="capitalize">
-                        {isOwner ? "Owner" : "Salesman"}
-                    </Badge>
-                    {!isOwner && <Badge tone={status.tone}>{status.label}</Badge>}
+        <li className="space-y-3 rounded-xl sm:rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:bg-white/[0.07] transition-colors p-3 sm:p-3.5 text-xs shadow-sm">
+            <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1 space-y-1">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <span className="break-words text-sm font-black text-white">{member.name || member.phone}</span>
+                        <Badge tone={isOwner ? "orange" : "sky"} className="capitalize">
+                            {isOwner ? "Owner" : "Salesman"}
+                        </Badge>
+                        {!isOwner && <Badge tone={status.tone}>{status.label}</Badge>}
+                    </div>
+                    <div className="flex flex-col gap-0.5 text-[11px] text-zinc-400 sm:flex-row sm:flex-wrap sm:gap-x-3">
+                        {member.phone && <span className="font-mono">{member.phone}</span>}
+                        {member.email && <span className="break-all">{member.email}</span>}
+                        <span>Orders for: {isOwner ? "All branches" : branchLabel}</span>
+                    </div>
                 </div>
-                <p className="text-[11px] text-zinc-400">
-                    {[
-                        member.phone,
-                        member.email,
-                        `Orders for: ${isOwner ? "All branches" : branchLabel}`,
-                    ]
-                        .filter(Boolean)
-                        .join(" · ")}
-                </p>
+
+                {!isOwner && !mode && (
+                    <div className="flex shrink-0 items-center gap-1.5">
+                        <Button
+                            variant="muted"
+                            size="sm"
+                            iconOnly
+                            onClick={() => {
+                                setBranchCode(member.branchCode || "ALL");
+                                setMode("edit");
+                            }}
+                            title={`Change branch for ${member.name}`}
+                            aria-label={`Change branch for ${member.name}`}
+                            icon={<FiEdit2 size={14} />}
+                        />
+                        <Button
+                            variant="muted-danger"
+                            size="sm"
+                            iconOnly
+                            onClick={() => setMode("remove")}
+                            title={`Remove ${member.name}`}
+                            aria-label={`Remove ${member.name}`}
+                            icon={<FiTrash2 size={14} />}
+                        />
+                    </div>
+                )}
             </div>
 
             {isOwner ? null : mode === "edit" ? (
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                     <Select
                         aria-label={`Branch for ${member.name}`}
-                        className="!py-2 !text-xs min-w-[180px]"
+                        className="!py-2 !text-xs w-full sm:w-auto sm:min-w-[200px]"
                         value={branchCode}
                         onChange={(e) => setBranchCode(e.target.value)}
                         options={branchOptions}
                     />
-                    <Button
-                        size="sm"
-                        loading={busy}
-                        loadingText="Saving…"
-                        disabled={branchCode === (member.branchCode || "ALL")}
-                        onClick={saveBranch}
-                    >
-                        Save
-                    </Button>
-                    <Button size="sm" variant="ghost" disabled={busy} onClick={() => setMode(null)}>
-                        Cancel
-                    </Button>
+                    <div className="grid grid-cols-2 gap-2 sm:flex">
+                        <Button size="sm" variant="ghost" disabled={busy} onClick={() => setMode(null)}>
+                            Cancel
+                        </Button>
+                        <Button
+                            size="sm"
+                            loading={busy}
+                            loadingText="Saving…"
+                            disabled={branchCode === (member.branchCode || "ALL")}
+                            onClick={saveBranch}
+                        >
+                            Save
+                        </Button>
+                    </div>
                 </div>
             ) : mode === "remove" ? (
                 <ConfirmInline
@@ -188,31 +214,7 @@ function MemberRow({ member }) {
                     onConfirm={remove}
                     onCancel={() => setMode(null)}
                 />
-            ) : (
-                <div className="flex items-center justify-end gap-2">
-                    <Button
-                        variant="muted"
-                        size="sm"
-                        iconOnly
-                        onClick={() => {
-                            setBranchCode(member.branchCode || "ALL");
-                            setMode("edit");
-                        }}
-                        title={`Change branch for ${member.name}`}
-                        aria-label={`Change branch for ${member.name}`}
-                        icon={<FiEdit2 size={14} />}
-                    />
-                    <Button
-                        variant="muted-danger"
-                        size="sm"
-                        iconOnly
-                        onClick={() => setMode("remove")}
-                        title={`Remove ${member.name}`}
-                        aria-label={`Remove ${member.name}`}
-                        icon={<FiTrash2 size={14} />}
-                    />
-                </div>
-            )}
+            ) : null}
         </li>
     );
 }
@@ -237,8 +239,8 @@ export default function TeamPanel() {
                 description="Each salesman logs in with their own mobile number and orders for your business."
                 action={
                     !adding && (
-                        <Button size="sm" onClick={() => setAdding(true)}>
-                            <FiPlus /> Add Member
+                        <Button variant="soft" size="sm" icon={<FiPlus size={14} />} onClick={() => setAdding(true)}>
+                            Add Member
                         </Button>
                     )
                 }

@@ -6,7 +6,6 @@ export const TRADE_SETTINGS = {
     companyName: "Torque Block",
     siteUrl,
     tagline: "Trade supply of premium & value performance motorcycle tyres, delivered across India.",
-    heroImage: "/hero/1-hero.webp",
     contact: {
         // Production WhatsApp & Phone:
         // phone: "+916366625625",

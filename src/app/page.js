@@ -18,7 +18,7 @@ export default async function HomePage({ searchParams }) {
     return (
         <main className="bg-[#0B0F19]">
             <StockHero
-                heroImages={getHeroImages(settings.heroImage)}
+                heroImages={getHeroImages()}
                 companyName={settings.companyName}
                 brands={stock.brands}
                 searchIndex={toSearchIndex(stock.products)}

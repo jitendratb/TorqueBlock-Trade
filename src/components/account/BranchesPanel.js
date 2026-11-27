@@ -2,19 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FiEdit2, FiMapPin, FiPlus, FiTrash2 } from "react-icons/fi";
-import {
-    Badge,
-    Button,
-    Card,
-    ConfirmInline,
-    EmptyState,
-    ErrorState,
-    FormActions,
-    FormError,
-    FormFields,
-    PanelHeader,
-    SkeletonRows,
-} from "@/components/ui";
+import { Badge, Button, Card, ConfirmInline, EmptyState, ErrorState, FormActions, FormError, FormFields, PanelHeader, SkeletonRows, } from "@/components/ui";
 import { ADDRESS_FIELDS, ADDRESS_KEYS } from "@/constants/forms";
 import useAsyncAction from "@/hooks/useAsyncAction";
 import useForm from "@/hooks/useForm";
@@ -151,8 +139,8 @@ function BranchCard({ branch, canManage, onEdit }) {
     return (
         <li className="space-y-2 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm hover:bg-white/[0.07] transition-colors p-3.5 text-xs shadow-sm">
             <div className="flex items-start justify-between gap-2">
-                <p className="flex flex-wrap items-center gap-2 text-sm font-black text-white">
-                    <FiMapPin className="text-orange-400" /> {branch.branchName}
+                <p className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm font-black text-white">
+                    <FiMapPin className="shrink-0 text-orange-400" /> <span className="break-words">{branch.branchName}</span>
                     <span className="rounded bg-white/10 px-1.5 py-0.5 font-mono text-[10px] text-zinc-300">
                         {branch.branchCode}
                     </span>
@@ -186,12 +174,12 @@ function BranchCard({ branch, canManage, onEdit }) {
 
             <p className="text-zinc-400">{formatAddress(branch.address) || "Address not added"}</p>
             {(branch.contactPerson || branch.phone || branch.email) && (
-                <p className="text-zinc-500">
+                <p className="break-words text-zinc-500">
                     {[branch.contactPerson, branch.phone, branch.email].filter(Boolean).join(" · ")}
                 </p>
             )}
             {(branch.gstin || branch.manager) && (
-                <p className="text-zinc-500">
+                <p className="break-words text-zinc-500">
                     {[
                         branch.gstin && `GSTIN ${branch.gstin}`,
                         branch.manager && `Manager: ${branch.manager.name || branch.manager.phone}`,
@@ -236,8 +224,8 @@ export default function BranchesPanel() {
                 action={
                     isOwner &&
                     !editing && (
-                        <Button size="sm" onClick={() => setEditing("new")}>
-                            <FiPlus /> Add Branch
+                        <Button variant="soft" size="sm" icon={<FiPlus size={14} />} onClick={() => setEditing("new")}>
+                            Add Branch
                         </Button>
                     )
                 }

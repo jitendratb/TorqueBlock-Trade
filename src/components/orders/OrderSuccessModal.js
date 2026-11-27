@@ -45,9 +45,7 @@ export default function OrderSuccessModal({ open, onClose, order }) {
 
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-orange-500/10 border border-orange-500/30 text-orange-400 mb-2">
                     <FiCheckCircle className="text-orange-500 text-xs" />
-                    {order.paymentMethod?.toLowerCase().includes("credit")
-                        ? `Approved Pay on Credit · Net ${order.creditDays || " "} Days`
-                        : "Payment Verified · Trade Order Placed"}
+                    {order.paymentMethod?.toLowerCase().includes("credit") ? `Approved Pay on Credit · Net ${order.creditDays || " "} Days` : "Payment Verified · Trade Order Placed"}
                 </span>
 
                 <h2 className="text-2xl font-black text-white tracking-tight font-display">

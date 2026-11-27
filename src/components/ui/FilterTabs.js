@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 
-export default function FilterTabs({ tabs = [], activeTab, onChange, right, className, }) {
+export default function FilterTabs({ tabs = [], activeTab, onChange, right, rightClassName, className, }) {
     return (
         <div
             className={clsx(
@@ -10,7 +10,7 @@ export default function FilterTabs({ tabs = [], activeTab, onChange, right, clas
                 className
             )}
         >
-            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5" role="tablist">
+            <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto md:flex-wrap" role="tablist">
                 {tabs.map(({ id, label, Icon, count }) => {
                     const isActive = activeTab === id;
                     return (
@@ -21,7 +21,7 @@ export default function FilterTabs({ tabs = [], activeTab, onChange, right, clas
                             aria-selected={isActive}
                             onClick={() => onChange(id)}
                             className={clsx(
-                                "flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider transition border",
+                                "flex shrink-0 items-center gap-1.5 sm:gap-2 whitespace-nowrap px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold tracking-wider transition border",
                                 isActive
                                     ? "bg-white/[0.12] text-white border-white/20 shadow-sm backdrop-blur-sm"
                                     : "text-zinc-400 hover:text-white hover:bg-white/[0.06] border-transparent"
@@ -44,7 +44,7 @@ export default function FilterTabs({ tabs = [], activeTab, onChange, right, clas
                 })}
             </div>
 
-            {right && <div className="shrink-0">{right}</div>}
+            {right && <div className={clsx("shrink-0", rightClassName)}>{right}</div>}
         </div>
     );
 }

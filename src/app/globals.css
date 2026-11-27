@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&display=swap");
 @import "tailwindcss";
 
+/* Phones with very little height (e.g. 320x568): the hero tightens so its trust bar stays above the tab bar */
+@custom-variant short (@media (max-height: 620px));
+
 @theme {
   --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
@@ -144,6 +147,14 @@ a,
 
 .animate-drawer-in {
   animation: drawer-in 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-scrim {
+  background: linear-gradient(#000000b8 0%, #00000047 22%, #00000014 42%, #00000075 66%, #000000e6 100%);
+}
+
+.hero-vignette {
+  background: radial-gradient(130% 90% at 50% 115%, #0000 38%, #0000008c 100%);
 }
 
 @keyframes hero-scroll-cue {

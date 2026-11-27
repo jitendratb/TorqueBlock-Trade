@@ -1,8 +1,9 @@
 "use client";
 
 import clsx from "clsx";
+import { BsQrCode } from "react-icons/bs";
 import { FiCheck, FiCheckCircle, FiCreditCard, FiMapPin } from "react-icons/fi";
-import { SiRazorpay } from "react-icons/si";
+import { SiGooglepay, SiPaytm, SiPhonepe, SiRazorpay } from "react-icons/si";
 import { Button, Select } from "@/components/ui";
 import { formatINR, formatPercent } from "@/lib/format";
 
@@ -137,7 +138,13 @@ function CreditDetails({ account, total, branchId, onBranch, lockedBranch }) {
     );
 }
 
-// Step 3 — Choose Razorpay or Pay on Credit and confirm.
+const PAY_BUTTON = {
+    razorpay: { label: (total) => `PAY ${formatINR(total)} VIA RAZORPAY`, loading: "Opening Gateway…", badge: "256-bit Secure Gateway" },
+    credit: { label: (total) => `CONFIRM & PAY ON CREDIT (${formatINR(total)})`, loading: "Confirming Credit Order…", badge: "Verified Business Credit" },
+    upi: { label: (total) => `PAY ${formatINR(total)} WITH GOOGLE PAY / UPI`, loading: "Opening UPI QR…", badge: "Auto-confirmed on Payment" },
+};
+
+// Step 3 — Choose Razorpay, direct UPI or Pay on Credit and confirm.
 export default function PaymentStep({
     billing,
     units,
@@ -156,6 +163,7 @@ export default function PaymentStep({
 }) {
     const { total } = totals;
     const isCredit = mode === "credit";
+    const payButton = PAY_BUTTON[mode] || PAY_BUTTON.razorpay;
 
     return (
         <>
@@ -194,7 +202,7 @@ export default function PaymentStep({
                     </p>
 
                     <PaymentOption
-                        selected={!isCredit}
+                        selected={mode === "razorpay"}
                         onSelect={() => onMode("razorpay")}
                         Icon={SiRazorpay}
                         title="Razorpay Payment Gateway"
@@ -212,6 +220,30 @@ export default function PaymentStep({
                                     key={label}
                                     className="rounded-md border border-white/10 bg-black/30 px-2 py-0.5 font-medium"
                                 >
+                                    {label}
+                                </span>
+                            ))}
+                        </div>
+                    </PaymentOption>
+
+                    <PaymentOption
+                        selected={mode === "upi"}
+                        onSelect={() => onMode("upi")}
+                        Icon={SiGooglepay}
+                        title="Google Pay / UPI QR"
+                        tag="Scan & Pay"
+                        tagClass="border-sky-500/30 bg-sky-500/15 text-sky-300"
+                        description="Scan the QR with any UPI app · Order confirmed automatically on payment"
+                    >
+                        <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-white/10 pt-3 text-[10px] text-zinc-300">
+                            {[
+                                { Icon: SiGooglepay, label: "Google Pay" },
+                                { Icon: SiPhonepe, label: "PhonePe" },
+                                { Icon: SiPaytm, label: "Paytm" },
+                                { Icon: BsQrCode, label: "Any UPI QR" },
+                            ].map(({ Icon, label }) => (
+                                <span key={label} className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-black/30 px-2 py-0.5 font-medium">
+                                    <Icon aria-hidden="true" className="text-xs" />
                                     {label}
                                 </span>
                             ))}
@@ -273,14 +305,12 @@ export default function PaymentStep({
                     size="lg"
                     full
                     loading={sending}
-                    loadingText={isCredit ? "Confirming Credit Order…" : "Opening Gateway…"}
+                    loadingText={payButton.loading}
                     onClick={onPay}
                     rightIcon={<span className="text-base leading-none">→</span>}
                     className="text-xs sm:text-[13px] font-bold tracking-[0.08em]"
                 >
-                    {isCredit
-                        ? `CONFIRM & PAY ON CREDIT (${formatINR(total)})`
-                        : `PAY ${formatINR(total)} VIA RAZORPAY`}
+                    {payButton.label(total)}
                 </Button>
 
                 <div className="flex items-center justify-between pt-1 text-[11px] text-zinc-400">
@@ -288,8 +318,7 @@ export default function PaymentStep({
                         ← Back to Address
                     </Button>
                     <span className="flex items-center gap-1 text-emerald-400">
-                        <FiCheckCircle size={12} />{" "}
-                        {isCredit ? "Verified Business Credit" : "256-bit Secure Gateway"}
+                        <FiCheckCircle size={12} /> {payButton.badge}
                     </span>
                 </div>
             </footer>
